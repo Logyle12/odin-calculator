@@ -14,6 +14,10 @@
 }
 
 .calc-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 540px;
     height: 710px;
     background-color: rgba(12, 14, 18, 0.649);
