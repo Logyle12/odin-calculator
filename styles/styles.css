@@ -66,4 +66,6 @@
 .key {
     width: 101px;
     height: 64px;
+    border-radius: 10px;
+    background-color: rgb(234, 227, 220);
 }
