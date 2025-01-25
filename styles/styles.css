@@ -75,6 +75,10 @@
     cursor: pointer;
 }
 
+.key:hover {
+    background-color: rgb(255, 255, 254);
+}
+
 #key-reset, #key-equal {
     width: 226px;
 }
