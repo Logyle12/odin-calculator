@@ -78,12 +78,17 @@
     width: 226px;
 }
 
+#key-equal {
+    background-color: rgb(208, 63, 47);
+    box-shadow: inset 0px -4px 0px rgb(147, 38, 26);
+}
+
 #key-reset, #key-del {
     background-color: rgb(100, 113, 152);
     box-shadow: inset 0px -4px 0px rgb(65, 78, 115);
 }
 
-#key-reset > .key-text, #key-del > .key-text {
+#key-reset > .key-text, #key-del > .key-text, #key-equal > .key-text {
     color: rgb(255, 255, 255);
 }
 
