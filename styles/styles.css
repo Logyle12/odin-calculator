@@ -26,6 +26,7 @@
 .calc-display, .calc-keypad {
     width: 100%;
     background-color: rgb(24, 31, 51);
+    padding: 22px;
 }
 
 .calc-display {
