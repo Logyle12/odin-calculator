@@ -12,3 +12,9 @@
     min-height: 100vh;
     background-color: rgb(58, 70, 99);
 }
+
+.calc-body {
+    min-width: 540px;
+    min-height: 708px;
+    background-color: rgba(12, 14, 18, 0.649);
+}
