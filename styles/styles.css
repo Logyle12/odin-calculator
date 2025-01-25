@@ -27,6 +27,7 @@
     width: 100%;
     background-color: rgb(24, 31, 51);
     padding: 22px;
+    border-radius: 10px;
 }
 
 .calc-display {
