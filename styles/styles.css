@@ -23,12 +23,15 @@
     background-color: rgba(12, 14, 18, 0.649);
 }
 
+.calc-display, .calc-keypad {
+    width: 100%;
+    background-color: rgb(24, 31, 51);
+}
+
 .calc-display {
     height: 18%;
-    background-color: rgb(24, 31, 51);
 }
 
 .calc-keypad {
     height: 82%;
-    background-color: rgb(24, 31, 51);
 }
