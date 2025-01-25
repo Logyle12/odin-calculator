@@ -71,3 +71,13 @@
     box-shadow: inset 0px -4px 0px rgb(179, 164, 151);
     text-align: center;
 }
+
+.key-text {
+    font-family: 'League Spartan';
+    font-size: 36px;
+    font-weight: 500;
+    font-style: normal;
+    font-optical-sizing: auto;
+    letter-spacing: 1.5px;
+    color: #434A59
+}
