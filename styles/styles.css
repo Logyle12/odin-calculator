@@ -36,6 +36,9 @@
 }
 
 #display-value-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     width: 185px;
     height: 52px;
 }
