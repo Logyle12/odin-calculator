@@ -43,6 +43,16 @@
     height: 52px;
 }
 
+#display-value-text {
+    font-family: 'League Spartan';
+    font-size: 48px;
+    font-weight: 500;
+    font-style: normal;
+    font-optical-sizing: auto;
+    letter-spacing: 3px;
+    color: rgb(255, 255, 255);
+}
+
 .calc-keypad {
     height: 82%;
 }
