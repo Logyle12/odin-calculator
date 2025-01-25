@@ -14,12 +14,12 @@
 }
 
 .calc-body {
-    min-width: 540px;
-    min-height: 708px;
+    width: 540px;
+    height: 710px;
     background-color: rgba(12, 14, 18, 0.649);
 }
 
 .calc-display {
-    min-height: 128px;
+    height: 18%;
     background-color: rgb(24, 31, 51);
 }
