@@ -20,7 +20,7 @@
     align-items: center;
     width: 540px;
     height: 710px;
-    background-color: rgba(12, 14, 18, 0.649);
+    row-gap: 24px;
 }
 
 .calc-display, .calc-keypad {
