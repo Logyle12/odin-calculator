@@ -56,16 +56,15 @@
 
 .calc-keypad {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 24px;
-    height: 82%;
+    gap: 24px 18px;
+    padding: 32px;
 }
 
 .key {
     width: 101px;
-    height: 64px;
+    height: 72px;
     border-radius: 10px;
     background-color: rgb(234, 227, 220);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
