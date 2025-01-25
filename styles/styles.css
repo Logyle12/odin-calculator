@@ -32,6 +32,11 @@
     height: 18%;
 }
 
+#display-value-container {
+    width: 185px;
+    height: 52px;
+}
+
 .calc-keypad {
     height: 82%;
 }
