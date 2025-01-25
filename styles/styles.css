@@ -18,3 +18,8 @@
     min-height: 708px;
     background-color: rgba(12, 14, 18, 0.649);
 }
+
+.calc-display {
+    min-height: 128px;
+    background-color: rgb(24, 31, 51);
+}
