@@ -12,9 +12,6 @@ function handleKeyActions() {
         key.onclick = () => {            
             // Update display with key action
             updateDisplay(key);
-
-            // Log action
-            console.log(keyAction);
         }
     });
 }
