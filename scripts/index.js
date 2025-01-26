@@ -8,9 +8,16 @@ const keyButtons = document.querySelectorAll('.key');
 function getKeyActions() {
     // Iterate through each key button
     keyButtons.forEach((key) => {
-        // Get key action
-        const keyAction = key.firstElementChild.textContent;
-        // Log action
-        console.log(keyAction)
+        // Add click event handler
+        key.onclick = () => {
+            // Get key action
+            const keyAction = key.firstElementChild.textContent;
+            
+            // Log action
+            console.log(keyAction);
+
+            // Return the current key's action when clicked
+            return keyAction;
+        }
     });
 }
