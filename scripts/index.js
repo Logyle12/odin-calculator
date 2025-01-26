@@ -13,11 +13,11 @@ function getKeyAction() {
             // Get key action
             const keyAction = key.firstElementChild.textContent;
             
+            // Update display with key action
+            updateDisplayValue(keyAction);
+
             // Log action
             console.log(keyAction);
-
-            // Return the current key's action when clicked
-            return keyAction;
         }
     });
 }
