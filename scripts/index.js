@@ -21,3 +21,9 @@ function getKeyAction() {
         }
     });
 }
+
+// Update display with pressed key
+function updateDisplayValue(keyAction) {
+    // Append key value to display
+    displayValue.textContent += keyAction;
+}
