@@ -9,12 +9,9 @@ function handleKeyActions() {
     // Iterate through each key button
     keyButtons.forEach((key) => {
         // Add click event handler
-        key.onclick = () => {
-            // Get key action
-            const keyAction = key.firstElementChild.textContent;
-            
+        key.onclick = () => {            
             // Update display with key action
-            updateDisplay(keyAction);
+            updateDisplay(key);
 
             // Log action
             console.log(keyAction);
@@ -23,7 +20,10 @@ function handleKeyActions() {
 }
 
 // Update display with pressed key
-function updateDisplay(keyAction) {
+function updateDisplay(key) {
+    // Get key action
+    const keyAction = key.firstElementChild.textContent;
+
     // Append key value to display
     displayValue.textContent += keyAction;
 }
