@@ -4,8 +4,8 @@ const displayValue = document.querySelector('#display-value-text');
 // Retrieve all key elements
 const keyButtons = document.querySelectorAll('.key');
 
-// Extract actions from key elements
-function getKeyActions() {
+// Extract action for clicked key
+function getKeyAction() {
     // Iterate through each key button
     keyButtons.forEach((key) => {
         // Add click event handler
