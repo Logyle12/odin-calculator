@@ -69,16 +69,17 @@
     height: 72px;
     border: none;
     border-radius: 10px;
-    background-color: rgb(234, 227, 220);
+    background: linear-gradient(to top, rgb(234, 227, 220) 50%,  rgb(255, 255, 254) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     box-shadow: inset 0px -4px 0px rgb(179, 164, 151);
     cursor: pointer;
-    transition: background-color 0.35s 0.05s ease-in-out;
+    transition: background-position 0.25s 0.05s ease-in-out;
 }
 
 .key:hover {
-    background-color: rgb(255, 255, 254);
-
+    background-position: top;
 }
 
 .key:active {
@@ -93,21 +94,25 @@
 }
 
 #key-equal {
-    background-color: rgb(208, 63, 47);
+    background: linear-gradient(to top, rgb(208, 63, 47) 50%,  rgb(249, 107, 91) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
     box-shadow: inset 0px -4px 0px rgb(147, 38, 26);
 }
 
 #key-equal:hover {
-    background-color: rgb(249, 107, 91);
+    background-position: top;
 }
 
 #key-reset, #key-del {
-    background-color: rgb(100, 113, 152);
+    background: linear-gradient(to top, rgb(100, 113, 152) 50%,  rgb(163, 178, 225) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
     box-shadow: inset 0px -4px 0px rgb(65, 78, 115);
 }
 
 #key-reset:hover, #key-del:hover {
-    background-color: rgb(163, 178, 225);
+    background-position: top;
 }
 
 #key-reset > .key-text, #key-del > .key-text, #key-equal > .key-text {
