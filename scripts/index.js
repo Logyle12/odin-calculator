@@ -24,6 +24,6 @@ function updateDisplay(key) {
     // Get key action
     const keyAction = key.firstElementChild.textContent;
 
-    // Append key value to display
-    displayValue.textContent += keyAction;
+    // Get the key type (digit, control, or operator)
+    const keyType = key.classList[1];
 }
