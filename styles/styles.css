@@ -90,7 +90,7 @@
                 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-#key-reset, #key-equal {
+#key-AC, #key-equal {
     width: 226px;
 }
 
@@ -105,18 +105,18 @@
     background-position: top;
 }
 
-#key-reset, #key-del {
+#key-AC, #key-del {
     background: linear-gradient(to top, rgb(100, 113, 152) 50%,  rgb(163, 178, 225) 50%);
     background-size: 100% 200%;
     background-position: bottom;
     box-shadow: inset 0px -4px 0px rgb(65, 78, 115);
 }
 
-#key-reset:hover, #key-del:hover {
+#key-AC:hover, #key-del:hover {
     background-position: top;
 }
 
-#key-reset > .key-text, #key-del > .key-text, #key-equal > .key-text {
+#key-AC > .key-text, #key-del > .key-text, #key-equal > .key-text {
     color: rgb(255, 255, 255);
 }
 
