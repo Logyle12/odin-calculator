@@ -14,7 +14,7 @@ function handleKeyActions() {
             const keyAction = key.firstElementChild.textContent;
             
             // Update display with key action
-            updateDisplayValue(keyAction);
+            updateDisplay(keyAction);
 
             // Log action
             console.log(keyAction);
@@ -23,7 +23,7 @@ function handleKeyActions() {
 }
 
 // Update display with pressed key
-function updateDisplayValue(keyAction) {
+function updateDisplay(keyAction) {
     // Append key value to display
     displayValue.textContent += keyAction;
 }
