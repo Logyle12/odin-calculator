@@ -34,6 +34,8 @@ function updateDisplay(key) {
             if (displayValue.textContent === '0') {
                 // Replace the zero with the clicked digit
                 displayValue.textContent = keyAction;
+                // Reset tracked value to avoid leading zeros
+                currentValue = keyAction;
             }
 
             // Otherwise append digit if under max length
