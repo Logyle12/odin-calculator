@@ -40,7 +40,7 @@ function updateDisplay(key) {
 
             // Otherwise append digit if under max length
             else {
-                if (currentValue.length <= 15) {
+                if (currentValue.length < 15) {
                     // Append digit to tracked value
                     currentValue += keyAction;
                     // Parse and format number with UK locale separators
