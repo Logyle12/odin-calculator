@@ -39,13 +39,13 @@
 
 #display-value-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
 }
 
 #display-value-text {
     font-family: 'League Spartan';
-    font-size: 56px;
+    font-size: 54px;
     font-weight: 500;
     font-style: normal;
     font-optical-sizing: auto;
