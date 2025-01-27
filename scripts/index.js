@@ -56,6 +56,11 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
+            // Append operator if value exists
+            if (currentValue.length !== 0) {
+                // Append operator to display
+                displayValue.textContent += keyAction;
+            }
             break;
         
         default:
