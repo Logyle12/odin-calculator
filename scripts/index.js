@@ -32,14 +32,19 @@ function updateDisplay(key) {
         case 'key-digit':
             // If display shows only zero, overwrite it with new input
             if (displayValue.textContent === '0') {
+                // Replace the zero with the clicked digit
                 displayValue.textContent = keyAction;
             }
 
-            // Otherwise append the new input to existing display
+            // Otherwise append digit if under max length
             else {
-                displayValue.textContent += keyAction;
+                if (currentValue.length <= 15) {
+                    // Append digit to tracked value
+                    currentValue += keyAction;
+                    // Update display to show new value
+                    displayValue.textContent = currentValue;
+                }
             }
-
             
             break;
     
