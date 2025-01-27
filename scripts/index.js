@@ -27,8 +27,15 @@ function updateDisplay(key) {
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
-            // Append key value to display
-            displayValue.textContent += keyAction;
+            // If display shows only zero, overwrite it with new input
+            if (displayValue.textContent === '0') {
+                displayValue.textContent = keyAction;
+            }
+
+            // Otherwise append the new input to existing display
+            else {
+                displayValue.textContent += keyAction;
+            }
             break;
     
         case 'key-control':
@@ -41,3 +48,5 @@ function updateDisplay(key) {
             break;
     }
 }
+
+handleKeyActions();
