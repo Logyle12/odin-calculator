@@ -4,6 +4,9 @@ const displayValue = document.querySelector('#display-value-text');
 // Retrieve all key elements
 const keyButtons = document.querySelectorAll('.key');
 
+// Global variables
+let currentValue = '';
+
 // Handle key button clicks
 function handleKeyActions() {
     // Iterate through each key button
@@ -36,6 +39,8 @@ function updateDisplay(key) {
             else {
                 displayValue.textContent += keyAction;
             }
+
+            
             break;
     
         case 'key-control':
