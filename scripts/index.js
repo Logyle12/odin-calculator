@@ -43,8 +43,10 @@ function updateDisplay(key) {
                 if (currentValue.length <= 15) {
                     // Append digit to tracked value
                     currentValue += keyAction;
-                    // Update display to show new value
-                    displayValue.textContent = currentValue;
+                    // Parse and format number with UK locale separators
+                    const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
+                    // Update display with formatted number
+                    displayValue.textContent = formattedNumber;
                 }
             }
             
