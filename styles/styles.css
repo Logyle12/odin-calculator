@@ -8,8 +8,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 100vw;
-    min-height: 100vh;
+    min-width: 100svw;
+    min-height: 100svh;
     background-color: rgb(58, 70, 99);
 }
 
