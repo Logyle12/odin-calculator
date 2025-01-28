@@ -58,8 +58,10 @@ function updateDisplay(key) {
         case 'key-operator':
             // Append operator if value exists
             if (currentValue.length !== 0) {
+                // Add padding around operator
+                const operator = keyAction.padStart(2).padEnd(3);
                 // Append operator to display
-                displayValue.textContent += keyAction;
+                displayValue.textContent += operator;
             }
             break;
         
