@@ -47,10 +47,13 @@ function updateDisplay(key) {
                 if (currentValue.length < 15) {
                     // Append digit to tracked value
                     currentValue += keyAction;
+
+                    // Update display with current digit
+                    displayValue.textContent += keyAction;
+
                     // Parse and format number with UK locale separators
                     const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
-                    // Update display with formatted number
-                    displayValue.textContent = formattedNumber;
+                    
                 }
             }
             
