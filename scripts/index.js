@@ -36,7 +36,8 @@ function updateDisplay(key) {
             // If display shows only zero, overwrite it with new input
             if (displayValue.textContent === '0') {
                 // Replace the zero with the clicked digit
-                displayValue.textContent = keyAction;
+                displayText = keyAction
+                displayValue.textContent = displayText;
                 // Reset tracked value to avoid leading zeros
                 currentValue = keyAction;
             }
