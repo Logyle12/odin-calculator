@@ -59,6 +59,9 @@ function updateDisplay(key) {
 
                     // Parse and format number with UK locale separators
                     const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
+
+                    // Replace unformatted number with locale-formatted version
+                    displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
                     
                 }
             }
