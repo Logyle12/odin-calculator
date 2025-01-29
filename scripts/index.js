@@ -76,8 +76,12 @@ function updateDisplay(key) {
             if (currentValue.length !== 0) {
                 // Add padding around operator
                 const operator = keyAction.padStart(2).padEnd(3);
+
                 // Append operator to display
                 displayValue.textContent += operator;
+
+                // Reset tracked value after operator added
+                currentValue = '';
             }
             break;
         
