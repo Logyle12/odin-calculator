@@ -55,7 +55,7 @@ function updateDisplay(key) {
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
 
                     // Extract raw number before formatting
-                    const unformattedNumber = displayText.match(/((?:\d+,))(\*)/)[1];
+                    const unformattedNumber = displayText.match(/((?:\d+,*)*)(\*)/)[1];
 
                     // Parse and format number with UK locale separators
                     const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
