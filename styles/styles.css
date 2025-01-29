@@ -44,6 +44,7 @@
 }
 
 #display-value-text {
+    width: 100%;
     font-family: 'League Spartan';
     font-size: 46px;
     font-weight: 500;
