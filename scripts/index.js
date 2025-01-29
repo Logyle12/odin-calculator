@@ -51,6 +51,9 @@ function updateDisplay(key) {
                     // Update display with current digit
                     displayValue.textContent += keyAction;
 
+                    // Append current digit to displayText, marking for extraction
+                    displayText += keyAction.padEnd(keyAction.length + 1, '*');
+
                     // Parse and format number with UK locale separators
                     const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
                     
