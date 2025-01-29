@@ -27,6 +27,9 @@ function updateDisplay(key) {
     // Get the key type (digit, control, or operator)
     const keyType = key.classList[1];
 
+    // Copy of display content for manipulation
+    let displayText = displayValue.textContent;
+
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
