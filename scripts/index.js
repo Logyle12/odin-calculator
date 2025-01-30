@@ -99,9 +99,15 @@ function updateDisplay(key) {
             else {  
                 // Remove the last character if display is not zero  
                 if (displayValue.textContent !== '0') { 
-                    // Get updated display content after removing last character   
-                    const updatedDisplayText = displayValue.textContent.slice(0, -1); 
                     
+                    // Retrieve the last character using negative indexing
+                    const lastCharacter = displayValue.textContent.at(-1);
+
+                    // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
+                    const updatedDisplayText = /\s/.test(lastCharacter)
+                        ? displayValue.textContent.slice(0, displayValue.textContent.length - 3) 
+                        : displayValue.textContent.slice(0, -1);
+
                     // Update display text for further processing
                     displayText = updatedDisplayText;
             
@@ -120,8 +126,7 @@ function updateDisplay(key) {
                     }  
             
                     // Update tracked value, removing non-numeric characters 
-                    currentValue = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');
-                    console.log('Current Value:', currentValue);
+                    currentValue = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');             
                 }
 
                 // Check if current value exists
