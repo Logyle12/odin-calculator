@@ -20,6 +20,29 @@ function handleKeyActions() {
     });
 }
 
+// Format and update number display with locale separators  
+function formatNumberDisplay() {
+    // Extract raw number before formatting
+    const unformattedNumber = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1];
+
+    // Format number if it doesn't already contain a decimal point
+    if (unformattedNumber.includes('.') === false) {
+        // Parse and format number with UK locale separators
+        const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
+
+        // Replace unformatted number with locale-formatted version
+        displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
+
+        // Set digit limit: 15 for integers
+        digitLimit = 15;
+    }
+
+    else {
+        // Set digit limit: 10 for decimals
+        digitLimit = 10;
+    }
+}
+
 // Update display with pressed key
 function updateDisplay(key) {
     // Get key action
@@ -58,25 +81,8 @@ function updateDisplay(key) {
                     // Append current digit to displayText, marking for extraction
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
 
-                    // Extract raw number before formatting
-                    const unformattedNumber = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1];
-
-                    // Format number if it doesn't already contain a decimal point
-                    if (unformattedNumber.includes('.') === false) {
-                        // Parse and format number with UK locale separators
-                        const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
-    
-                        // Replace unformatted number with locale-formatted version
-                        displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
-
-                        // Set digit limit: 15 for integers
-                        digitLimit = 15;
-                    }
-
-                    else {
-                        // Set digit limit: 10 for decimals
-                        digitLimit = 10;
-                    }
+                    // Apply locale formatting  
+                    formatNumberDisplay();
                 }
             }
             
@@ -88,6 +94,7 @@ function updateDisplay(key) {
                 // Reset display to zero
                 displayValue.textContent = '0';
             }
+            
             break;
             
         case 'key-operator':
