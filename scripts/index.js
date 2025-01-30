@@ -88,6 +88,15 @@ function updateDisplay(key) {
         default:
             break;
     }
+
+    // Get full width of scrollable content
+    const scrollWidth = displayValue.parentElement.scrollWidth;
+
+    // Auto-scroll to keep newest input visible
+    displayValue.parentElement.scrollTo({
+        left: scrollWidth, // Scroll to full width of content
+        behavior: 'instant', // Immediate scroll without animation
+    });
 }
 
 handleKeyActions();
