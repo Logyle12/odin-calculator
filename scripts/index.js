@@ -27,6 +27,9 @@ function updateDisplay(key) {
     // Get the key type (digit, control, or operator)
     const keyType = key.classList[1];
 
+    // Get the key ID for reference in actions
+    const keyId = key.id;
+
     // Copy of display content for manipulation
     let displayText = displayValue.textContent;
 
@@ -62,7 +65,6 @@ function updateDisplay(key) {
 
                     // Replace unformatted number with locale-formatted version
                     displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
-                    
                 }
             }
             
@@ -72,16 +74,19 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
-            // Append operator if value exists
-            if (currentValue.length !== 0) {
-                // Add padding around operator
-                const operator = keyAction.padStart(2).padEnd(3);
-
-                // Append operator to display
-                displayValue.textContent += operator;
-
-                // Reset tracked value after operator added
-                currentValue = '';
+            // Skip operator append for equal key
+            if (keyId !== 'key-equal') {
+                // Append operator if value exists
+                if (currentValue.length !== 0) {
+                    // Add padding around operator
+                    const operator = keyAction.padStart(2).padEnd(3);
+    
+                    // Append operator to display
+                    displayValue.textContent += operator;
+    
+                    // Reset tracked value after operator added
+                    currentValue = '';
+                }
             }
             break;
         
