@@ -5,7 +5,7 @@ const displayValue = document.querySelector('#display-value-text');
 const keyButtons = document.querySelectorAll('.key');
 
 // Global variables
-let currentValue = '';
+let currentValue = displayValue.textContent;
 
 // Handle key button clicks
 function handleKeyActions() {
