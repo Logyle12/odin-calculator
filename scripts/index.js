@@ -76,11 +76,15 @@ function updateDisplay(key) {
         case 'key-operator':
             // Skip operator append for equal key
             if (keyId !== 'key-equal') {
+
                 // Append operator if value exists
                 if (currentValue.length !== 0) {
-                    // Add padding around operator
-                    const operator = keyAction.padStart(2).padEnd(3);
-    
+                    
+                    // Pad operator unless it's decimal key
+                    const operator = keyId !== 'key-decimal' 
+                        ? keyAction.padStart(2).padEnd(3) 
+                        : keyAction;
+
                     // Append operator to display
                     displayValue.textContent += operator;
     
