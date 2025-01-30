@@ -83,6 +83,11 @@ function updateDisplay(key) {
             break;
     
         case 'key-control':
+            // Check for 'key-AC' press
+            if (keyId === 'key-AC') {
+                // Reset display to zero
+                displayValue.textContent = '0';
+            }
             break;
             
         case 'key-operator':
