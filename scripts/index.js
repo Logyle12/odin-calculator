@@ -6,6 +6,7 @@ const keyButtons = document.querySelectorAll('.key');
 
 // Global variables
 let currentValue = displayValue.textContent;
+let digitLimit = 15;
 
 // Handle key button clicks
 function handleKeyActions() {
@@ -45,9 +46,9 @@ function updateDisplay(key) {
                 currentValue = keyAction;
             }
 
-            // Otherwise append digit if under max length
+            // Otherwise append digit if under limit
             else {
-                if (currentValue.length < 15) {
+                if (currentValue.length < digitLimit) {
                     // Append digit to tracked value
                     currentValue += keyAction;
 
@@ -67,6 +68,14 @@ function updateDisplay(key) {
     
                         // Replace unformatted number with locale-formatted version
                         displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
+
+                        // Set digit limit: 15 for integers
+                        digitLimit = 15;
+                    }
+
+                    else {
+                        // Set digit limit: 10 for decimals
+                        digitLimit = 10;
                     }
                 }
             }
