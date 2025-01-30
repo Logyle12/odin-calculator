@@ -21,7 +21,7 @@ function handleKeyActions() {
 }
 
 // Format and update number display with locale separators  
-function formatNumberDisplay() {
+function formatNumberDisplay(displayText) {
     // Extract raw number before formatting
     const unformattedNumber = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1];
 
@@ -82,7 +82,7 @@ function updateDisplay(key) {
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
 
                     // Apply locale formatting  
-                    formatNumberDisplay();
+                    formatNumberDisplay(displayText);
                 }
             }
             
@@ -94,7 +94,7 @@ function updateDisplay(key) {
                 // Reset display to zero
                 displayValue.textContent = '0';
             }
-            
+
             break;
             
         case 'key-operator':
