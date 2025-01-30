@@ -95,6 +95,28 @@ function updateDisplay(key) {
                 displayValue.textContent = '0';
             }
 
+            else {  
+                // Remove the last character if display is not zero  
+                if (displayValue.textContent !== '0') { 
+                    // Get updated display content after removing last character   
+                    const updatedDisplayText = displayValue.textContent.slice(0, -1);  
+            
+                    // Update display if there's more than one character left  
+                    if (displayValue.textContent.length > 1) {  
+                        // Apply updated text to display 
+                        displayValue.textContent = updatedDisplayText;  
+                    }  
+            
+                    else {  
+                        // Reset display to zero when last digit is removed  
+                        displayValue.textContent = '0';  
+                    }  
+            
+                    // Update tracked value, removing non-numeric characters  
+                    currentValue = displayValue.textContent.match(/\d+/g).join('');  
+                }  
+            }  
+            
             break;
             
         case 'key-operator':
