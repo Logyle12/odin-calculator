@@ -95,11 +95,18 @@ function updateDisplay(key) {
                 displayValue.textContent = '0';
             }
 
+            // Otherwise, on delete press
             else {  
                 // Remove the last character if display is not zero  
                 if (displayValue.textContent !== '0') { 
                     // Get updated display content after removing last character   
-                    const updatedDisplayText = displayValue.textContent.slice(0, -1);  
+                    const updatedDisplayText = displayValue.textContent.slice(0, -1); 
+                    
+                    // Update display text for further processing
+                    displayText = updatedDisplayText;
+            
+                    // Append marker for number extraction
+                    displayText += '*';
             
                     // Update display if there's more than one character left  
                     if (displayValue.textContent.length > 1) {  
@@ -112,10 +119,17 @@ function updateDisplay(key) {
                         displayValue.textContent = '0';  
                     }  
             
-                    // Update tracked value, removing non-numeric characters  
-                    currentValue = displayValue.textContent.match(/\d+/g).join('');  
-                }  
-            }  
+                    // Update tracked value, removing non-numeric characters 
+                    currentValue = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');
+                    console.log('Current Value:', currentValue);
+                }
+
+                // Check if current value exists
+                if (currentValue.length !== 0) {
+                    // Format number
+                    formatNumberDisplay(displayText);
+                }
+            }
             
             break;
             
