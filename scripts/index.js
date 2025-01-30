@@ -58,13 +58,16 @@ function updateDisplay(key) {
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
 
                     // Extract raw number before formatting
-                    const unformattedNumber = displayText.match(/((?:\d+,*)*)(\*)/)[1];
+                    const unformattedNumber = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1];
 
-                    // Parse and format number with UK locale separators
-                    const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
-
-                    // Replace unformatted number with locale-formatted version
-                    displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
+                    // Format number if it doesn't already contain a decimal point
+                    if (unformattedNumber.includes('.') === false) {
+                        // Parse and format number with UK locale separators
+                        const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
+    
+                        // Replace unformatted number with locale-formatted version
+                        displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
+                    }
                 }
             }
             
@@ -76,10 +79,9 @@ function updateDisplay(key) {
         case 'key-operator':
             // Skip operator append for equal key
             if (keyId !== 'key-equal') {
-
                 // Append operator if value exists
                 if (currentValue.length !== 0) {
-                    
+
                     // Pad operator unless it's decimal key
                     const operator = keyId !== 'key-decimal' 
                         ? keyAction.padStart(2).padEnd(3) 
