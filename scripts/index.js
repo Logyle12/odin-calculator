@@ -25,7 +25,7 @@ function normalizeOperator(operator) {
     } else {
         return operator;
     }
-}
+ }
 
 // Handle key button clicks
 function handleKeyActions() {
@@ -61,6 +61,21 @@ function formatNumberDisplay(displayText) {
         digitLimit = 10;
     }
 }
+
+// Standardizes and evaluates the math expression
+function evaluateExpression(mathExpression) {
+    // Remove locale formatting 
+    const sanitizedInput = mathExpression.replaceAll(',', '');
+    
+    // Replace math operators with their standard ASCII equivalents
+    const normalizedExpression = sanitizedInput.replace(/[^\d|\s]/g, normalizeOperator);
+    
+    // Store the final processed expression
+    mathExpression = normalizedExpression;
+
+    // Log result for debugging
+    console.log(mathExpression);
+} 
 
 // Update display with pressed key
 function updateDisplay(key) {
