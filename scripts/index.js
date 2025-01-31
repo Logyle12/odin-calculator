@@ -190,6 +190,15 @@ function updateDisplay(key) {
                     currentValue = '';
                 }
             }
+
+            // If equal press, evaluate the expression
+            else {
+                // Get the current expression from the displa
+                const currentExpression = displayValue.textContent;
+
+                // Evaluate the current expression
+                evaluateExpression(currentExpression);
+            }
             break;
         
         default:
