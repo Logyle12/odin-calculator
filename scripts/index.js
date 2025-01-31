@@ -8,6 +8,25 @@ const keyButtons = document.querySelectorAll('.key');
 let currentValue = displayValue.textContent;
 let digitLimit = 15;
 
+// Helper Functions
+
+// Standardizes special math operators to ASCII equivalents
+function normalizeOperator(operator) {
+    // Get unicode value to identify special characters
+    const unicode = operator.codePointAt(0);
+    
+    // Division symbol ÷ to forward slash
+    if (unicode === 247) {
+        return '/';
+    // Multiplication symbol × to asterisk 
+    } else if (unicode === 215) {
+        return '*';
+    // Leave other operators unchanged
+    } else {
+        return operator;
+    }
+}
+
 // Handle key button clicks
 function handleKeyActions() {
     // Iterate through each key button
