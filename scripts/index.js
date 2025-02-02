@@ -163,9 +163,12 @@ function updateDisplay(key) {
                     // Append operator to display
                     displayValue.textContent += operator;
 
-                    // Append
-                    operatorQueue.push([keyId, keyAction]);
-    
+                    // Check if the operator is not already in the queue
+                    if (operatorQueue.flat().includes(keyId) === false) {
+                        // Add the operator and action to the queue
+                        operatorQueue.push([keyId, keyAction]);
+                    }
+
                     // Reset tracked value after operator added
                     currentValue = '';
                 }
