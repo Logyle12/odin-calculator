@@ -8,6 +8,17 @@ const keyButtons = document.querySelectorAll('.key');
 let currentValue = displayValue.textContent;
 let digitLimit = 15;
 
+// Store pending operations awaiting calculation
+const operatorQueue = [];
+
+// Define operator precedence: multiply=4, divide=3, add=2, subtract=1
+const operatorRank = {
+   'key-multiply': 4,
+   'key-divide': 3,
+   'key-add': 2,
+   'key-subtract': 1,
+};
+
 // Handle key button clicks
 function handleKeyActions() {
     // Iterate through each key button
