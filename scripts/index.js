@@ -55,7 +55,13 @@ function formatNumberDisplay(displayText) {
 }
 
 // Evaluate expression by operator precedence
-function evaluateExpression() {
+function evaluateExpression(expression) {
+    // Sanitize the expression by removing whitespace and commas
+    expression = expression.replace(/\s|\,/g, '');
+
+    // Log the sanitized expression for debugging
+    console.log(expression);
+
     // Sort the operator queue based on operator precedence
     operatorQueue.sort(
         (operatorA, operatorB) => operatorRank[operatorB[0]] - operatorRank[operatorA[0]]
@@ -67,12 +73,26 @@ function evaluateExpression() {
     // Get the current size of the operator queue   
     const queueSize = operatorQueue.length;
     
+    
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Get the current operator from the FIFO queue
         const currentOperator = operatorQueue.shift()[1];
-        // Log the current operator
-        console.log(currentOperator);
+
+        // Create a pattern to match numbers with the current operator
+        const pattern = `\\d+\\${currentOperator}\\d+`;
+
+        // Convert the pattern to a regular expression
+        const regex = new RegExp(pattern, 'g');
+
+        // Log the generated regular expression for debugging
+        console.log(regex);
+
+        // Find all matches of the pattern in the mathematical expression
+        const matches = expression.match(regex);
+
+        // Log matched expressions for debugging
+        console.table(matches)
     }
 }
 
@@ -197,7 +217,11 @@ function updateDisplay(key) {
             }
 
             else {
-                evaluateExpression();
+                // Get the current expression from the display
+                const currentExpression = displayValue.textContent;
+
+                // Evaluate the current expression
+                evaluateExpression(currentExpression);
             }
             break;
         
