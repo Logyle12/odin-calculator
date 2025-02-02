@@ -54,6 +54,18 @@ function formatNumberDisplay(displayText) {
     }
 }
 
+// Evaluate expression by operator precedence
+function evaluateExpression() {
+    // Sort the operator queue based on operator precedence
+    operatorQueue.sort(
+        (operatorA, operatorB) => operatorRank[operatorB[0]] - operatorRank[operatorA[0]]
+    );
+    
+
+    // Log the sorted operator queue for debugging
+    console.table(operatorQueue);
+}
+
 // Update display with pressed key
 function updateDisplay(key) {
     // Get key action
@@ -175,14 +187,7 @@ function updateDisplay(key) {
             }
 
             else {
-                // Sort the operator queue based on operator precedence
-                operatorQueue.sort(
-                    (operatorA, operatorB) => operatorRank[operatorB[0]] - operatorRank[operatorA[0]]
-                );
-                
-
-                // Log the sorted operator queue for debugging
-                console.table(operatorQueue);
+                evaluateExpression();
             }
             break;
         
