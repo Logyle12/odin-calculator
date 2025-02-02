@@ -162,10 +162,24 @@ function updateDisplay(key) {
 
                     // Append operator to display
                     displayValue.textContent += operator;
+
+                    // Append
+                    operatorQueue.push([keyId, keyAction]);
     
                     // Reset tracked value after operator added
                     currentValue = '';
                 }
+            }
+
+            else {
+                // Sort the operator queue based on operator precedence
+                operatorQueue.sort(
+                    (operatorA, operatorB) => operatorRank[operatorB[0]] - operatorRank[operatorA[0]]
+                );
+                
+
+                // Log the sorted operator queue for debugging
+                console.table(operatorQueue);
             }
             break;
         
