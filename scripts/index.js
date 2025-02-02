@@ -60,10 +60,20 @@ function evaluateExpression() {
     operatorQueue.sort(
         (operatorA, operatorB) => operatorRank[operatorB[0]] - operatorRank[operatorA[0]]
     );
-    
 
     // Log the sorted operator queue for debugging
     console.table(operatorQueue);
+
+    // Get the current size of the operator queue   
+    const queueSize = operatorQueue.length;
+    
+    // Process each expression based on operator precedence
+    for (let i = 0; i < queueSize; i++) {
+        // Get the current operator from the FIFO queue
+        const currentOperator = operatorQueue.shift()[1];
+        // Log the current operator
+        console.log(currentOperator);
+    }
 }
 
 // Update display with pressed key
