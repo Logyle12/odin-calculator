@@ -45,15 +45,19 @@ const operatorQueue = [];
 const operatorRank = {
     'key-multiply': {
         'rank': 4,
+        'operation': multiply,
     },
     'key-divide': {
-        'rank': 3
+        'rank': 3,
+        'operation': divide,
     },
     'key-add': {
-        'rank': 2
+        'rank': 2,
+        'operation': add,
     },
     'key-subtract': {
-        'rank': 1
+        'rank': 1,
+        'operation': subtract,
     }
 };
 
