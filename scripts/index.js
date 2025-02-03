@@ -15,7 +15,6 @@ function add(operands) {
     // Calculate and return the sum
     const sum = operands.reduce(
         (sum, currentValue) => sum + currentValue,
-        currentValue
     );
     return sum;
 }
@@ -25,7 +24,6 @@ function subtract(operands) {
     // Calculate and return the difference
     const difference = operands.reduce(
         (difference, currentValue) => difference - currentValue,
-        currentValue
     );
     return difference; 
 }
@@ -35,7 +33,6 @@ function multiply(operands) {
     // Calculate and return the product
     const product = operands.reduce(
         (product, currentValue) => product * currentValue,
-        currentValue
     );
     return product; 
 }
@@ -45,7 +42,6 @@ function divide(operands) {
     // Calculate and return the quotient
     const quotient = operands.reduce(
         (quotient, currentValue) => quotient / currentValue,
-        currentValue
     );
     return quotient; 
 }
@@ -142,10 +138,10 @@ function evaluateExpression(expression) {
         console.log(regex);
 
         // Find all matches of the pattern in the mathematical expression
-        const matches = expression.match(regex);
+        const operatorMatches = expression.match(regex);
 
         // Log matched expressions for debugging
-        console.table(matches);
+        console.table(operatorMatches);
     }
 }
 
