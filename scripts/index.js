@@ -117,8 +117,8 @@ function evaluateExpression(expression) {
     
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
-        // Get the current operator from the FIFO queue
-        const currentOperator = operatorQueue.shift()[1];
+        // Get the current operator and its ID from the FIFO queue
+        const [operatorId, currentOperator] = operatorQueue.shift();
 
         // Create a pattern to match numbers with the current operator
         const pattern = `\\d+\\${currentOperator}\\d+`;
