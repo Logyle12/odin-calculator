@@ -8,6 +8,36 @@ const keyButtons = document.querySelectorAll('.key');
 let currentValue = displayValue.textContent;
 let digitLimit = 15;
 
+// Math functions
+
+// Add two numbers
+function add(a, b) {
+    // Calculate and return the sum
+    const sum = a + b;
+    return sum; 
+}
+
+// Subtract second number from the first
+function subtract(a, b) {
+    // Calculate and return the difference
+    const difference = a - b;
+    return difference; 
+}
+
+// Multiply two numbers
+function multiply(a, b) {
+    // Calculate and return the product
+    const product = a * b;
+    return product; 
+}
+
+// Divide first number by the second
+function divide(a, b) {
+    // Calculate and return the quotient
+    const quotient = a / b;
+    return quotient; 
+}
+
 // Store pending operations awaiting calculation
 const operatorQueue = [];
 
