@@ -10,31 +10,43 @@ let digitLimit = 15;
 
 // Math functions
 
-// Add two numbers
-function add(a, b) {
+// Add all numbers in the array
+function add(operands) {
     // Calculate and return the sum
-    const sum = a + b;
-    return sum; 
+    const sum = operands.reduce(
+        (sum, currentValue) => sum + currentValue,
+        currentValue
+    );
+    return sum;
 }
 
-// Subtract second number from the first
-function subtract(a, b) {
+// Subtract all numbers in the array
+function subtract(operands) {
     // Calculate and return the difference
-    const difference = a - b;
+    const difference = operands.reduce(
+        (difference, currentValue) => difference - currentValue,
+        currentValue
+    );
     return difference; 
 }
 
-// Multiply two numbers
-function multiply(a, b) {
+// Multiply all numbers in the array
+function multiply(operands) {
     // Calculate and return the product
-    const product = a * b;
+    const product = operands.reduce(
+        (product, currentValue) => product * currentValue,
+        currentValue
+    );
     return product; 
 }
 
-// Divide first number by the second
-function divide(a, b) {
+// Divide the initial number by all subsequent numbers in the array
+function divide(operands) {
     // Calculate and return the quotient
-    const quotient = a / b;
+    const quotient = operands.reduce(
+        (quotient, currentValue) => quotient / currentValue,
+        currentValue
+    );
     return quotient; 
 }
 
