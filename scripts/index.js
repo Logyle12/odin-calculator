@@ -13,10 +13,18 @@ const operatorQueue = [];
 
 // Define operator precedence: multiply=4, divide=3, add=2, subtract=1
 const operatorRank = {
-   'key-multiply': 4,
-   'key-divide': 3,
-   'key-add': 2,
-   'key-subtract': 1,
+    'key-multiply': {
+        'rank': 4,
+    },
+    'key-divide': {
+        'rank': 4
+    },
+    'key-add': {
+        'rank': 2
+    },
+    'key-subtract': {
+        'rank': 2
+    }
 };
 
 // Handle key button clicks
@@ -64,7 +72,7 @@ function evaluateExpression(expression) {
 
     // Sort the operator queue based on operator precedence
     operatorQueue.sort(
-        (operatorA, operatorB) => operatorRank[operatorB[0]] - operatorRank[operatorA[0]]
+        (operatorA, operatorB) => operatorRank[operatorB[0]].rank - operatorRank[operatorA[0]].rank
     );
 
     // Log the sorted operator queue for debugging
@@ -72,7 +80,6 @@ function evaluateExpression(expression) {
 
     // Get the current size of the operator queue   
     const queueSize = operatorQueue.length;
-    
     
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
@@ -92,7 +99,7 @@ function evaluateExpression(expression) {
         const matches = expression.match(regex);
 
         // Log matched expressions for debugging
-        console.table(matches)
+        console.table(matches);
     }
 }
 
