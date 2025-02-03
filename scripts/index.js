@@ -104,6 +104,37 @@ function formatNumberDisplay(displayText) {
     }
 }
 
+// Simplify the expression by processing matched groups
+function simplifyExpression(operatorId, operatorGroups) {
+    // Extract and convert operands to numbers
+    const operands = operatorGroups.map(matchedExpression => 
+        // Convert matched digits to numbers
+        matchedExpression.match(/\d+/g).map(Number)
+    );
+
+    // Log the extracted operands for debugging
+    console.table(operands);
+
+    // Get the count of operands
+    const operandCount = operands.length;
+
+    // Process each group of operands
+    for (let i = 0; i < operandCount; i++) {
+        // Remove the first pair of operands
+        const operandPair = operands.shift();
+        console.log('Operand Pair:', operandPair);
+        
+        // Log the operator ID
+        console.log('Operator Id:', operatorId);
+        
+        // Perform the operation based on operator ID
+        const simplifiedResult = operatorRank[operatorId].operation(operandPair);
+        
+        // Log the result of the operation
+        console.log('Simplified Result:', simplifiedResult);
+    }
+}
+
 // Evaluate expression by operator precedence
 function evaluateExpression(expression) {
     // Sanitize the expression by removing whitespace and commas
@@ -142,6 +173,9 @@ function evaluateExpression(expression) {
 
         // Log matched expressions for debugging
         console.table(operatorMatches);
+
+        // Process grouped expressions
+        simplifyExpression(operatorId, operatorMatches);
     }
 }
 
