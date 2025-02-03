@@ -47,13 +47,13 @@ const operatorRank = {
         'rank': 4,
     },
     'key-divide': {
-        'rank': 4
+        'rank': 3
     },
     'key-add': {
         'rank': 2
     },
     'key-subtract': {
-        'rank': 2
+        'rank': 1
     }
 };
 
