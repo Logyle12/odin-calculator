@@ -105,7 +105,7 @@ function formatNumberDisplay(displayText) {
 }
 
 // Simplify the expression by processing matched groups
-function simplifyExpression(operatorId, operatorGroup) {
+function simplifyExpression(operatorId, operatorGroup, expression) {
     // Extract and convert operands to numbers
     const [subExpression, ...operandStrings]  = operatorGroup; 
 
@@ -126,6 +126,16 @@ function simplifyExpression(operatorId, operatorGroup) {
     
     // Log the result of the operation
     console.log('Simplified Result:', simplifiedResult);
+
+    // Replace sub-expression with result
+    const simplifiedExpression = expression.replace(subExpression, simplifiedResult, expression);
+
+    // Log the updated expression
+    console.log('Simplified Expression:', simplifiedExpression);
+
+    // Update and return the expression
+    expression = simplifiedExpression;
+    return expression;
 }
 
 // Evaluate expression by operator precedence
@@ -167,8 +177,11 @@ function evaluateExpression(expression) {
         // Log matched expressions for debugging
         console.table(operatorMatches);
 
-        // Process grouped expressions
-        simplifyExpression(operatorId, operatorMatches);
+        // Process the matched expressions
+        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
+
+        // Update the main expression
+        expression = simplifiedExpression;
     }
 }
 
