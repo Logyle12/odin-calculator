@@ -166,7 +166,7 @@ function evaluateExpression(expression) {
         const [operatorId, currentOperator] = operatorQueue.shift();
 
         // Create a pattern to match numbers with the current operator
-        const pattern = `(\\d+)\\${currentOperator}(\\d+)`;
+        const pattern = `(\\-?\\d+\\.?\\d*)\\${currentOperator}(\\-?\\d+\\.?\\d*)`;
 
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
