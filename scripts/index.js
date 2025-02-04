@@ -146,17 +146,20 @@ function evaluateExpression(expression) {
     // Log the sanitized expression for debugging
     console.log(expression);
 
-    // Sort the operator queue based on operator precedence
-    operatorQueue.sort(
-        (operatorA, operatorB) => operatorRank[operatorB[0]].rank - operatorRank[operatorA[0]].rank
-    );
-
     // Log the sorted operator queue for debugging
     console.table(operatorQueue);
 
     // Get the current size of the operator queue   
     const queueSize = operatorQueue.length;
-    
+        
+    // If the queue has more than one operator, sort by precedence
+    if (queueSize > 1) {
+        // Arrange operators by their precedence
+        operatorQueue.sort(
+            (operatorA, operatorB) => operatorRank[operatorB[0]].rank - operatorRank[operatorA[0]].rank
+        );    
+    }
+
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Get the current operator and its ID from the FIFO queue
@@ -294,8 +297,11 @@ function updateDisplay(key) {
                     // Append operator to display
                     displayValue.textContent += operator;
 
-                    // Add the operator and action to the queue
-                    operatorQueue.push([keyId, keyAction]);
+                    // If the key pressed is not the 'decimal' key
+                    if (keyId !== 'key-decimal') {
+                        // Add the operator and action to the queue
+                        operatorQueue.push([keyId, keyAction]);
+                    }
 
                     // Reset tracked value after operator added
                     currentValue = '';
