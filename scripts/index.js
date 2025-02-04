@@ -105,34 +105,27 @@ function formatNumberDisplay(displayText) {
 }
 
 // Simplify the expression by processing matched groups
-function simplifyExpression(operatorId, operatorGroups) {
+function simplifyExpression(operatorId, operatorGroup) {
     // Extract and convert operands to numbers
-    const operands = operatorGroups.map(matchedExpression => 
-        // Convert matched digits to numbers
-        matchedExpression.match(/\d+/g).map(Number)
-    );
+    const [subExpression, ...operandStrings]  = operatorGroup; 
+
+    // Convert operand strings to numbers
+    const operands = operandStrings.map(Number);
+
+    // Log the sub-expression
+    console.log('Sub Expression:', subExpression);
 
     // Log the extracted operands for debugging
-    console.table(operands);
+    console.log(operands);
 
-    // Get the count of operands
-    const operandCount = operands.length;
+    // Log the operator ID
+    console.log('Operator Id:', operatorId);
 
-    // Process each group of operands
-    for (let i = 0; i < operandCount; i++) {
-        // Remove the first pair of operands
-        const operandPair = operands.shift();
-        console.log('Operand Pair:', operandPair);
-        
-        // Log the operator ID
-        console.log('Operator Id:', operatorId);
-        
-        // Perform the operation based on operator ID
-        const simplifiedResult = operatorRank[operatorId].operation(operandPair);
-        
-        // Log the result of the operation
-        console.log('Simplified Result:', simplifiedResult);
-    }
+    // Apply the corresponding operation based on operator precedence
+    const simplifiedResult = operatorRank[operatorId].operation(operands);
+    
+    // Log the result of the operation
+    console.log('Simplified Result:', simplifiedResult);
 }
 
 // Evaluate expression by operator precedence
@@ -160,7 +153,7 @@ function evaluateExpression(expression) {
         const [operatorId, currentOperator] = operatorQueue.shift();
 
         // Create a pattern to match numbers with the current operator
-        const pattern = `\\d+\\${currentOperator}\\d+`;
+        const pattern = `(\\d+)\\${currentOperator}(\\d+)`;
 
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
