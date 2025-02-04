@@ -163,7 +163,7 @@ function evaluateExpression(expression) {
         const pattern = `\\d+\\${currentOperator}\\d+`;
 
         // Convert the pattern to a regular expression
-        const regex = new RegExp(pattern, 'g');
+        const regex = new RegExp(pattern);
 
         // Log the generated regular expression for debugging
         console.log(regex);
@@ -288,11 +288,8 @@ function updateDisplay(key) {
                     // Append operator to display
                     displayValue.textContent += operator;
 
-                    // Check if the operator is not already in the queue
-                    if (operatorQueue.flat().includes(keyId) === false) {
-                        // Add the operator and action to the queue
-                        operatorQueue.push([keyId, keyAction]);
-                    }
+                    // Add the operator and action to the queue
+                    operatorQueue.push([keyId, keyAction]);
 
                     // Reset tracked value after operator added
                     currentValue = '';
