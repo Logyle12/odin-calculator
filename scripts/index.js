@@ -244,12 +244,21 @@ function updateDisplay(key) {
             else {  
                 // Remove the last character if display is not zero  
                 if (displayValue.textContent !== '0') { 
+                    // Remove all whitespace characters
+                    displayText = displayText.replaceAll(/\s/g, '');
+                    console.log(displayText);
                     
                     // Retrieve the last character using negative indexing
-                    const lastCharacter = displayValue.textContent.at(-1);
+                    const lastCharacter = displayText.at(-1);
+
+                    // Check if the last character is an operator
+                    if (/[+−÷×]/.test(lastCharacter)) {
+                        // Shift the first operator from the queue
+                        operatorQueue.shift();
+                    }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
-                    const updatedDisplayText = /\s/.test(lastCharacter)
+                    const updatedDisplayText = /[+−÷×]/.test(lastCharacter)
                         ? displayValue.textContent.slice(0, displayValue.textContent.length - 3) 
                         : displayValue.textContent.slice(0, -1);
 
