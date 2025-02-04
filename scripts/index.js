@@ -52,15 +52,15 @@ const operatorQueue = [];
 // Define operator precedence: multiply=4, divide=3, add=2, subtract=1
 const operatorRank = {
     'key-multiply': {
-        'rank': 4,
+        'rank': 2,
         'operation': multiply,
     },
     'key-divide': {
-        'rank': 3,
+        'rank': 2,
         'operation': divide,
     },
     'key-add': {
-        'rank': 2,
+        'rank': 1,
         'operation': add,
     },
     'key-subtract': {
