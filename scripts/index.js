@@ -354,6 +354,9 @@ function updateDisplay(key) {
                     // Evaluate the current expression and store the result
                     const computedResult = evaluateExpression(currentExpression);
 
+                    // Update current value with the result
+                    currentValue = computedResult;
+
                     // Display the result using locale separators
                     displayValue.value = parseInt(computedResult, 10).toLocaleString('en-GB');
                 }
