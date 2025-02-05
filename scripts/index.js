@@ -369,10 +369,10 @@ function updateDisplay(key) {
     }
 
     // Get full width of scrollable content
-    const scrollWidth = displayValue.parentElement.scrollWidth;
+    const scrollWidth = displayValue.scrollWidth;
 
     // Auto-scroll to keep newest input visible
-    displayValue.parentElement.scrollTo({
+    displayValue.scrollTo({
         left: scrollWidth, // Scroll to full width of content
         behavior: 'instant', // Immediate scroll without animation
     });
