@@ -41,9 +41,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    white-space: nowrap;
-    overflow-x: scroll;
-    scrollbar-width: none;
 }
 
 #display-value-text {
