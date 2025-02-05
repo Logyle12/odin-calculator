@@ -354,8 +354,8 @@ function updateDisplay(key) {
                     // Evaluate the current expression and store the result
                     const computedResult = evaluateExpression(currentExpression);
 
-                    // Display the evaluated result in the UI
-                    displayValue.value = computedResult;
+                    // Display the result using locale separators
+                    displayValue.value = parseInt(computedResult, 10).toLocaleString('en-GB');
                 }
 
             }
