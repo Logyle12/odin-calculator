@@ -295,6 +295,25 @@ function updateDisplay(key) {
         case 'key-operator':
             // Skip operator append for equal key
             if (keyId !== 'key-equal') {
+                // Get the last displayed character
+                const lastCharacter = displayValue.textContent.at(-1);
+                
+                // Handle operator replacement when the last input is whitespace
+                if (/\s/.test(lastCharacter)) {
+                    // Extract the previous operator from the queue
+                    const dequeuedOperator = operatorQueue.shift()[1];
+                    
+                    // Create a regex to replace the previous operator, ensuring it's not followed by a digit
+                    const operatorRegex = new RegExp(`\\${dequeuedOperator}(?=\\s(?!\\d))`);
+                    
+                    // Replace the old operator with the new one in the display
+                    const updatedDisplayText = displayValue.textContent.replace(operatorRegex, keyAction);
+                    
+                    // Update operator queue and display
+                    operatorQueue.push([keyId, keyAction]);
+                    displayValue.textContent = updatedDisplayText;
+                }
+
                 // Append operator if value exists
                 if (currentValue.length !== 0) {
 
