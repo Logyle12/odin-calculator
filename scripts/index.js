@@ -5,7 +5,7 @@ const displayValue = document.querySelector('#display-value-text');
 const keyButtons = document.querySelectorAll('.key');
 
 // Global variables
-let currentValue = displayValue.textContent;
+let currentValue = displayValue.value;
 let digitLimit = 15;
 
 // Math functions
@@ -92,7 +92,7 @@ function formatNumberDisplay(displayText) {
         const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
 
         // Replace unformatted number with locale-formatted version
-        displayValue.textContent = displayValue.textContent.replace(unformattedNumber, formattedNumber);
+        displayValue.value = displayValue.value.replace(unformattedNumber, formattedNumber);
 
         // Set digit limit: 15 for integers
         digitLimit = 15;
@@ -202,16 +202,16 @@ function updateDisplay(key) {
     const keyId = key.id;
 
     // Copy of display content for manipulation
-    let displayText = displayValue.textContent;
+    let displayText = displayValue.value;
 
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
             // If display shows only zero, overwrite it with new input
-            if (displayValue.textContent === '0') {
+            if (displayValue.value === '0') {
                 // Replace the zero with the clicked digit
                 displayText = keyAction
-                displayValue.textContent = displayText;
+                displayValue.value = displayText;
                 // Reset tracked value to avoid leading zeros
                 currentValue = keyAction;
             }
@@ -223,7 +223,7 @@ function updateDisplay(key) {
                     currentValue += keyAction;
 
                     // Update display with current digit
-                    displayValue.textContent += keyAction;
+                    displayValue.value += keyAction;
 
                     // Append current digit to displayText, marking for extraction
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
@@ -239,13 +239,13 @@ function updateDisplay(key) {
             // Check for 'key-AC' press
             if (keyId === 'key-AC') {
                 // Reset display to zero
-                displayValue.textContent = '0';
+                displayValue.value = '0';
             }
 
             // Otherwise, on delete press
             else {  
                 // Remove the last character if display is not zero  
-                if (displayValue.textContent !== '0') { 
+                if (displayValue.value !== '0') { 
                     // Remove all whitespace characters
                     displayText = displayText.replaceAll(/\s/g, '');
                     console.log(displayText);
@@ -261,8 +261,8 @@ function updateDisplay(key) {
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
                     const updatedDisplayText = /[+−÷×]/.test(lastCharacter)
-                        ? displayValue.textContent.slice(0, displayValue.textContent.length - 3) 
-                        : displayValue.textContent.slice(0, -1);
+                        ? displayValue.value.slice(0, displayValue.value.length - 3) 
+                        : displayValue.value.slice(0, -1);
 
                     // Update display text for further processing
                     displayText = updatedDisplayText;
@@ -271,14 +271,14 @@ function updateDisplay(key) {
                     displayText += '*';
             
                     // Update display if there's more than one character left  
-                    if (displayValue.textContent.length > 1) {  
+                    if (displayValue.value.length > 1) {  
                         // Apply updated text to display 
-                        displayValue.textContent = updatedDisplayText;  
+                        displayValue.value = updatedDisplayText;  
                     }  
             
                     else {  
                         // Reset display to zero when last digit is removed  
-                        displayValue.textContent = '0';  
+                        displayValue.value = '0';  
                     }  
             
                     // Update tracked value, removing non-numeric characters 
@@ -296,7 +296,7 @@ function updateDisplay(key) {
             
         case 'key-operator':
             // Get the last displayed character
-            const lastCharacter = displayValue.textContent.at(-1);
+            const lastCharacter = displayValue.value.at(-1);
 
             // Skip operator append for equal key
             if (keyId !== 'key-equal') {
@@ -309,11 +309,11 @@ function updateDisplay(key) {
                     const operatorRegex = new RegExp(`\\${dequeuedOperator}(?=\\s(?!\\d))`);
                     
                     // Replace the old operator with the new one in the display
-                    const updatedDisplayText = displayValue.textContent.replace(operatorRegex, keyAction);
+                    const updatedDisplayText = displayValue.value.replace(operatorRegex, keyAction);
                     
                     // Update operator queue and display
                     operatorQueue.push([keyId, keyAction]);
-                    displayValue.textContent = updatedDisplayText;
+                    displayValue.value = updatedDisplayText;
                 }
 
                 // Append operator if value exists
@@ -325,7 +325,7 @@ function updateDisplay(key) {
                         : keyAction;
 
                     // Append operator to display
-                    displayValue.textContent += operator;
+                    displayValue.value += operator;
 
                     // If the key pressed is not the 'decimal' key
                     if (keyId !== 'key-decimal') {
@@ -340,7 +340,7 @@ function updateDisplay(key) {
 
             else {
                 // Get the current expression from the display
-                const currentExpression = displayValue.textContent;
+                const currentExpression = displayValue.value;
 
                 // Evaluate only if the last character is a digit
                 if (/\d/.test(lastCharacter)) {
@@ -348,7 +348,7 @@ function updateDisplay(key) {
                     const computedResult = evaluateExpression(currentExpression);
 
                     // Display the evaluated result in the UI
-                    displayValue.textContent = computedResult;
+                    displayValue.value = computedResult;
                 }
 
             }
