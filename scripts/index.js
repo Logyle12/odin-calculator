@@ -186,6 +186,8 @@ function evaluateExpression(expression) {
         // Update the main expression
         expression = simplifiedExpression;
     }
+
+    return expression;
 }
 
 // Update display with pressed key
@@ -342,8 +344,11 @@ function updateDisplay(key) {
 
                 // Evaluate only if the last character is a digit
                 if (/\d/.test(lastCharacter)) {
-                    // Evaluate the current expression
-                    evaluateExpression(currentExpression);
+                    // Evaluate the current expression and store the result
+                    const computedResult = evaluateExpression(currentExpression);
+
+                    // Display the evaluated result in the UI
+                    displayValue.textContent = computedResult;
                 }
 
             }
