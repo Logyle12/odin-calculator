@@ -146,9 +146,6 @@ function evaluateExpression(expression) {
     // Log the sanitized expression for debugging
     console.log(expression);
 
-    // Log the sorted operator queue for debugging
-    console.table(operatorQueue);
-
     // Get the current size of the operator queue   
     const queueSize = operatorQueue.length;
         
@@ -159,6 +156,9 @@ function evaluateExpression(expression) {
             (operatorA, operatorB) => operatorRank[operatorB[0]].rank - operatorRank[operatorA[0]].rank
         );    
     }
+
+    // Log the sorted operator queue for debugging
+    console.table(operatorQueue);
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
@@ -240,6 +240,13 @@ function updateDisplay(key) {
             if (keyId === 'key-AC') {
                 // Reset display to zero
                 displayValue.value = '0';
+
+                // If non-empty
+                if (operatorQueue.length !== 0) {
+                    // Clear operator queue
+                    operatorQueue.length = 0;
+                }
+
             }
 
             // Otherwise, on delete press
@@ -255,8 +262,8 @@ function updateDisplay(key) {
 
                     // Check if the last character is an operator
                     if (/[+−÷×]/.test(lastCharacter)) {
-                        // Shift the first operator from the queue
-                        operatorQueue.shift();
+                        // Remove most recent operator from the queue
+                        operatorQueue.pop();
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
