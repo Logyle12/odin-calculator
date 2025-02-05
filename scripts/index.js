@@ -293,11 +293,11 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
+            // Get the last displayed character
+            const lastCharacter = displayValue.textContent.at(-1);
+
             // Skip operator append for equal key
             if (keyId !== 'key-equal') {
-                // Get the last displayed character
-                const lastCharacter = displayValue.textContent.at(-1);
-                
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
@@ -340,8 +340,12 @@ function updateDisplay(key) {
                 // Get the current expression from the display
                 const currentExpression = displayValue.textContent;
 
-                // Evaluate the current expression
-                evaluateExpression(currentExpression);
+                // Evaluate only if the last character is a digit
+                if (/\d/.test(lastCharacter)) {
+                    // Evaluate the current expression
+                    evaluateExpression(currentExpression);
+                }
+
             }
             break;
         
