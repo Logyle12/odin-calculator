@@ -100,8 +100,8 @@ function formatNumberDisplay(displayText) {
     }
 
     else {
-        // Set digit limit: 10 for decimals
-        digitLimit = 10;
+        // Set digit limit: 10 for decimals (11 for dp)
+        digitLimit = 11;
     }
 }
 
@@ -251,6 +251,8 @@ function updateDisplay(key) {
                     formatNumberDisplay(displayText);
                 }
             }
+
+            console.log(currentValue);
             
             break;
     
@@ -361,6 +363,9 @@ function updateDisplay(key) {
 
             // Check if the decimal key was pressed
             else if (keyId === 'key-decimal') {
+                // Append the decimal point to the current input value
+                currentValue += keyAction;
+
                 // Append the decimal point to the current display value
                 expressionDisplay.value += keyAction;
             }
