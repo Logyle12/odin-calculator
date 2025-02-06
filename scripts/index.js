@@ -5,9 +5,38 @@ const resultDisplay = document.querySelector('#result-display');
 // Retrieve all key elements
 const keyButtons = document.querySelectorAll('.key');
 
-// Global variables
-let currentValue = expressionDisplay.value;
-let digitLimit = 15;
+// Calculator object holding state and configurations
+const calculator = {
+    // Store latest number value
+    currentValue: expressionDisplay.value,
+
+    // Max digits allowed
+    digitLimit: 15,
+
+    // Operator keys mapped to rank and function
+    operatorRank: {
+        // Multiplication
+        'key-multiply': {
+            'rank': 2,
+            'operation': multiply,
+        },
+        // Division
+        'key-divide': {
+            'rank': 2,
+            'operation': divide,
+        },
+        // Addition
+        'key-add': {
+            'rank': 1,
+            'operation': add,
+        },
+        // Subtraction
+        'key-subtract': {
+            'rank': 1,
+            'operation': subtract,
+        }
+    },
+};
 
 // Math functions
 
@@ -15,7 +44,7 @@ let digitLimit = 15;
 function add(operands) {
     // Calculate and return the sum
     const sum = operands.reduce(
-        (sum, currentValue) => sum + currentValue,
+        (sum, number) => sum + number,
     );
     return sum;
 }
@@ -24,7 +53,7 @@ function add(operands) {
 function subtract(operands) {
     // Calculate and return the difference
     const difference = operands.reduce(
-        (difference, currentValue) => difference - currentValue,
+        (difference, number) => difference - number,
     );
     return difference; 
 }
@@ -33,7 +62,7 @@ function subtract(operands) {
 function multiply(operands) {
     // Calculate and return the product
     const product = operands.reduce(
-        (product, currentValue) => product * currentValue,
+        (product, number) => product * number,
     );
     return product; 
 }
@@ -42,7 +71,7 @@ function multiply(operands) {
 function divide(operands) {
     // Calculate and return the quotient
     const quotient = operands.reduce(
-        (quotient, currentValue) => quotient / currentValue,
+        (quotient, number) => quotient / number,
     );
     return quotient; 
 }
@@ -51,24 +80,7 @@ function divide(operands) {
 const operatorQueue = [];
 
 // Define operator precedence: multiply=4, divide=3, add=2, subtract=1
-const operatorRank = {
-    'key-multiply': {
-        'rank': 2,
-        'operation': multiply,
-    },
-    'key-divide': {
-        'rank': 2,
-        'operation': divide,
-    },
-    'key-add': {
-        'rank': 1,
-        'operation': add,
-    },
-    'key-subtract': {
-        'rank': 1,
-        'operation': subtract,
-    }
-};
+
 
 // Handle key button clicks
 function handleKeyActions() {
@@ -90,18 +102,18 @@ function formatNumberDisplay(displayText) {
     // Format number if it doesn't already contain a decimal point
     if (unformattedNumber.includes('.') === false) {
         // Parse and format number with UK locale separators
-        const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
+        const formattedNumber = parseInt(calculator.currentValue, 10).toLocaleString('en-GB');
 
         // Replace unformatted number with locale-formatted version
         expressionDisplay.value = expressionDisplay.value.replace(unformattedNumber, formattedNumber);
 
         // Set digit limit: 15 for integers
-        digitLimit = 15;
+        calculator.digitLimit = 15;
     }
 
     else {
         // Set digit limit: 10 for decimals (11 for dp)
-        digitLimit = 11;
+        calculator.digitLimit = 11;
     }
 }
 
@@ -123,7 +135,7 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
     console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
-    const simplifiedResult = operatorRank[operatorId].operation(operands);
+    const simplifiedResult = calculator.operatorRank[operatorId].operation(operands);
     
     // Log the result of the operation
     console.log('Simplified Result:', simplifiedResult);
@@ -154,7 +166,7 @@ function evaluateExpression(expression) {
     if (queueSize > 1) {
         // Arrange operators by their precedence
         operatorQueue.sort(
-            (operatorA, operatorB) => operatorRank[operatorB[0]].rank - operatorRank[operatorA[0]].rank
+            (operatorA, operatorB) => calculator.operatorRank[operatorB[0]].rank - calculator.operatorRank[operatorA[0]].rank
         );    
     }
 
@@ -202,7 +214,7 @@ function processResult(displayElement, expression) {
         const computedResult = evaluateExpression(expression);
 
         // Update current value with the result
-        currentValue = computedResult;
+        calculator.currentValue = computedResult;
 
         // Display the result using locale separators
         displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
@@ -232,14 +244,14 @@ function updateDisplay(key) {
                 displayText = keyAction
                 expressionDisplay.value = displayText;
                 // Reset tracked value to avoid leading zeros
-                currentValue = keyAction;
+                calculator.currentValue = keyAction;
             }
 
             // Otherwise append digit if under limit
             else {
-                if (currentValue.length < digitLimit) {
+                if (calculator.currentValue.length < calculator.digitLimit) {
                     // Append digit to tracked value
-                    currentValue += keyAction;
+                    calculator.currentValue += keyAction;
 
                     // Update display with current digit
                     expressionDisplay.value += keyAction;
@@ -252,7 +264,7 @@ function updateDisplay(key) {
                 }
             }
 
-            console.log(currentValue);
+            console.log(calculator.currentValue);
             
             break;
     
@@ -310,11 +322,11 @@ function updateDisplay(key) {
                     }  
             
                     // Update tracked value, removing non-numeric characters 
-                    currentValue = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');             
+                    calculator.currentValue = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');             
                 }
 
                 // Check if current value exists
-                if (currentValue.length !== 0) {
+                if (calculator.currentValue.length !== 0) {
                     // Format number
                     formatNumberDisplay(displayText);
                 }
@@ -345,7 +357,7 @@ function updateDisplay(key) {
                 }
 
                 // Append operator if value exists
-                if (currentValue.length !== 0) {
+                if (calculator.currentValue.length !== 0) {
 
                     // Pad operator unless it's decimal key
                     const operator = keyAction.padStart(2).padEnd(3);
@@ -357,28 +369,28 @@ function updateDisplay(key) {
                     operatorQueue.push([keyId, keyAction]);
 
                     // Reset tracked value after operator added
-                    currentValue = '';
+                    calculator.currentValue = '';
                 }
             }
 
             // Check if the decimal key was pressed
             else if (keyId === 'key-decimal') {
                 // Add decimal point if currentValue doesn't have one yet
-                if (currentValue.includes('.') === false) {
+                if (calculator.currentValue.includes('.') === false) {
                     // Add '0' if input not preceded by a digit
-                    if (currentValue.length === 0) {
+                    if (calculator.currentValue.length === 0) {
 
                         // Prepend decimal point with 0 for correct notation
-                        currentValue = keyAction.padStart(keyAction.length + 1, '0');
+                        calculator.currentValue = keyAction.padStart(keyAction.length + 1, '0');
                     
                         // Update the display to reflect the current input
-                        expressionDisplay.value += currentValue;  
+                        expressionDisplay.value += calculator.currentValue;  
                     }
 
                     // Otherwise, append decimal to existing number
                     else {
                         // Append the decimal point to the current input value
-                        currentValue += keyAction;
+                        calculator.currentValue += keyAction;
 
                         // Append the decimal point to the current display value
                         expressionDisplay.value += keyAction;
