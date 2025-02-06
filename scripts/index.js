@@ -363,11 +363,28 @@ function updateDisplay(key) {
 
             // Check if the decimal key was pressed
             else if (keyId === 'key-decimal') {
-                // Append the decimal point to the current input value
-                currentValue += keyAction;
+                // Add decimal point if currentValue doesn't have one yet
+                if (currentValue.includes('.') === false) {
+                    // Add '0' if input not preceded by a digit
+                    if (currentValue.length === 0) {
 
-                // Append the decimal point to the current display value
-                expressionDisplay.value += keyAction;
+                        // Prepend decimal point with 0 for correct notation
+                        currentValue = keyAction.padStart(keyAction.length + 1, '0');
+                    
+                        // Update the display to reflect the current input
+                        expressionDisplay.value += currentValue;  
+                    }
+
+                    // Otherwise, append decimal to existing number
+                    else {
+                        // Append the decimal point to the current input value
+                        currentValue += keyAction;
+
+                        // Append the decimal point to the current display value
+                        expressionDisplay.value += keyAction;
+                    }
+                    
+                }
             }
 
             // On equal press
