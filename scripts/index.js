@@ -1,11 +1,11 @@
 // Retrieve display value
-const displayValue = document.querySelector('#display-value-text');
+const expressionDisplay = document.querySelector('#expression-display');
 
 // Retrieve all key elements
 const keyButtons = document.querySelectorAll('.key');
 
 // Global variables
-let currentValue = displayValue.value;
+let currentValue = expressionDisplay.value;
 let digitLimit = 15;
 
 // Math functions
@@ -92,7 +92,7 @@ function formatNumberDisplay(displayText) {
         const formattedNumber = parseInt(currentValue, 10).toLocaleString('en-GB');
 
         // Replace unformatted number with locale-formatted version
-        displayValue.value = displayValue.value.replace(unformattedNumber, formattedNumber);
+        expressionDisplay.value = expressionDisplay.value.replace(unformattedNumber, formattedNumber);
 
         // Set digit limit: 15 for integers
         digitLimit = 15;
@@ -223,16 +223,16 @@ function updateDisplay(key) {
     const keyId = key.id;
 
     // Copy of display content for manipulation
-    let displayText = displayValue.value;
+    let displayText = expressionDisplay.value;
 
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
             // If display shows only zero, overwrite it with new input
-            if (displayValue.value === '0') {
+            if (expressionDisplay.value === '0') {
                 // Replace the zero with the clicked digit
                 displayText = keyAction
-                displayValue.value = displayText;
+                expressionDisplay.value = displayText;
                 // Reset tracked value to avoid leading zeros
                 currentValue = keyAction;
             }
@@ -244,7 +244,7 @@ function updateDisplay(key) {
                     currentValue += keyAction;
 
                     // Update display with current digit
-                    displayValue.value += keyAction;
+                    expressionDisplay.value += keyAction;
 
                     // Append current digit to displayText, marking for extraction
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
@@ -260,7 +260,7 @@ function updateDisplay(key) {
             // Check for 'key-AC' press
             if (keyId === 'key-AC') {
                 // Reset display to zero
-                displayValue.value = '0';
+                expressionDisplay.value = '0';
 
                 // If non-empty
                 if (operatorQueue.length !== 0) {
@@ -273,7 +273,7 @@ function updateDisplay(key) {
             // Otherwise, on delete press
             else {  
                 // Remove the last character if display is not zero  
-                if (displayValue.value !== '0') { 
+                if (expressionDisplay.value !== '0') { 
                     // Remove all whitespace characters
                     displayText = displayText.replaceAll(/\s/g, '');
                     console.log(displayText);
@@ -289,8 +289,8 @@ function updateDisplay(key) {
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
                     const updatedDisplayText = /[+−÷×]/.test(lastCharacter)
-                        ? displayValue.value.slice(0, displayValue.value.length - 3) 
-                        : displayValue.value.slice(0, -1);
+                        ? expressionDisplay.value.slice(0, expressionDisplay.value.length - 3) 
+                        : expressionDisplay.value.slice(0, -1);
 
                     // Update display text for further processing
                     displayText = updatedDisplayText;
@@ -299,14 +299,14 @@ function updateDisplay(key) {
                     displayText += '*';
             
                     // Update display if there's more than one character left  
-                    if (displayValue.value.length > 1) {  
+                    if (expressionDisplay.value.length > 1) {  
                         // Apply updated text to display 
-                        displayValue.value = updatedDisplayText;  
+                        expressionDisplay.value = updatedDisplayText;  
                     }  
             
                     else {  
                         // Reset display to zero when last digit is removed  
-                        displayValue.value = '0';  
+                        expressionDisplay.value = '0';  
                     }  
             
                     // Update tracked value, removing non-numeric characters 
@@ -324,7 +324,7 @@ function updateDisplay(key) {
             
         case 'key-operator':
             // Get the last displayed character
-            const lastCharacter = displayValue.value.at(-1);
+            const lastCharacter = expressionDisplay.value.at(-1);
 
             // Skip operator append for equal key
             if (keyId !== 'key-equal') {
@@ -337,11 +337,11 @@ function updateDisplay(key) {
                     const operatorRegex = new RegExp(`\\${dequeuedOperator}(?=\\s(?!\\d))`);
                     
                     // Replace the old operator with the new one in the display
-                    const updatedDisplayText = displayValue.value.replace(operatorRegex, keyAction);
+                    const updatedDisplayText = expressionDisplay.value.replace(operatorRegex, keyAction);
                     
                     // Update operator queue and display
                     operatorQueue.push([keyId, keyAction]);
-                    displayValue.value = updatedDisplayText;
+                    expressionDisplay.value = updatedDisplayText;
                 }
 
                 // Append operator if value exists
@@ -353,7 +353,7 @@ function updateDisplay(key) {
                         : keyAction;
 
                     // Append operator to display
-                    displayValue.value += operator;
+                    expressionDisplay.value += operator;
 
                     // If the key pressed is not the 'decimal' key
                     if (keyId !== 'key-decimal') {
@@ -368,7 +368,7 @@ function updateDisplay(key) {
 
             else {  
                 // Process and format the result of the current expression
-                processResult(displayValue);
+                processResult(expressionDisplay);
             }
             break;
         
@@ -377,10 +377,10 @@ function updateDisplay(key) {
     }
 
     // Get full width of scrollable content
-    const scrollWidth = displayValue.scrollWidth;
+    const scrollWidth = expressionDisplay.scrollWidth;
 
     // Auto-scroll to keep newest input visible
-    displayValue.scrollTo({
+    expressionDisplay.scrollTo({
         left: scrollWidth, // Scroll to full width of content
         behavior: 'instant', // Immediate scroll without animation
     });

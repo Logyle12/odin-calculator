@@ -59,12 +59,12 @@
     background-color: transparent;
 }
 
-#display-value-text {
+#expression-display {
     font-size: 42px;
     margin-top: 12px;
 }
 
-#display-value-text, #display-value-text:focus, #result-display {
+#expression-display, #expression-display:focus, #result-display {
     border: none;
     outline: none;
 }
