@@ -192,17 +192,14 @@ function evaluateExpression(expression) {
 }
 
 // Process and format the result of a mathematical expression
-function processResult(displayElement) {
-    // Get the current expression from the display
-    const currentExpression = displayElement.value;
-
+function processResult(displayElement, expression) {
     // Get the last displayed character
-    const lastCharacter = displayElement.value.at(-1);
+    const lastCharacter = expression.at(-1);
 
     // Evaluate only if the last character is a digit
     if (/\d/.test(lastCharacter)) {
         // Evaluate the current expression and store the result
-        const computedResult = evaluateExpression(currentExpression);
+        const computedResult = evaluateExpression(expression);
 
         // Update current value with the result
         currentValue = computedResult;
@@ -368,8 +365,11 @@ function updateDisplay(key) {
             }
 
             else {  
+                // Get the current expression from the display
+                const finalExpression = expressionDisplay.value;
+
                 // Process and format the result of the current expression
-                processResult(expressionDisplay);
+                processResult(expressionDisplay, finalExpression);
             }
             break;
         
