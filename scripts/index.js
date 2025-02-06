@@ -1,5 +1,6 @@
-// Retrieve display value
+// Retrieve display elements
 const expressionDisplay = document.querySelector('#expression-display');
+const resultDisplay = document.querySelector('#result-display');
 
 // Retrieve all key elements
 const keyButtons = document.querySelectorAll('.key');
