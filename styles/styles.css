@@ -48,7 +48,6 @@
 .number-display {
     width: 100%;
     font-family: 'League Spartan';
-    font-size: 42px;
     font-weight: 500;
     font-style: normal;
     font-optical-sizing: auto;
@@ -58,6 +57,11 @@
     color: rgb(255, 255, 255);
     text-align: end;
     background-color: transparent;
+}
+
+#display-value-text {
+    font-size: 42px;
+    margin-top: 12px;
 }
 
 #display-value-text, #display-value-text:focus, #result-display {
