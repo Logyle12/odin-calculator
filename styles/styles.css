@@ -43,7 +43,7 @@
     align-items: center;
 }
 
-#display-value-text {
+.number-display{
     width: 100%;
     font-family: 'League Spartan';
     font-size: 42px;
