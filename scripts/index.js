@@ -190,6 +190,27 @@ function evaluateExpression(expression) {
     return expression;
 }
 
+// Process and format the result of a mathematical expression
+function processResult(displayElement) {
+    // Get the current expression from the display
+    const currentExpression = displayElement.value;
+
+    // Get the last displayed character
+    const lastCharacter = displayElement.value.at(-1);
+
+    // Evaluate only if the last character is a digit
+    if (/\d/.test(lastCharacter)) {
+        // Evaluate the current expression and store the result
+        const computedResult = evaluateExpression(currentExpression);
+
+        // Update current value with the result
+        currentValue = computedResult;
+
+        // Display the result using locale separators
+        displayElement.value = parseInt(computedResult, 10).toLocaleString('en-GB');
+    }
+}
+
 // Update display with pressed key
 function updateDisplay(key) {
     // Get key action
@@ -345,22 +366,9 @@ function updateDisplay(key) {
                 }
             }
 
-            else {
-                // Get the current expression from the display
-                const currentExpression = displayValue.value;
-
-                // Evaluate only if the last character is a digit
-                if (/\d/.test(lastCharacter)) {
-                    // Evaluate the current expression and store the result
-                    const computedResult = evaluateExpression(currentExpression);
-
-                    // Update current value with the result
-                    currentValue = computedResult;
-
-                    // Display the result using locale separators
-                    displayValue.value = parseInt(computedResult, 10).toLocaleString('en-GB');
-                }
-
+            else {  
+                // Process and format the result of the current expression
+                processResult(displayValue);
             }
             break;
         
