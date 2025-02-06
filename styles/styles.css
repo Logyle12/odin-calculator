@@ -60,9 +60,14 @@
     background-color: transparent;
 }
 
-#display-value-text, #display-value-text:focus {
+#display-value-text, #display-value-text:focus, #result-display {
     border: none;
     outline: none;
+}
+
+#result-display {
+    font-size: 22px;
+    opacity: 0.60;
 }
 
 .calc-keypad {
