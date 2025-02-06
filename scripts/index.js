@@ -324,8 +324,8 @@ function updateDisplay(key) {
             // Get the last displayed character
             const lastCharacter = expressionDisplay.value.at(-1);
 
-            // Skip operator append for equal key
-            if (keyId !== 'key-equal') {
+            // Skip operator append for equal and decimal key
+            if (keyId !== 'key-equal' && keyId !== 'key-decimal') {
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
@@ -346,24 +346,26 @@ function updateDisplay(key) {
                 if (currentValue.length !== 0) {
 
                     // Pad operator unless it's decimal key
-                    const operator = keyId !== 'key-decimal' 
-                        ? keyAction.padStart(2).padEnd(3) 
-                        : keyAction;
+                    const operator = keyAction.padStart(2).padEnd(3);
 
                     // Append operator to display
                     expressionDisplay.value += operator;
 
-                    // If the key pressed is not the 'decimal' key
-                    if (keyId !== 'key-decimal') {
-                        // Add the operator and action to the queue
-                        operatorQueue.push([keyId, keyAction]);
-                    }
+                    // Add the operator and action to the queue
+                    operatorQueue.push([keyId, keyAction]);
 
                     // Reset tracked value after operator added
                     currentValue = '';
                 }
             }
 
+            // Check if the decimal key was pressed
+            else if (keyId === 'key-decimal') {
+                // Append the decimal point to the current display value
+                expressionDisplay.value += keyAction;
+            }
+
+            // On equal press
             else {  
                 // Get the current expression from the display
                 const finalExpression = expressionDisplay.value;
