@@ -205,7 +205,7 @@ function processResult(displayElement, expression) {
         currentValue = computedResult;
 
         // Display the result using locale separators
-        displayElement.value = parseInt(computedResult, 10).toLocaleString('en-GB');
+        displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
     }
 }
 
