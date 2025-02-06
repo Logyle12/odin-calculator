@@ -41,9 +41,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    row-gap: 10px;
 }
 
-.number-display{
+.number-display {
     width: 100%;
     font-family: 'League Spartan';
     font-size: 42px;
