@@ -36,6 +36,9 @@ const calculator = {
             'operation': subtract,
         }
     },
+
+    // Store pending operations awaiting calculation
+    operatorQueue: [],
 };
 
 // Math functions
@@ -75,12 +78,6 @@ function divide(operands) {
     );
     return quotient; 
 }
-
-// Store pending operations awaiting calculation
-const operatorQueue = [];
-
-// Define operator precedence: multiply=4, divide=3, add=2, subtract=1
-
 
 // Handle key button clicks
 function handleKeyActions() {
@@ -160,23 +157,23 @@ function evaluateExpression(expression) {
     console.log(expression);
 
     // Get the current size of the operator queue   
-    const queueSize = operatorQueue.length;
+    const queueSize = calculator.operatorQueue.length;
         
     // If the queue has more than one operator, sort by precedence
     if (queueSize > 1) {
         // Arrange operators by their precedence
-        operatorQueue.sort(
+        calculator.operatorQueue.sort(
             (operatorA, operatorB) => calculator.operatorRank[operatorB[0]].rank - calculator.operatorRank[operatorA[0]].rank
         );    
     }
 
     // Log the sorted operator queue for debugging
-    console.table(operatorQueue);
+    console.table(calculator.operatorQueue);
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Destructure priority operator's details from queue
-        const [operatorId, currentOperator] = operatorQueue[i];
+        const [operatorId, currentOperator] = calculator.operatorQueue[i];
 
         // Create a pattern to match numbers with the current operator
         const pattern = `(\\-?\\d+\\.?\\d*)\\${currentOperator}(\\-?\\d+\\.?\\d*)`;
@@ -274,10 +271,10 @@ function updateDisplay(key) {
                 // Reset display to zero
                 expressionDisplay.value = '0';
 
-                // If non-empty
-                if (operatorQueue.length !== 0) {
+                // If non-empty queue
+                if (calculator.operatorQueue.length !== 0) {
                     // Clear operator queue
-                    operatorQueue.length = 0;
+                    calculator.operatorQueue.length = 0;
                 }
 
             }
@@ -296,7 +293,7 @@ function updateDisplay(key) {
                     // Check if the last character is an operator
                     if (/[+−÷×]/.test(lastCharacter)) {
                         // Remove most recent operator from the queue
-                        operatorQueue.pop();
+                        calculator.operatorQueue.pop();
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
@@ -343,7 +340,7 @@ function updateDisplay(key) {
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
-                    const dequeuedOperator = operatorQueue.shift()[1];
+                    const dequeuedOperator = calculator.operatorQueue.shift()[1];
                     
                     // Create a regex to replace the previous operator, ensuring it's not followed by a digit
                     const operatorRegex = new RegExp(`\\${dequeuedOperator}(?=\\s(?!\\d))`);
@@ -352,7 +349,7 @@ function updateDisplay(key) {
                     const updatedDisplayText = expressionDisplay.value.replace(operatorRegex, keyAction);
                     
                     // Update operator queue and display
-                    operatorQueue.push([keyId, keyAction]);
+                    calculator.operatorQueue.push([keyId, keyAction]);
                     expressionDisplay.value = updatedDisplayText;
                 }
 
@@ -366,7 +363,7 @@ function updateDisplay(key) {
                     expressionDisplay.value += operator;
 
                     // Add the operator and action to the queue
-                    operatorQueue.push([keyId, keyAction]);
+                    calculator.operatorQueue.push([keyId, keyAction]);
 
                     // Reset tracked value after operator added
                     calculator.currentValue = '';
