@@ -422,7 +422,7 @@ function updateDisplay(key) {
                 processResult(expressionDisplay, finalExpression);
 
                 // Reset operator queue after final calculation
-                calculator.operatorQueue.length = [];
+                calculator.operatorQueue = [];
             }
 
             break;
