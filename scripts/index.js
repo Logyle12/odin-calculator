@@ -327,6 +327,10 @@ function updateDisplay(key) {
                         // Apply updated text to display 
                         expressionDisplay.value = updatedExpression; 
                         
+                        // Compute new result and update display
+                        processResult(resultDisplay, updatedExpression);
+                        
+                        // Log current queue state of operators
                         console.table(calculator.operatorQueue);
                     }  
             
