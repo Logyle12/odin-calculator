@@ -261,8 +261,17 @@ function updateDisplay(key) {
                 }
             }
 
+            // Check if expression contains an operator
+            const currentExpression = expressionDisplay.value;
+
+            // Process result if operator present
+            if (/[+−÷×]/.test(currentExpression)) {
+                processResult(resultDisplay, currentExpression);
+            }
+
+            // Log current calculator value
             console.log(calculator.currentValue);
-            
+                        
             break;
     
         case 'key-control':
