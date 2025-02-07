@@ -283,7 +283,7 @@ function updateDisplay(key) {
                 // If non-empty queue
                 if (calculator.operatorQueue.length !== 0) {
                     // Clear operator queue
-                    calculator.operatorQueue.length = 0;
+                    calculator.operatorQueue = [];
                 }
 
             }
