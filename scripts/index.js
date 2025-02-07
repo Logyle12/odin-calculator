@@ -205,16 +205,26 @@ function processResult(displayElement, expression) {
     // Get the last displayed character
     const lastCharacter = expression.at(-1);
 
+    console.log(/[+−÷×]/.test(expression));
+
     // Evaluate if we have both operands (preceded by operator)
-    if (/\d/.test(lastCharacter) && /[+−÷×]/.test(expression)) {
-        // Evaluate the current expression and store the result
-        const computedResult = evaluateExpression(expression);
+    if (/\d+\s[+−÷×]\s\d+/.test(expression)) {
+        // // Proceed only if a complete expression
+        if (/\d/.test(lastCharacter)) {
+            // Evaluate the current expression and store the result
+            const computedResult = evaluateExpression(expression);
+    
+            // Update current value with the result
+            calculator.currentValue = computedResult;
+    
+            // Display the result using locale separators
+            displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
+        }
+    }
 
-        // Update current value with the result
-        calculator.currentValue = computedResult;
-
-        // Display the result using locale separators
-        displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
+    // Clear the results display if the expression is incomplete  
+    else {
+        resultDisplay.value = '';
     }
 }
 
