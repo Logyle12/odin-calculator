@@ -205,8 +205,8 @@ function processResult(displayElement, expression) {
     // Get the last displayed character
     const lastCharacter = expression.at(-1);
 
-    // Evaluate only if the last character is a digit
-    if (/\d/.test(lastCharacter)) {
+    // Evaluate if we have both operands (preceded by operator)
+    if (/\d/.test(lastCharacter) && /[+−÷×]/.test(expression)) {
         // Evaluate the current expression and store the result
         const computedResult = evaluateExpression(expression);
 
@@ -264,10 +264,8 @@ function updateDisplay(key) {
             // Check if expression contains an operator
             const currentExpression = expressionDisplay.value;
 
-            // Process result if operator present
-            if (/[+−÷×]/.test(currentExpression)) {
-                processResult(resultDisplay, currentExpression);
-            }
+            // Process if at least two operands are present
+            processResult(resultDisplay, currentExpression);
 
             // Log current calculator value
             console.log(calculator.currentValue);
