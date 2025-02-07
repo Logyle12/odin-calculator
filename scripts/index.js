@@ -304,8 +304,13 @@ function updateDisplay(key) {
 
                     // Check if the last character is an operator
                     if (/[+−÷×]/.test(lastCharacter)) {
-                        // Remove most recent operator from the queue
-                        calculator.operatorQueue.pop();
+                        // Get the index of the last matching operator in the queue    
+                        const operatorIndex = calculator.operatorQueue.findLastIndex(
+                            (operatorEntry) => lastCharacter === operatorEntry[1]
+                        );
+
+                        // Dequeue the last matching operator
+                        calculator.operatorQueue.splice(operatorIndex, 1);
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
@@ -322,7 +327,9 @@ function updateDisplay(key) {
                     // Update display if there's more than one character left  
                     if (expressionDisplay.value.length > 1) {  
                         // Apply updated text to display 
-                        expressionDisplay.value = updatedExpression;  
+                        expressionDisplay.value = updatedExpression; 
+                        
+                        console.table(calculator.operatorQueue);
                     }  
             
                     else {  
