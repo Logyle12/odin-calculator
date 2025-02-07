@@ -277,8 +277,11 @@ function updateDisplay(key) {
         case 'key-control':
             // Check for 'key-AC' press
             if (keyId === 'key-AC') {
-                // Reset display to zero
+                // Reset expression display to zero
                 expressionDisplay.value = '0';
+
+                // Clear result display 
+                resultDisplay.value = '';
 
                 // If non-empty queue
                 if (calculator.operatorQueue.length !== 0) {
