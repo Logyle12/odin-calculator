@@ -412,7 +412,11 @@ function updateDisplay(key) {
 
                 // Process and format the result of the current expression
                 processResult(expressionDisplay, finalExpression);
+
+                // Reset operator queue after final calculation
+                calculator.operatorQueue.length = [];
             }
+
             break;
         
         default:
