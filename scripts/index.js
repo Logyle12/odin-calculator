@@ -309,12 +309,12 @@ function updateDisplay(key) {
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
-                    const updatedDisplayText = /[+−÷×]/.test(lastCharacter)
+                    const updatedExpression = /[+−÷×]/.test(lastCharacter)
                         ? expressionDisplay.value.slice(0, expressionDisplay.value.length - 3) 
                         : expressionDisplay.value.slice(0, -1);
 
                     // Update display text for further processing
-                    displayText = updatedDisplayText;
+                    displayText = updatedExpression;
             
                     // Append marker for number extraction
                     displayText += '*';
@@ -322,7 +322,7 @@ function updateDisplay(key) {
                     // Update display if there's more than one character left  
                     if (expressionDisplay.value.length > 1) {  
                         // Apply updated text to display 
-                        expressionDisplay.value = updatedDisplayText;  
+                        expressionDisplay.value = updatedExpression;  
                     }  
             
                     else {  
@@ -358,11 +358,11 @@ function updateDisplay(key) {
                     const operatorRegex = new RegExp(`\\${dequeuedOperator}(?=\\s(?!\\d))`);
                     
                     // Replace the old operator with the new one in the display
-                    const updatedDisplayText = expressionDisplay.value.replace(operatorRegex, keyAction);
+                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
                     
                     // Update operator queue and display
                     calculator.operatorQueue.push([keyId, keyAction]);
-                    expressionDisplay.value = updatedDisplayText;
+                    expressionDisplay.value = updatedExpression;
                 }
 
                 // Append operator if value exists
