@@ -239,6 +239,9 @@ function updateDisplay(key) {
     // Copy of display content for manipulation
     let displayText = expressionDisplay.value;
 
+    // Remove commas to standardize number formatting 
+    calculator.currentOperand = calculator.currentOperand.replaceAll(',', '');
+
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
