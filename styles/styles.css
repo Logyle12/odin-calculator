@@ -26,7 +26,7 @@
 .calc-display, .calc-keypad {
     width: 100%;
     background-color: rgb(24, 31, 51);
-    padding: 22px 32px;
+    padding: 24px 32px 28px;
     border-radius: 10px;
 }
 
@@ -34,7 +34,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: 128px;
+    height: 138px;
 }
 
 #display-value-container {
@@ -42,7 +42,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 14px;
 }
 
 .number-display {
@@ -60,8 +60,8 @@
 }
 
 #expression-display {
-    font-size: 40px;
-    margin-top: 12px;
+    font-size: 44px;
+    margin-top: 6px;
 }
 
 #expression-display, #expression-display:focus, #result-display {
@@ -110,18 +110,18 @@
                 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-#key-AC, #key-equal {
+#key-AC, #key-equals {
     width: 226px;
 }
 
-#key-equal {
+#key-equals {
     background: linear-gradient(to top, rgb(208, 63, 47) 50%,  rgb(249, 107, 91) 50%);
     background-size: 100% 200%;
     background-position: bottom;
     box-shadow: inset 0px -4px 0px rgb(147, 38, 26);
 }
 
-#key-equal:hover {
+#key-equals:hover {
     background-position: top;
 }
 
@@ -136,7 +136,7 @@
     background-position: top;
 }
 
-#key-AC > .key-text, #key-del > .key-text, #key-equal > .key-text {
+#key-AC > .key-text, #key-del > .key-text, #key-equals > .key-text {
     color: rgb(255, 255, 255);
 }
 

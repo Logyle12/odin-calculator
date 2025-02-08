@@ -363,8 +363,8 @@ function updateDisplay(key) {
             // Get the last displayed character
             const lastCharacter = expressionDisplay.value.at(-1);
 
-            // Skip operator append for equal and decimal key
-            if (keyId !== 'key-equal' && keyId !== 'key-decimal') {
+            // Skip operator append for equals and decimal key
+            if (keyId !== 'key-equals' && keyId !== 'key-decimal') {
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
@@ -424,7 +424,7 @@ function updateDisplay(key) {
                 }
             }
 
-            // On equal press
+            // On equals press
             else {  
                 // Get the current expression from the display
                 const finalExpression = expressionDisplay.value;
