@@ -214,9 +214,6 @@ function processResult(displayElement, expression) {
             // Evaluate the current expression and store the result
             const computedResult = evaluateExpression(expression);
     
-            // Update current value with the result
-            calculator.currentValue = computedResult;
-    
             // Display the result using locale separators
             displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
         }
