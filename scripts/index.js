@@ -432,6 +432,12 @@ function updateDisplay(key) {
                 // Process and format the result of the current expression
                 processResult(expressionDisplay, finalExpression);
 
+                // Update the current operand to the computed result
+                calculator.currentOperand = resultDisplay.value;
+
+                // Clear the result display
+                resultDisplay.value = '';
+
                 // Reset operator queue after final calculation
                 calculator.operatorQueue = [];
             }
