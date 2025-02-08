@@ -8,7 +8,7 @@ const keyButtons = document.querySelectorAll('.key');
 // Calculator object holding state and configurations
 const calculator = {
     // Store latest number value
-    currentValue: expressionDisplay.value,
+    currentOperand: expressionDisplay.value,
 
     // Max digits allowed
     digitLimit: 15,
@@ -99,7 +99,7 @@ function formatNumberDisplay(displayText) {
     // Format number if it doesn't already contain a decimal point
     if (unformattedNumber.includes('.') === false) {
         // Parse and format number with UK locale separators
-        const formattedNumber = parseInt(calculator.currentValue, 10).toLocaleString('en-GB');
+        const formattedNumber = parseInt(calculator.currentOperand, 10).toLocaleString('en-GB');
 
         // Replace unformatted number with locale-formatted version
         expressionDisplay.value = expressionDisplay.value.replace(unformattedNumber, formattedNumber);
@@ -248,14 +248,14 @@ function updateDisplay(key) {
                 displayText = keyAction
                 expressionDisplay.value = displayText;
                 // Reset tracked value to avoid leading zeros
-                calculator.currentValue = keyAction;
+                calculator.currentOperand = keyAction;
             }
 
             // Otherwise append digit if under limit
             else {
-                if (calculator.currentValue.length < calculator.digitLimit) {
+                if (calculator.currentOperand.length < calculator.digitLimit) {
                     // Append digit to tracked value
-                    calculator.currentValue += keyAction;
+                    calculator.currentOperand += keyAction;
 
                     // Update display with current digit
                     expressionDisplay.value += keyAction;
@@ -275,7 +275,7 @@ function updateDisplay(key) {
             processResult(resultDisplay, currentExpression);
 
             // Log current calculator value
-            console.log(calculator.currentValue);
+            console.log(calculator.currentOperand);
                         
             break;
     
@@ -347,11 +347,11 @@ function updateDisplay(key) {
                     }  
             
                     // Update tracked value, removing non-numeric characters 
-                    calculator.currentValue = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');             
+                    calculator.currentOperand = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');             
                 }
 
                 // Check if current value exists
-                if (calculator.currentValue.length !== 0) {
+                if (calculator.currentOperand.length !== 0) {
                     // Format number
                     formatNumberDisplay(displayText);
                 }
@@ -382,7 +382,7 @@ function updateDisplay(key) {
                 }
 
                 // Append operator if value exists
-                if (calculator.currentValue.length !== 0) {
+                if (calculator.currentOperand.length !== 0) {
 
                     // Pad operator unless it's decimal key
                     const operator = keyAction.padStart(2).padEnd(3);
@@ -394,28 +394,28 @@ function updateDisplay(key) {
                     calculator.operatorQueue.push([keyId, keyAction]);
 
                     // Reset tracked value after operator added
-                    calculator.currentValue = '';
+                    calculator.currentOperand = '';
                 }
             }
 
             // Check if the decimal key was pressed
             else if (keyId === 'key-decimal') {
-                // Add decimal point if currentValue doesn't have one yet
-                if (calculator.currentValue.includes('.') === false) {
+                // Add decimal point if currentOperand doesn't have one yet
+                if (calculator.currentOperand.includes('.') === false) {
                     // Add '0' if input not preceded by a digit
-                    if (calculator.currentValue.length === 0) {
+                    if (calculator.currentOperand.length === 0) {
 
                         // Prepend decimal point with 0 for correct notation
-                        calculator.currentValue = keyAction.padStart(keyAction.length + 1, '0');
+                        calculator.currentOperand = keyAction.padStart(keyAction.length + 1, '0');
                     
                         // Update the display to reflect the current input
-                        expressionDisplay.value += calculator.currentValue;  
+                        expressionDisplay.value += calculator.currentOperand;  
                     }
 
                     // Otherwise, append decimal to existing number
                     else {
                         // Append the decimal point to the current input value
-                        calculator.currentValue += keyAction;
+                        calculator.currentOperand += keyAction;
 
                         // Append the decimal point to the current display value
                         expressionDisplay.value += keyAction;
