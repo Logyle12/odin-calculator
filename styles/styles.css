@@ -110,15 +110,15 @@
                 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-#key-AC, #key-equals {
+/* #key-AC, #key-equals {
     width: 226px;
-}
+} */
 
 #key-equals {
-    background: linear-gradient(to top, rgb(208, 63, 47) 50%,  rgb(249, 107, 91) 50%);
+    background: linear-gradient(to top, rgb(178, 50, 50) 50%,  rgb(220, 70, 70) 50%);
     background-size: 100% 200%;
     background-position: bottom;
-    box-shadow: inset 0px -4px 0px rgb(147, 38, 26);
+    box-shadow: inset 0px -4px 0px rgb(140, 35, 35);
 }
 
 #key-equals:hover {
