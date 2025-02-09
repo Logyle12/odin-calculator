@@ -242,6 +242,18 @@ function updateDisplay(key) {
     // Remove commas to standardize number formatting 
     calculator.currentOperand = calculator.currentOperand.replaceAll(',', '');
 
+    // If result display has transitions active
+    if (resultDisplay.id === 'transition-result') {
+        // Remove transition animations  
+        resultDisplay.id = 'result-display';
+
+        // Reset result display
+        resultDisplay.value = '';
+
+        // Show expression input field
+        expressionDisplay.style['display'] = 'inline-block';
+    }
+
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
@@ -287,9 +299,6 @@ function updateDisplay(key) {
             if (keyId === 'key-AC') {
                 // Reset expression display to zero
                 expressionDisplay.value = '0';
-
-                // Clear result display 
-                resultDisplay.value = '';
 
                 // If non-empty queue
                 if (calculator.operatorQueue.length !== 0) {
@@ -438,8 +447,11 @@ function updateDisplay(key) {
                 // Update the current operand to the computed result
                 calculator.currentOperand = resultDisplay.value;
 
-                // Clear the result display
-                resultDisplay.value = '';
+                // Hide the expression input field
+                expressionDisplay.style['display'] = 'none';
+
+                // Apply transition animations
+                resultDisplay.id = 'transition-result';
 
                 // Reset operator queue after final calculation
                 calculator.operatorQueue = [];
