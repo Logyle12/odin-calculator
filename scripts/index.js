@@ -205,8 +205,6 @@ function processResult(displayElement, expression) {
     // Get the last displayed character
     const lastCharacter = expression.at(-1);
 
-    console.log(/[+−÷×]/.test(expression));
-
     // Evaluate if we have both operands (preceded by operator)
     if (/\d+\s[+−÷×]\s\d+/.test(expression)) {
         // // Proceed only if a complete expression
@@ -438,24 +436,27 @@ function updateDisplay(key) {
             }
 
             // On equals press
-            else {  
-                // Get the current expression from the display
-                const finalExpression = expressionDisplay.value;
-
-                // Process and format the result of the current expression
-                processResult(expressionDisplay, finalExpression);
-
-                // Update the current operand to the computed result
-                calculator.currentOperand = resultDisplay.value;
-
-                // Hide the expression input field
-                expressionDisplay.style['display'] = 'none';
-
-                // Apply transition animations
-                resultDisplay.id = 'transition-result';
-
-                // Reset operator queue after final calculation
-                calculator.operatorQueue = [];
+            else { 
+                // Process expression only if a result is displayed
+                if (resultDisplay.value.length > 0) {
+                    // Get the current expression from the display
+                    const finalExpression = expressionDisplay.value;
+    
+                    // Process and format the result of the current expression
+                    processResult(expressionDisplay, finalExpression);
+    
+                    // Update the current operand to the computed result
+                    calculator.currentOperand = resultDisplay.value;
+    
+                    // Hide the expression input field
+                    expressionDisplay.style['display'] = 'none';
+    
+                    // Apply transition animations
+                    resultDisplay.id = 'transition-result';
+    
+                    // Reset operator queue after final calculation
+                    calculator.operatorQueue = [];
+                } 
             }
 
             break;
