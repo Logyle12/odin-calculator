@@ -61,7 +61,7 @@
 }
 
 #transition-result {
-    margin-bottom: 43.4px;
+    margin-bottom: 38px;
     opacity: 1;
     transition: margin-bottom 0.35s cubic-bezier(0.33, 0.95, 0.50, 1) 0.1s,
                 font-size 0.35s cubic-bezier(0.33, 0.95, 0.50, 1) 0.1s,
