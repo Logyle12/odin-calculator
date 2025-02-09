@@ -43,6 +43,7 @@
     align-items: center;
     flex-direction: column;
     row-gap: 14px;
+    height: 94px;
 }
 
 .number-display {
@@ -62,9 +63,10 @@
 #expression-display {
     font-size: 44px;
     margin-top: 13px;
+    height: 40%;
 }
 
-#expression-display, #expression-display:focus, #result-display {
+#expression-display, #expression-display:focus, #result-display, #transition-result {
     border: none;
     outline: none;
 }
@@ -72,6 +74,18 @@
 #result-display {
     font-size: 28px;
     opacity: 0.60;
+    height: 25%;
+}
+
+#transition-result {
+    margin-top: 13px;
+    margin-bottom: 43.4px;
+    height: 40%;
+    font-size: 44px;
+    opacity: 1;
+    transition: margin-bottom 0.25s cubic-bezier(0.33, 0.95, 0.50, 1) 0.1s,
+                font-size 0.25s cubic-bezier(0.33, 0.95, 0.50, 1) 0.1s,
+                opacity 0.25s cubic-bezier(0.33, 0.95, 0.50, 1) 0.1s;
 }
 
 .calc-keypad {
