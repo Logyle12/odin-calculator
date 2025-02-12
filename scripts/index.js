@@ -267,6 +267,22 @@ function updateDisplay(key) {
             // Otherwise append digit if under limit
             else {
                 if (calculator.currentOperand.length < calculator.digitLimit) {
+
+                // Check if the last character is a closing parenthesis
+                if (displayText.at(-1) === '\u0029') {
+                    // Create a padded multiplication operator
+                    const timesOperator = '\u00D7'.padStart(2).padEnd(3);
+                    
+                    // Append the padded multiplication operator
+                    expressionDisplay.value += timesOperator;
+                    
+                    // Update the display text to reflect the change
+                    displayText = expressionDisplay.value;
+                    
+                    // Clear the current operand
+                    calculator.currentOperand = '';
+                }
+
                     // Append digit to tracked value
                     calculator.currentOperand += keyAction;
 
@@ -275,6 +291,8 @@ function updateDisplay(key) {
 
                     // Append current digit to displayText, marking for extraction
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
+
+                    console.log('Display Text:', displayText);
 
                     // Apply locale formatting  
                     formatNumberDisplay(displayText);
