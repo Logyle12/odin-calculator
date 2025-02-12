@@ -371,11 +371,14 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
+            // Append marker for number extraction
+            displayText += '*';
+            
             // Get the last displayed character
             const lastCharacter = expressionDisplay.value.at(-1);
 
             // Skip operator append for equals and decimal key
-            if (keyId !== 'key-equals' && keyId !== 'key-decimal') {
+            if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
@@ -405,6 +408,39 @@ function updateDisplay(key) {
                     calculator.operatorQueue.push([keyId, keyAction]);
 
                     // Reset tracked value after operator added
+                    calculator.currentOperand = '';
+                }
+            }
+
+            // Handle parentheses key press logic
+            else if (keyId === 'key-parentheses') {
+                // Debug current expression state
+                console.log('Display Text:', displayText);
+                
+                // Destructure parentheses from action tuple
+                const [leftParenthesis, rightParenthesis] = keyAction;
+            
+                // Close group after completed operand inside parentheses
+                if (/\(\d+\.?\,?\d*\*/g.test(displayText)) {
+                    // Append closing parenthesis
+                    expressionDisplay.value += rightParenthesis;
+                }
+
+                // Match whitespace character indicating preceding operator
+                else if (/\s/.test(lastCharacter)) {
+                    // Begin new explicit group after operator
+                    expressionDisplay.value += leftParenthesis;
+                }
+
+                // Implicit multiplication case
+                else {
+                    // Create padded multiplication symbol for display
+                    const timesOperator = '\u00D7'.padStart(2).padEnd(3);
+
+                    // Insert implicit multiplication before new group
+                    expressionDisplay.value += `${timesOperator}${leftParenthesis}`;
+                    
+                    // Clear current operand
                     calculator.currentOperand = '';
                 }
             }
