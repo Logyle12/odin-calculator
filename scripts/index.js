@@ -438,8 +438,8 @@ function updateDisplay(key) {
                 // Destructure parentheses from action tuple
                 const [leftParenthesis, rightParenthesis] = keyAction;
             
-                // Close group after completed operand inside parentheses
-                if (/\(\d+\.?\,?\d*\*/g.test(displayText)) {
+                // Close group after completed operand operator inside parentheses
+                if (/\([+−÷×\d,\s]*(?<!\))\*/g.test(displayText)) {
                     // Append closing parenthesis
                     expressionDisplay.value += rightParenthesis;
                 }
