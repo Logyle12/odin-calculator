@@ -123,25 +123,25 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
     const operands = operandStrings.map(Number);
 
     // Log the sub-expression
-    console.log('Sub Expression:', subExpression);
+    // console.log('Sub Expression:', subExpression);
 
     // Log the extracted operands for debugging
-    console.log(operands);
+    // console.log(operands);
 
     // Log the operator ID
-    console.log('Operator Id:', operatorId);
+    // console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
     const simplifiedResult = calculator.operatorRank[operatorId].operation(operands);
     
     // Log the result of the operation
-    console.log('Simplified Result:', simplifiedResult);
+    // console.log('Simplified Result:', simplifiedResult);
 
     // Replace sub-expression with result
     const simplifiedExpression = expression.replace(subExpression, simplifiedResult, expression);
 
     // Log the updated expression
-    console.log('Simplified Expression:', simplifiedExpression);
+    // console.log('Simplified Expression:', simplifiedExpression);
 
     // Update and return the expression
     expression = simplifiedExpression;
@@ -154,7 +154,7 @@ function evaluateExpression(expression) {
     expression = expression.replace(/\s|\,/g, '');
 
     // Log the sanitized expression for debugging
-    console.log(expression);
+    // console.log(expression);
 
     // Get the current size of the operator queue   
     const queueSize = calculator.operatorQueue.length;
@@ -168,7 +168,7 @@ function evaluateExpression(expression) {
     }
 
     // Log the sorted operator queue for debugging
-    console.table(calculator.operatorQueue);
+    // console.table(calculator.operatorQueue);
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
@@ -182,13 +182,13 @@ function evaluateExpression(expression) {
         const regex = new RegExp(pattern);
 
         // Log the generated regular expression for debugging
-        console.log(regex);
+        // console.log(regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = expression.match(regex);
 
         // Log matched expressions for debugging
-        console.table(operatorMatches);
+        // console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
@@ -292,7 +292,7 @@ function updateDisplay(key) {
                     // Append current digit to displayText, marking for extraction
                     displayText += keyAction.padEnd(keyAction.length + 1, '*');
 
-                    console.log('Display Text:', displayText);
+                    // console.log('Display Text:', displayText);
 
                     // Apply locale formatting  
                     formatNumberDisplay(displayText);
@@ -306,7 +306,7 @@ function updateDisplay(key) {
             processResult(resultDisplay, currentExpression);
 
             // Log current calculator value
-            console.log(calculator.currentOperand);
+            // console.log(calculator.currentOperand);
                         
             break;
     
@@ -389,14 +389,26 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
-            // Append marker for number extraction
+            // Mark end for extraction  
             displayText += '*';
+
+            // Remove all white spaces from displayText 
+            displayText = displayText.replaceAll(/\s/g, '');
             
             // Get the last displayed character
             const lastCharacter = expressionDisplay.value.at(-1);
 
+            // Check if the operator is inside parentheses  
+            const inParentheses = /\([+−÷×\d,\s]*(?<!\))\*/g.test(displayText);
+
             // Skip operator append for equals and decimal key
             if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
+
+                // Adjust rank if inside parentheses  
+                const operatorRank = inParentheses  
+                    ? calculator.operatorRank[keyId].rank + 2  
+                    : calculator.operatorRank[keyId].rank;
+
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
@@ -409,7 +421,7 @@ function updateDisplay(key) {
                     const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
                     
                     // Update operator queue and display
-                    calculator.operatorQueue.push([keyId, keyAction]);
+                    calculator.operatorQueue.push([keyId, keyAction, operatorRank]);
                     expressionDisplay.value = updatedExpression;
                 }
 
@@ -423,7 +435,7 @@ function updateDisplay(key) {
                     expressionDisplay.value += operator;
 
                     // Add the operator and action to the queue
-                    calculator.operatorQueue.push([keyId, keyAction]);
+                    calculator.operatorQueue.push([keyId, keyAction, operatorRank]);
 
                     // Reset tracked value after operator added
                     calculator.currentOperand = '';
@@ -437,17 +449,17 @@ function updateDisplay(key) {
                 
                 // Destructure parentheses from action tuple
                 const [leftParenthesis, rightParenthesis] = keyAction;
-            
-                // Close group after completed operand operator inside parentheses
-                if (/\([+−÷×\d,\s]*(?<!\))\*/g.test(displayText)) {
-                    // Append closing parenthesis
-                    expressionDisplay.value += rightParenthesis;
-                }
 
                 // Match whitespace character indicating preceding operator
-                else if (/\s/.test(lastCharacter)) {
+                if (/\s/.test(lastCharacter)) {
                     // Begin new explicit group after operator
                     expressionDisplay.value += leftParenthesis;
+                }
+            
+                // Close group after completed operand operator inside parentheses
+                else if (inParentheses) {
+                    // Append closing parenthesis
+                    expressionDisplay.value += rightParenthesis;
                 }
 
                 // Implicit multiplication case
@@ -512,6 +524,8 @@ function updateDisplay(key) {
                     calculator.operatorQueue = [];
                 } 
             }
+
+            console.table(calculator.operatorQueue);
 
             break;
         
