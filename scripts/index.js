@@ -163,12 +163,12 @@ function evaluateExpression(expression) {
     if (queueSize > 1) {
         // Arrange operators by their precedence
         calculator.operatorQueue.sort(
-            (operatorA, operatorB) => calculator.operatorRank[operatorB[0]].rank - calculator.operatorRank[operatorA[0]].rank
+            (operatorA, operatorB) => operatorB[2] - operatorA[2]
         );    
     }
 
     // Log the sorted operator queue for debugging
-    // console.table(calculator.operatorQueue);
+    console.table(calculator.operatorQueue);
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
@@ -525,7 +525,7 @@ function updateDisplay(key) {
                 } 
             }
 
-            console.table(calculator.operatorQueue);
+            // console.table(calculator.operatorQueue);
 
             break;
         
