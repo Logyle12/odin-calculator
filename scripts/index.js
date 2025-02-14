@@ -138,7 +138,7 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
     // console.log('Simplified Result:', simplifiedResult);
 
     // Replace sub-expression with result
-    const simplifiedExpression = expression.replace(subExpression, simplifiedResult, expression);
+    const simplifiedExpression = expression.replace(subExpression, simplifiedResult);
 
     // Log the updated expression
     // console.log('Simplified Expression:', simplifiedExpression);
