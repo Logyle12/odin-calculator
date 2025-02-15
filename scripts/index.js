@@ -114,6 +114,37 @@ function formatNumberDisplay(displayText) {
     }
 }
 
+// Extracts the next operation to be evaluated based on "PEMDAS" order
+function findNextOperation(operatorRegex, expression) {
+    // Will store our target operation once we find it
+    let currentOperation;
+
+    // Finds any expressions within parentheses - they get priority
+    const groupedExpressions = expression.match(/\([\d+−÷×]+\)?/g);
+ 
+    // Process any parenthesized expressions first
+    if (groupedExpressions !== null) {
+        // Iterate through each parenthesized expression
+        for (const subExpression of groupedExpressions) {
+            
+            // lLog grouped expression for debugging
+            console.log('Group:', groupedExpressions);
+            
+            // Check if sub-expression contains target operation
+            if (operatorRegex.test(subExpression)) {
+                
+                // Extract and return first matching operation
+                currentOperation = subExpression.match(operatorRegex);
+                return currentOperation;
+            }
+        }
+    }
+ 
+    // Find and return operation from main expression if no parenthesized matches
+    currentOperation = expression.match(operatorRegex);
+    return currentOperation;
+}
+
 // Simplify the expression by processing matched groups
 function simplifyExpression(operatorId, operatorGroup, expression) {
     // Extract and convert operands to numbers
@@ -123,25 +154,25 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
     const operands = operandStrings.map(Number);
 
     // Log the sub-expression
-    // console.log('Sub Expression:', subExpression);
+    console.log('Sub Expression:', subExpression);
 
     // Log the extracted operands for debugging
-    // console.log(operands);
+    console.log(operands);
 
     // Log the operator ID
-    // console.log('Operator Id:', operatorId);
+    console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
     const simplifiedResult = calculator.operatorRank[operatorId].operation(operands);
     
     // Log the result of the operation
-    // console.log('Simplified Result:', simplifiedResult);
+    console.log('Simplified Result:', simplifiedResult);
 
     // Replace sub-expression with result
     const simplifiedExpression = expression.replace(subExpression, simplifiedResult);
 
     // Log the updated expression
-    // console.log('Simplified Expression:', simplifiedExpression);
+    console.log('Simplified Expression:', simplifiedExpression);
 
     // Update and return the expression
     expression = simplifiedExpression;
@@ -154,7 +185,7 @@ function evaluateExpression(expression) {
     expression = expression.replace(/\s|\,/g, '');
 
     // Log the sanitized expression for debugging
-    // console.log(expression);
+    console.log(expression);
 
     // Get the current size of the operator queue   
     const queueSize = calculator.operatorQueue.length;
@@ -173,22 +204,25 @@ function evaluateExpression(expression) {
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Destructure priority operator's details from queue
-        const [operatorId, currentOperator] = calculator.operatorQueue[i];
+        const [operatorId, currentOperator, operatorRank] = calculator.operatorQueue[i];
 
-        // Create a pattern to match numbers with the current operator
-        const pattern = `(\\-?\\d+\\.?\\d*)\\${currentOperator}(\\-?\\d+\\.?\\d*)`;
+        // Get default rank for current operator
+        const baseRank = calculator.operatorRank[operatorId].rank;
 
+        // Match numbers around operator, with optional parentheses if precedence was boosted
+        const pattern = operatorRank > baseRank
+            ? `(\\-?\\d+\\.?\\d*)\\${currentOperator}(\\-?\\d+\\.?\\d*)`
+            : `\\(?(\\-?\\d+\\.?\\d*)\\)?\\${currentOperator}\\(?(\\-?\\d+\\.?\\d*)\\)?`;
+    
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
 
-        // Log the generated regular expression for debugging
-        // console.log(regex);
-
         // Find all matches of the pattern in the mathematical expression
-        const operatorMatches = expression.match(regex);
-
+        const operatorMatches = findNextOperation(regex, expression);
+        
         // Log matched expressions for debugging
-        // console.table(operatorMatches);
+        console.log('Operator Matches:');
+        console.table(operatorMatches);`    `
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
