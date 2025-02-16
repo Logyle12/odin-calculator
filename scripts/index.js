@@ -13,6 +13,12 @@ const calculator = {
     // Max digits allowed
     digitLimit: 15,
 
+     // Track count of opening and closing parentheses
+    nestingCount: {
+        'opening-parenthesis': 0,
+        'closing-parenthesis': 0,
+    },
+
     // Operator keys mapped to rank and function
     operatorRank: {
         // Multiplication
@@ -211,7 +217,7 @@ function evaluateExpression(expression) {
 
         // Match numbers around operator, with optional parentheses if precedence was boosted
         const pattern = operatorRank > baseRank
-            ? `(\\-?\\d+\\.?\\d*)\\${currentOperator}(\\-?\\d+\\.?\\d*)`
+            ? `\\({0,1}(\\-?\\d+\\.?\\d*)\\)?\\${currentOperator}\\({0,1}(\\-?\\d+\\.?\\d*)\\)?`
             : `\\(?(\\-?\\d+\\.?\\d*)\\)?\\${currentOperator}\\(?(\\-?\\d+\\.?\\d*)\\)?`;
     
         // Convert the pattern to a regular expression
@@ -423,6 +429,15 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
+            // Reset nesting if parentheses are balanced 
+            if (calculator.nestingCount['opening-parenthesis'] === calculator.nestingCount['closing-parenthesis']) {
+                // Clear opening count for next expression   
+                calculator.nestingCount['opening-parenthesis'] = 0;
+
+                 // Clear closing count for next expression
+                calculator.nestingCount['closing-parenthesis'] = 0;
+            }
+
             // Mark end for extraction  
             displayText += '*';
 
@@ -433,14 +448,17 @@ function updateDisplay(key) {
             const lastCharacter = expressionDisplay.value.at(-1);
 
             // Check if the operator is inside parentheses  
-            const inParentheses = /\([+−÷×\d,\s]*(?<!\))\*/g.test(displayText);
+            const inParentheses = /\([\(\)+−÷×\d,\s]*\*/g.test(displayText);
 
             // Skip operator append for equals and decimal key
             if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
 
-                // Adjust rank if inside parentheses  
-                const operatorRank = inParentheses  
-                    ? calculator.operatorRank[keyId].rank + 2  
+                // Get current depth of nested parentheses
+                const nestingLevel = calculator.nestingCount['opening-parenthesis'];
+
+                // Adjust rank if inside parentheses - rank increases per nesting level
+                const operatorRank = nestingLevel > 0  
+                    ? calculator.operatorRank[keyId].rank + 2 + nestingLevel  
                     : calculator.operatorRank[keyId].rank;
 
                 // Handle operator replacement when the last input is whitespace
@@ -485,27 +503,48 @@ function updateDisplay(key) {
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
                 // Match whitespace character indicating preceding operator
-                if (/\s/.test(lastCharacter)) {
+                if (/\s|\(/.test(lastCharacter)) {
                     // Begin new explicit group after operator
                     expressionDisplay.value += openingParenthesis;
+
+                    // Track opening parentheses in expression 
+                    calculator.nestingCount['opening-parenthesis'] += 1;
+
+                    // Log opening parentheses state
+                    console.log('Opening Count:', calculator.nestingCount['opening-parenthesis']);
                 }
             
                 // Close group after completed operand operator inside parentheses
                 else if (inParentheses) {
-                    // Append closing parenthesis
-                    expressionDisplay.value += closingParenthesis;
-                }
-
-                // Implicit multiplication case
-                else {
-                    // Create padded multiplication symbol for display
-                    const timesOperator = '\u00D7'.padStart(2).padEnd(3);
-
-                    // Insert implicit multiplication before new group
-                    expressionDisplay.value += `${timesOperator}${openingParenthesis}`;
+                    // Only allow closing parenthesis if there are unclosed ones
+                    if (calculator.nestingCount['closing-parenthesis'] < 
+                        calculator.nestingCount['opening-parenthesis']
+                    ) {
+                        // Append closing parenthesis when there are unclosed ones
+                        expressionDisplay.value += closingParenthesis;
                     
-                    // Clear current operand
-                    calculator.currentOperand = '';
+                        // Track closing parentheses in expression  
+                        calculator.nestingCount['closing-parenthesis'] += 1;
+                    
+                        // Log closing parentheses state
+                        console.log('Closing Count:', calculator.nestingCount['closing-parenthesis']);
+                    }
+
+                    // Implicit multiplication case
+                    else if (/\d|\)/.test(lastCharacter)) {
+                        // Create padded multiplication symbol for display
+                        const timesOperator = '\u00D7'.padStart(2).padEnd(3);
+    
+                        // Insert implicit multiplication before new group
+                        expressionDisplay.value += `${timesOperator}${openingParenthesis}`;
+                        
+                        // Clear current operand
+                        calculator.currentOperand = '';
+
+                        // Reset nesting counts for new parentheses group
+                        calculator.nestingCount['opening-parenthesis'] = 1;
+                        calculator.nestingCount['closing-parenthesis'] = 0;
+                    }
                 }
             }
 
