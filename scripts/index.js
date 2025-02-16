@@ -482,18 +482,18 @@ function updateDisplay(key) {
                 console.log('Display Text:', displayText);
                 
                 // Destructure parentheses from action tuple
-                const [leftParenthesis, rightParenthesis] = keyAction;
+                const [openingParenthesis, closingParenthesis] = keyAction;
 
                 // Match whitespace character indicating preceding operator
                 if (/\s/.test(lastCharacter)) {
                     // Begin new explicit group after operator
-                    expressionDisplay.value += leftParenthesis;
+                    expressionDisplay.value += openingParenthesis;
                 }
             
                 // Close group after completed operand operator inside parentheses
                 else if (inParentheses) {
                     // Append closing parenthesis
-                    expressionDisplay.value += rightParenthesis;
+                    expressionDisplay.value += closingParenthesis;
                 }
 
                 // Implicit multiplication case
@@ -502,7 +502,7 @@ function updateDisplay(key) {
                     const timesOperator = '\u00D7'.padStart(2).padEnd(3);
 
                     // Insert implicit multiplication before new group
-                    expressionDisplay.value += `${timesOperator}${leftParenthesis}`;
+                    expressionDisplay.value += `${timesOperator}${openingParenthesis}`;
                     
                     // Clear current operand
                     calculator.currentOperand = '';
