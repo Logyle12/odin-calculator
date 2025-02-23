@@ -14,13 +14,13 @@ const calculator = {
     digitLimit: 15,
 
      // Track count of opening and closing parentheses
-    nestingCount: {
+    depthTracker: {
         'opening-parenthesis': 0,
         'closing-parenthesis': 0,
     },
 
     // Operator keys mapped to rank and function
-    operatorRank: {
+    operatorConfig: {
         // Multiplication
         'key-multiply': {
             'rank': 2,
@@ -169,7 +169,7 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
     console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
-    const simplifiedResult = calculator.operatorRank[operatorId].operation(operands);
+    const simplifiedResult = calculator.operatorConfig[operatorId].operation(operands);
     
     // Log the result of the operation
     console.log('Simplified Result:', simplifiedResult);
@@ -213,7 +213,7 @@ function evaluateExpression(expression) {
         const [operatorId, currentOperator, operatorRank] = calculator.operatorQueue[i];
 
         // Get default rank for current operator
-        const baseRank = calculator.operatorRank[operatorId].rank;
+        const baseRank = calculator.operatorConfig[operatorId].rank;
 
         // Match numbers around operator, with optional parentheses if precedence was boosted
         const pattern = operatorRank > baseRank
@@ -430,12 +430,12 @@ function updateDisplay(key) {
             
         case 'key-operator':
             // Reset nesting if parentheses are balanced 
-            if (calculator.nestingCount['opening-parenthesis'] === calculator.nestingCount['closing-parenthesis']) {
+            if (calculator.depthTracker['opening-parenthesis'] === calculator.depthTracker['closing-parenthesis']) {
                 // Clear opening count for next expression   
-                calculator.nestingCount['opening-parenthesis'] = 0;
+                calculator.depthTracker['opening-parenthesis'] = 0;
 
                  // Clear closing count for next expression
-                calculator.nestingCount['closing-parenthesis'] = 0;
+                calculator.depthTracker['closing-parenthesis'] = 0;
             }
 
             // Mark end for extraction  
@@ -454,12 +454,12 @@ function updateDisplay(key) {
             if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
 
                 // Get current depth of nested parentheses
-                const nestingLevel = calculator.nestingCount['opening-parenthesis'];
+                const nestingLevel = calculator.depthTracker['opening-parenthesis'];
 
                 // Adjust rank if inside parentheses - rank increases per nesting level
                 const operatorRank = nestingLevel > 0  
-                    ? calculator.operatorRank[keyId].rank + 2 + nestingLevel  
-                    : calculator.operatorRank[keyId].rank;
+                    ? calculator.operatorConfig[keyId].rank + 2 + nestingLevel  
+                    : calculator.operatorConfig[keyId].rank;
 
                 // Handle operator replacement when the last input is whitespace
                 if (/\s/.test(lastCharacter)) {
@@ -508,26 +508,26 @@ function updateDisplay(key) {
                     expressionDisplay.value += openingParenthesis;
 
                     // Track opening parentheses in expression 
-                    calculator.nestingCount['opening-parenthesis'] += 1;
+                    calculator.depthTracker['opening-parenthesis'] += 1;
 
                     // Log opening parentheses state
-                    console.log('Opening Count:', calculator.nestingCount['opening-parenthesis']);
+                    console.log('Opening Count:', calculator.depthTracker['opening-parenthesis']);
                 }
             
                 // Close group after completed operand operator inside parentheses
                 else if (inParentheses) {
                     // Only allow closing parenthesis if there are unclosed ones
-                    if (calculator.nestingCount['closing-parenthesis'] < 
-                        calculator.nestingCount['opening-parenthesis']
+                    if (calculator.depthTracker['closing-parenthesis'] < 
+                        calculator.depthTracker['opening-parenthesis']
                     ) {
                         // Append closing parenthesis when there are unclosed ones
                         expressionDisplay.value += closingParenthesis;
                     
                         // Track closing parentheses in expression  
-                        calculator.nestingCount['closing-parenthesis'] += 1;
+                        calculator.depthTracker['closing-parenthesis'] += 1;
                     
                         // Log closing parentheses state
-                        console.log('Closing Count:', calculator.nestingCount['closing-parenthesis']);
+                        console.log('Closing Count:', calculator.depthTracker['closing-parenthesis']);
                     }
 
                     // Implicit multiplication case
@@ -542,8 +542,8 @@ function updateDisplay(key) {
                         calculator.currentOperand = '';
 
                         // Reset nesting counts for new parentheses group
-                        calculator.nestingCount['opening-parenthesis'] = 1;
-                        calculator.nestingCount['closing-parenthesis'] = 0;
+                        calculator.depthTracker['opening-parenthesis'] = 1;
+                        calculator.depthTracker['closing-parenthesis'] = 0;
                     }
                 }
             }
