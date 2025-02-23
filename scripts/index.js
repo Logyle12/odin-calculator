@@ -15,8 +15,8 @@ const calculator = {
 
      // Track count of opening and closing parentheses
     depthTracker: {
-        'opening-parenthesis': 0,
-        'closing-parenthesis': 0,
+        'openingCount': 0,
+        'closingCount': 0,
     },
 
     // Operator keys mapped to rank and function
@@ -448,7 +448,7 @@ function updateDisplay(key) {
             if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
 
                 // Get current depth of nested parentheses
-                const nestingLevel = depthTracker['opening-parenthesis'];
+                const nestingLevel = depthTracker['openingCount'];
 
                 // Adjust rank if inside parentheses - rank increases per nesting level
                 const operatorRank = nestingLevel > 0  
@@ -502,26 +502,26 @@ function updateDisplay(key) {
                     expressionDisplay.value += openingParenthesis;
 
                     // Track opening parentheses in expression 
-                    depthTracker['opening-parenthesis'] += 1;
+                    depthTracker['openingCount'] += 1;
 
                     // Log opening parentheses state
-                    console.log('Opening Count:', depthTracker['opening-parenthesis']);
+                    console.log('Opening Count:', depthTracker['openingCount']);
                 }
             
                 // Close group after completed operand operator inside parentheses
                 else if (inParentheses) {
                     // Only allow closing parenthesis if there are unclosed ones
-                    if (depthTracker['closing-parenthesis'] < 
-                        depthTracker['opening-parenthesis']
+                    if (depthTracker['closingCount'] < 
+                        depthTracker['openingCount']
                     ) {
                         // Append closing parenthesis when there are unclosed ones
                         expressionDisplay.value += closingParenthesis;
                     
                         // Track closing parentheses in expression  
-                        depthTracker['closing-parenthesis'] += 1;
+                        depthTracker['closingCount'] += 1;
                     
                         // Log closing parentheses state
-                        console.log('Closing Count:', depthTracker['closing-parenthesis']);
+                        console.log('Closing Count:', depthTracker['closingCount']);
                     }
 
                     // Implicit multiplication case
@@ -536,8 +536,8 @@ function updateDisplay(key) {
                         calculator.currentOperand = '';
 
                         // Reset nesting counts for new parentheses group
-                        depthTracker['opening-parenthesis'] = 1;
-                        depthTracker['closing-parenthesis'] = 0;
+                        depthTracker['openingCount'] = 1;
+                        depthTracker['closingCount'] = 0;
                     }
                 }
             }
