@@ -506,7 +506,15 @@ function updateDisplay(key) {
                     // Track opening parentheses in expression 
                     depthTracker.openingCount += 1;
 
+                    // Adjust nesting balance when reopening previously closed groups
+                    if (depthTracker.closingCount > 0) {
+                        // Decrement closing count to maintain proper parentheses tracking
+                        depthTracker.closingCount -= 1;
+                    }
+                    
+                    // Update maximum nesting depth for parentheses validation
                     if (depthTracker.openingCount > depthTracker.highestDepth) {
+                        // Record new highest depth to ensure proper closing of all parentheses
                         depthTracker.highestDepth = depthTracker.openingCount;
                     }
 
