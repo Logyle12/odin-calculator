@@ -469,9 +469,9 @@ function updateDisplay(key) {
                 // Get current depth of nested parentheses
                 const nestingLevel = depthTracker.openingCount;
 
-                // Adjust rank if inside parentheses - rank increases per nesting level
+                // Adjust rank if inside parentheses, scaling by nesting level
                 const operatorRank = nestingLevel > 0  
-                    ? calculator.operatorConfig[keyId].rank + 2 + nestingLevel  
+                    ? calculator.operatorConfig[keyId].rank + (2 * nestingLevel)  
                     : calculator.operatorConfig[keyId].rank;
 
                 // Handle operator replacement when the last input is whitespace
