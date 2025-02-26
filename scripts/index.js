@@ -195,7 +195,7 @@ function evaluateExpression(expression) {
     expression = expression.replace(/\s|\,/g, '').concat(')'.repeat(openingCount));
     
     // Log the sanitized expression for debugging
-    console.log(expression);
+    console.log('Expression:', expression);
 
     // Get the current size of the operator queue   
     const queueSize = calculator.operatorQueue.length;
@@ -214,9 +214,9 @@ function evaluateExpression(expression) {
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Simplify nested parentheses patterns
-        while (/(?<=\()\(+([^()]+)(?:\)+(?=\)))/g.test(expression)||/\((\-?\d+\.?\d*)\)/g.test(expression)) {
+        while (/(?<=\()\((\d+(?=[+−÷×])[^()]+)(?:\)(?=\)))/g.test(expression)||/\((\-?\d+\.?\d*)\)/g.test(expression)) {
             // Unwrap redundant groups and single numbers in parentheses
-            const normalizedExpression = expression.replaceAll(/(?<=\()\(([^()]+)(?:\)(?=\)))/g, '$1')
+            const normalizedExpression = expression.replaceAll(/(?<=\()\((\d+(?=[+−÷×])[^()]+)(?:\)(?=\)))/g, '$1')
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
