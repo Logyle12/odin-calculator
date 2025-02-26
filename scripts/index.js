@@ -264,7 +264,7 @@ function processResult(displayElement, expression) {
     const lastCharacter = expression.at(-1);
 
     // Evaluate if we have both operands (preceded by operator)
-    if (/\(?\d+\)?\s[+−÷×]\s\(?\d+\)?/.test(expression)) {
+    if (/\(*\d+\)*\s[+−÷×]\s\(*\d+\)*/.test(expression)) {
         // // Proceed only if a complete expression
         if (/\d/.test(lastCharacter)) {
             // Evaluate the current expression and store the result
