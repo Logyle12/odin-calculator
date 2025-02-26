@@ -188,9 +188,12 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
 
 // Evaluate expression by operator precedence
 function evaluateExpression(expression) {
-    // Sanitize the expression by removing whitespace and commas
-    expression = expression.replace(/\s|\,/g, '');
+    // Get count of unclosed parentheses
+    const openingCount = calculator.depthTracker.openingCount;
 
+    // Sanitize expression and Auto-close unclosed parentheses
+    expression = expression.replace(/\s|\,/g, '').concat(')'.repeat(openingCount));
+    
     // Log the sanitized expression for debugging
     console.log(expression);
 
@@ -210,17 +213,11 @@ function evaluateExpression(expression) {
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
-        // Get count of unclosed parentheses
-        const openingCount = calculator.depthTracker.openingCount;
-
-        // Auto-close unclosed parentheses
-        expression = expression.concat(')'.repeat(openingCount));
-
         // Simplify nested parentheses patterns
-        while (/(?<=\()\(+([^()]+)(?:\)+(?=\)))/g.test(expression)||/\((\d+)\)/g.test(expression)) {
+        while (/(?<=\()\(+([^()]+)(?:\)+(?=\)))/g.test(expression)||/\((\-?\d+\.?\d*)\)/g.test(expression)) {
             // Unwrap redundant groups and single numbers in parentheses
             const normalizedExpression = expression.replaceAll(/(?<=\()\(([^()]+)(?:\)(?=\)))/g, '$1')
-                                            .replaceAll(/\((\d+)\)/g, '$1');
+                                            .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
             console.log('Normalized Expression', normalizedExpression);
