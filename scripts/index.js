@@ -153,15 +153,21 @@ function findNextOperation(operatorRegex, expression) {
 }
 
 // Simplify the expression by processing matched groups
-function simplifyExpression(operatorId, operatorGroup, expression) {
+function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Extract and convert operands to numbers
     const [subExpression, ...operandStrings]  = operatorGroup; 
+
+    // Get the full matched segment from the expression
+    const matchedSegment = operatorGroup.input;
 
     // Convert operand strings to numbers
     const operands = operandStrings.map(Number);
 
     // Log the sub-expression
     console.log('Sub Expression:', subExpression);
+
+    // Log the matched segment
+    console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
     console.log('Operands:', operands);
@@ -171,19 +177,25 @@ function simplifyExpression(operatorId, operatorGroup, expression) {
 
     // Apply the corresponding operation based on operator precedence
     const simplifiedResult = calculator.operatorConfig[operatorId].operation(operands);
-    
+
+    // Substitute calculated value within the matched context
+    const simplifiedSegment = matchedSegment.replace(subExpression, simplifiedResult);
+
+    // Add the simplified portion back into the full expression
+    const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment);
+
     // Log the result of the operation
     console.log('Simplified Result:', simplifiedResult);
 
-    // Replace sub-expression with result
-    const simplifiedExpression = expression.replace(subExpression, simplifiedResult);
+    // Log the simplified segment
+    console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
     console.log('Simplified Expression:', simplifiedExpression);
 
     // Update and return the expression
-    expression = simplifiedExpression;
-    return expression;
+    originalExpression = simplifiedExpression;
+    return originalExpression;
 }
 
 // Evaluate expression by operator precedence
