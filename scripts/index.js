@@ -135,7 +135,7 @@ function findNextOperation(operatorRegex, expression) {
         for (const subExpression of groupedExpressions) {
             
             // lLog grouped expression for debugging
-            console.log('Groups:', groupedExpressions);
+            // console.log('Groups:', groupedExpressions);
             
             // Check if sub-expression contains target operation
             if (operatorRegex.test(subExpression)) {
@@ -152,6 +152,37 @@ function findNextOperation(operatorRegex, expression) {
     return currentOperation;
 }
 
+// Callback that locates operator in queue by matching rank and symbol
+function findOperatorIndex(operatorEntry) {
+    // Destructure operator data
+    const [keyId, keyAction, operatorRank] = operatorEntry;
+    
+    // Get operator's intrinsic precedence
+    const baseRank = calculator.operatorConfig[keyId].rank;
+ 
+    // Convert implicit 'this' to string for symbol comparison
+    const operatorSymbol = String(this);
+ 
+    // Get current parentheses depth
+    const depthLevel = calculator.depthTracker.openingCount;
+    
+    // Calculate effective rank based on nesting
+    const currentRank = baseRank + (2 * depthLevel);
+ 
+    // For nested expressions
+    if (depthLevel > 0) {
+        // Match if both rank and symbol match at current nesting level
+        if (operatorRank === currentRank && operatorSymbol === keyAction) {
+            return true;
+        }  
+    }
+    
+    // For top-level expressions
+    else if (operatorRank === baseRank && operatorSymbol === keyAction) {
+        return true;
+    }
+}
+
 // Simplify the expression by processing matched groups
 function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Extract and convert operands to numbers
@@ -164,16 +195,16 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(Number);
 
     // Log the sub-expression
-    console.log('Sub Expression:', subExpression);
+    // console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    console.log('Matched Segment:', matchedSegment);
+    // console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    console.log('Operands:', operands);
+    // console.log('Operands:', operands);
 
     // Log the operator ID
-    console.log('Operator Id:', operatorId);
+    // console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
     const simplifiedResult = calculator.operatorConfig[operatorId].operation(operands);
@@ -185,13 +216,14 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment);
 
     // Log the result of the operation
-    console.log('Simplified Result:', simplifiedResult);
+    // console.log('Simplified Result:', simplifiedResult);
 
     // Log the simplified segment
-    console.log('Simplified Segment:', simplifiedSegment);
+    // console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
-    console.log('Simplified Expression:', simplifiedExpression);
+    // console.log('Simplified Expression:', simplifiedExpression);
+    // console.log('\n');
 
     // Update and return the expression
     originalExpression = simplifiedExpression;
@@ -207,7 +239,7 @@ function evaluateExpression(expression) {
     expression = expression.replace(/\s|\,/g, '').concat(')'.repeat(openingCount));
     
     // Log the sanitized expression for debugging
-    console.log('Expression:', expression);
+    // console.log('Expression:', expression);
 
     // Get the current size of the operator queue   
     const queueSize = calculator.operatorQueue.length;
@@ -221,7 +253,7 @@ function evaluateExpression(expression) {
     }
 
     // Log the sorted operator queue for debugging
-    console.table(calculator.operatorQueue);
+    // console.table(calculator.operatorQueue);
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
@@ -232,7 +264,7 @@ function evaluateExpression(expression) {
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
-            console.log('Normalized Expression', normalizedExpression);
+            // console.log('Normalized Expression', normalizedExpression);
 
             // Update with normalized version
             expression = normalizedExpression;
@@ -251,14 +283,14 @@ function evaluateExpression(expression) {
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
-        console.log('Regex:', regex);
+        // console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
         
         // Log matched expressions for debugging
-        console.log('Operator Matches:');
-        console.table(operatorMatches);
+        // console.log('Operator Matches:');
+        // console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
@@ -306,6 +338,9 @@ function updateDisplay(key) {
 
     // Copy of display content for manipulation
     let displayText = expressionDisplay.value;
+
+    // Store reference to track parentheses depth
+    const depthTracker = calculator.depthTracker;
 
     // Remove commas to standardize number formatting 
     calculator.currentOperand = calculator.currentOperand.replaceAll(',', '');
@@ -377,7 +412,7 @@ function updateDisplay(key) {
             processResult(resultDisplay, currentExpression);
 
             // Log current calculator value
-            // console.log(calculator.currentOperand);
+            // console.log('Current Operand:', calculator.currentOperand);
                         
             break;
     
@@ -401,7 +436,7 @@ function updateDisplay(key) {
                 if (expressionDisplay.value !== '0') { 
                     // Remove all whitespace characters
                     displayText = displayText.replaceAll(/\s/g, '');
-                    console.log(displayText);
+                    // console.log(displayText);
                     
                     // Retrieve the last character using negative indexing
                     const lastCharacter = displayText.at(-1);
@@ -409,12 +444,47 @@ function updateDisplay(key) {
                     // Check if the last character is an operator
                     if (/[+−÷×]/.test(lastCharacter)) {
                         // Get the index of the last matching operator in the queue    
-                        const operatorIndex = calculator.operatorQueue.findLastIndex(
-                            (operatorEntry) => lastCharacter === operatorEntry[1]
-                        );
+                        const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, lastCharacter);
 
                         // Dequeue the last matching operator
                         calculator.operatorQueue.splice(operatorIndex, 1);
+                    }
+
+                    // Increment opening count when deleting a closing parenthesis
+                    else if (/\)/.test(lastCharacter)) {
+                        // Update the opening count
+                        depthTracker.openingCount += 1;
+
+                        // Adjust nesting balance when reopening previously closed groups
+                        if (depthTracker.closingCount > 0) {
+                            // Update the closing count
+                            depthTracker.closingCount -= 1;
+                        }
+
+                        // Update maximum nesting depth for parentheses validation
+                        if (depthTracker.openingCount > depthTracker.highestDepth) {
+                            // Reset to current depth
+                            depthTracker.highestDepth = depthTracker.openingCount;
+                        }
+
+                        console.log('Opening Count:', depthTracker.openingCount);
+                        console.log('Closing Count:', depthTracker.closingCount);
+                        console.log('Highest Depth:', depthTracker.highestDepth);
+                        console.log('\n');
+                    }
+                    
+                    // Decrement opening count when deleting an opening parenthesis
+                    else if (/\(/.test(lastCharacter)) {
+                        // Update the opening count
+                        depthTracker.openingCount -= 1;
+
+                        // Update the closing count
+                        depthTracker.closingCount += 1;
+
+                        console.log('Opening Count:', depthTracker.openingCount);
+                        console.log('Closing Count:', depthTracker.closingCount);
+                        console.log('Highest Depth:', depthTracker.highestDepth);
+                        console.log('\n');
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
@@ -472,18 +542,15 @@ function updateDisplay(key) {
             // Check if the operator is inside parentheses  
             const inParentheses = /\([\(\)+−÷×\d,\s]*\*/g.test(displayText);
 
-            // Store reference to track parentheses depth
-            const depthTracker = calculator.depthTracker;
-
             // Skip operator append for equals and decimal key
             if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
 
                 // Get current depth of nested parentheses
-                const nestingLevel = depthTracker.openingCount;
+                const depthLevel = depthTracker.openingCount;
 
                 // Adjust rank if inside parentheses, scaling by nesting level
-                const operatorRank = nestingLevel > 0  
-                    ? calculator.operatorConfig[keyId].rank + (2 * nestingLevel)  
+                const operatorRank = depthLevel > 0  
+                    ? calculator.operatorConfig[keyId].rank + (2 * depthLevel)  
                     : calculator.operatorConfig[keyId].rank;
 
                 // Handle operator replacement when the last input is whitespace
@@ -535,7 +602,7 @@ function updateDisplay(key) {
                     // Track opening parentheses in expression 
                     depthTracker.openingCount += 1;
 
-                    // Adjust nesting balance when reopening previously closed groups
+                    // Adjust nesting balance when opening previously closed groups
                     if (depthTracker.closingCount > 0) {
                         // Decrement closing count to maintain proper parentheses tracking
                         depthTracker.closingCount -= 1;
@@ -551,6 +618,7 @@ function updateDisplay(key) {
                     console.log('Opening Count:', depthTracker.openingCount);
                     console.log('Closing Count:', depthTracker.closingCount);
                     console.log('Highest Depth:', depthTracker.highestDepth);
+                    console.log('\n');
                 }
             
                 // Close group after completed operand operator inside parentheses
@@ -563,17 +631,18 @@ function updateDisplay(key) {
                         // Track closing parentheses in expression  
                         depthTracker.closingCount += 1;
                         depthTracker.openingCount -= 1;
-                    
-                        // Log closing parentheses state
-                        console.log('Opening Count:', depthTracker.openingCount);
-                        console.log('Closing Count:', depthTracker.closingCount);
-                        console.log('Highest Depth:', depthTracker.highestDepth);
 
                         // Reset trackers when parentheses are balanced
                         if (depthTracker.closingCount === depthTracker.highestDepth) {
                             // Zero out both depth counters
                             depthTracker.closingCount = depthTracker.highestDepth = 0;
                         }
+
+                        // Log closing parentheses state
+                        console.log('Opening Count:', depthTracker.openingCount);
+                        console.log('Closing Count:', depthTracker.closingCount);
+                        console.log('Highest Depth:', depthTracker.highestDepth);
+                        console.log('\n');
                     }
 
                     // Implicit multiplication case
