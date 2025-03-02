@@ -99,9 +99,11 @@ function handleKeyActions() {
 }
 
 // Format and update number display with locale separators  
-function formatNumberDisplay(displayText) {
+function formatNumberDisplay() {
     // Extract raw number before formatting
-    const unformattedNumber = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1];
+    const unformattedNumber = calculator.currentOperand;
+
+    console.log('Unformatted Number:', unformattedNumber);
 
     // Format number if it doesn't already contain a decimal point
     if (unformattedNumber.includes('.') === false) {
@@ -401,7 +403,7 @@ function updateDisplay(key) {
                     // console.log('Display Text:', displayText);
 
                     // Apply locale formatting  
-                    formatNumberDisplay(displayText);
+                    formatNumberDisplay();
                 }
             }
 
@@ -533,7 +535,7 @@ function updateDisplay(key) {
                     // Check if current value exists
                     if (calculator.currentOperand.length !== 0) {
                         // Format number
-                        formatNumberDisplay(displayText);
+                        formatNumberDisplay();
                     }
                 }
 
