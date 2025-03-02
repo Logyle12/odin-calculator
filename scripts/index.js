@@ -111,6 +111,9 @@ function setCurrentOperand(displayText) {
         // Get the latest operand 
         return operands.pop();
     }
+
+    // Return the current operand unchanged 
+    return calculator.currentOperand;
 }
 
 // Format and update number display with locale separators  
