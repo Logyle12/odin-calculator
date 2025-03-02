@@ -98,6 +98,21 @@ function handleKeyActions() {
     });
 }
 
+// Derive the current operand from the display text  
+function setCurrentOperand(displayText) {
+    // Extract all numbers from display text
+    const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
+
+    // Log extracted operands for debugging
+    console.log('Operands:', operands);
+
+    // Update current operand only if it differs from last number
+    if (calculator.currentOperand !== operands.at(-1)) {
+        // Get the latest operand 
+        return operands.pop();
+    }
+}
+
 // Format and update number display with locale separators  
 function formatNumberDisplay() {
     // Extract raw number before formatting
@@ -398,9 +413,6 @@ function updateDisplay(key) {
                     // Update display with current digit
                     expressionDisplay.value += keyAction;
 
-                    // Append current digit to displayText, marking for extraction
-                    displayText += keyAction.padEnd(keyAction.length + 1, '*');
-
                     // console.log('Display Text:', displayText);
 
                     // Apply locale formatting  
@@ -498,9 +510,6 @@ function updateDisplay(key) {
                     // Update display text for further processing
                     displayText = updatedExpression;
             
-                    // Append marker for number extraction
-                    displayText += '*';
-            
                     // Update display if there's more than one character left  
                     if (expressionDisplay.value.length > 1) {  
                         // Apply updated text to display 
@@ -518,17 +527,8 @@ function updateDisplay(key) {
                         displayText = expressionDisplay.value = '0';  
                     } 
                     
-                    // Extract all numbers from display text
-                    const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
-
-                    // Log extracted operands for debugging
-                    console.log('Operands:', operands);
-
-                    // Update current operand only if it differs from last number
-                    if (calculator.currentOperand !== operands.at(-1)) {
-                        // Set current operand to last number in display  
-                        calculator.currentOperand = operands.pop();
-                    }
+                    // Set current operand to last number in display  
+                    calculator.currentOperand = setCurrentOperand(displayText);
 
                     // Log updated current operand value
                     console.log('Current Operand:', calculator.currentOperand);
