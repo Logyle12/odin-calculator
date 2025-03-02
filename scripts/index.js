@@ -129,7 +129,8 @@ function formatNumberDisplay() {
         const formattedNumber = parseInt(calculator.currentOperand, 10).toLocaleString('en-GB');
 
         // Replace unformatted number with locale-formatted version
-        expressionDisplay.value = expressionDisplay.value.replace(unformattedNumber, formattedNumber);
+        expressionDisplay.value = expressionDisplay.value.replace(/[\d,-]+$/g, unformattedNumber)
+                                            .replace(unformattedNumber, formattedNumber);
 
         // Set digit limit: 15 for integers
         calculator.digitLimit = 15;
