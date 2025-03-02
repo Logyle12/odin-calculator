@@ -315,22 +315,25 @@ function evaluateExpression(expression) {
 
 // Process and format the result of a mathematical expression
 function processResult(displayElement, expression) {
-    // Get count of unclosed parentheses
-    const openingCount = calculator.depthTracker.openingCount;
-
-    // Sanitize expression and Auto-close unclosed parentheses
-    expression = expression.replace(/\s|\,/g, '').concat(')'.repeat(openingCount));
-    
-    // Log the sanitized expression for debugging
-    console.log('Expression:', expression);
-
     // Get the last displayed character
     const lastCharacter = expression.at(-1);
+
+    // Sanitize the expression
+    expression = expression.replace(/\s|\,/g, '')
 
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
         if (/\(*\-?\d+\.?\d*\)*[+−÷×]\(*\-?\d+\.?\d*\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
+            // Get count of unclosed parentheses
+            const openingCount = calculator.depthTracker.openingCount;
+
+            // Auto-close unclosed parentheses
+            expression = expression.concat(')'.repeat(openingCount));
+            
+            // Log the sanitized expression for debugging
+            console.log('Expression:', expression);
+
             // Evaluate the current expression and store the result
             const computedResult = evaluateExpression(expression);
     
