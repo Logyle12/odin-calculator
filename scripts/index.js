@@ -340,6 +340,15 @@ function processResult(displayElement, expression) {
     
             // Display the result using locale separators
             displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
+
+            // Log the raw result for debugging
+            console.log('Computed Result:', computedResult);
+            
+            // Switch to scientific notation if result exceeds digit limit         
+            if (computedResult.length > calculator.digitLimit) {
+                // Format result display as exponential notation
+                displayElement.value = parseFloat(computedResult).toExponential();
+            }
         }
 
         // Clear the results display if the expression is incomplete  
