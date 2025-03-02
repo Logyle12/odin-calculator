@@ -515,7 +515,7 @@ function updateDisplay(key) {
             
                     else {  
                         // Reset display to zero when last digit is removed  
-                        expressionDisplay.value = '0';  
+                        displayText = expressionDisplay.value = '0';  
                     } 
                     
                     // Extract all numbers from display text
