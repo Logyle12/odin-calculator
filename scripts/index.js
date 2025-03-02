@@ -513,10 +513,22 @@ function updateDisplay(key) {
                     else {  
                         // Reset display to zero when last digit is removed  
                         expressionDisplay.value = '0';  
-                    }  
-            
-                    // Update tracked value, removing non-numeric characters 
-                    calculator.currentOperand = displayText.match(/((?:\d+,*\.*)*)(\*)/)[1].replaceAll(',', '');  
+                    } 
+                    
+                    // Extract all numbers from display text
+                    const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
+
+                    // Log extracted operands for debugging
+                    console.log('Operands:', operands);
+
+                    // Update current operand only if it differs from last number
+                    if (calculator.currentOperand !== operands.at(-1)) {
+                        // Set current operand to last number in display  
+                        calculator.currentOperand = operands.pop();
+                    }
+
+                    // Log updated current operand value
+                    console.log('Current Operand:', calculator.currentOperand);
 
                     // Check if current value exists
                     if (calculator.currentOperand.length !== 0) {
