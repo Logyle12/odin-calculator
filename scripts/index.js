@@ -312,7 +312,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*\d+\)*[+−÷×]\(*\d+\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
+        if (/\(*\-?\d+\.?\d*\)*[+−÷×]\(*\-?\d+\.?\d*\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
             // Evaluate the current expression and store the result
             const computedResult = evaluateExpression(expression);
     
