@@ -309,22 +309,23 @@ function processResult(displayElement, expression) {
     // Get the last displayed character
     const lastCharacter = expression.at(-1);
 
-    // Evaluate if we have both operands (preceded by operator)
-    if (/\(*\d+\)*[+−÷×]\(*\d+\)*/.test(expression)) {
-        // // Proceed only if a complete expression
-        if (/\d/.test(lastCharacter)) {
+    // Proceed only if there's a valid current operand  
+    if (calculator.currentOperand.length !== 0) {
+        // Check for a complete expression with a valid ending  
+        if (/\(*\d+\)*[+−÷×]\(*\d+\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
             // Evaluate the current expression and store the result
             const computedResult = evaluateExpression(expression);
     
             // Display the result using locale separators
             displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
         }
+
+        // Clear the results display if the expression is incomplete  
+        else {
+            resultDisplay.value = '';
+        }
     }
 
-    // Clear the results display if the expression is incomplete  
-    else {
-        resultDisplay.value = '';
-    }
 }
 
 // Update display with pressed key
