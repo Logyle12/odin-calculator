@@ -321,6 +321,18 @@ function processResult(displayElement, expression) {
     // Sanitize the expression
     expression = expression.replace(/\s|\,/g, '')
 
+    // Check if expression contains scientific notation (e.g., 1.23e+4)
+    if (/\d+\.\d+\e[+-]\d+/gi.test(expression)) {
+        // Extract and convert notation strings to numbers
+        const exponentialValues = expression.match(/\d+\.\d+\e[+-]\d+/gi).map(Number);
+
+        // Replace each notation instance with its numeric value
+        for (const exponentialValue of exponentialValues) {
+            // Substitute throughout the expression
+            expression = expression.replace(/\d+\.\d+\e[+-]\d+/gi, exponentialValue);
+        }
+    }
+
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
