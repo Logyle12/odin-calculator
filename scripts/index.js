@@ -371,7 +371,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*\-?\d+\.?\d*\%?\)*[+−÷×]\(*\-?\d+\.?\d*\%?\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
+        if (/\(*\-?\d+\.?\d*\%?\)*[+−÷×]\(*\-?\d+\.?\d*\%?\)*/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
@@ -485,10 +485,10 @@ function updateDisplay(key) {
                 }
             }
 
-            // Check if expression contains an operator
+            // Get the current expression from the display 
             const currentExpression = expressionDisplay.value;
 
-            // Process if at least two operands are present
+            // Compute new result and update display
             processResult(resultDisplay, currentExpression);
 
             // Log current calculator value
@@ -753,9 +753,18 @@ function updateDisplay(key) {
                 if (calculator.currentOperand.includes(keyAction) === false) {
                     // Append the percentage symbol to the display
                     expressionDisplay.value += keyAction;
-                    
+
                     // Add the percentage symbol to the current operand value
                     calculator.currentOperand += keyAction;
+
+                    // Get the current expression from the display  
+                    const currentExpression = expressionDisplay.value;  
+
+                    console.log('Current Expression:', currentExpression)
+
+                    // Compute new result and update display 
+                    processResult(resultDisplay, currentExpression);  
+
                 }
             }
 
@@ -792,7 +801,7 @@ function updateDisplay(key) {
                     // Get the current expression from the display
                     const finalExpression = expressionDisplay.value;
     
-                    // Process and format the result of the current expression
+                    // Compute new result and update display
                     processResult(expressionDisplay, finalExpression);
     
                     // Update the current operand to the computed result
