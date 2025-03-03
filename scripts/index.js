@@ -464,8 +464,11 @@ function updateDisplay(key) {
         case 'key-control':
             // Check for 'key-AC' press
             if (keyId === 'key-AC') {
-                // Reset expression display to zero
-                expressionDisplay.value = '0';
+                // Reset expression display and current operand to zero
+                expressionDisplay.value = calculator.currentOperand = '0';
+
+                // Clear result display
+                resultDisplay.value = '';
 
                 // If non-empty queue
                 if (calculator.operatorQueue.length !== 0) {
@@ -759,7 +762,6 @@ function updateDisplay(key) {
             }
 
             // console.table(calculator.operatorQueue);
-
             break;
         
         default:
