@@ -116,6 +116,39 @@ function setCurrentOperand(displayText) {
     return calculator.currentOperand;
 }
 
+// Converts operand strings to numeric values with percentage handling
+function processOperands(numericString, currentIndex, operandStrings) {
+    // For percentage values (e.g., "50%")
+    if (/(\d+)\%/.test(numericString)) {
+        // First operand: direct percentage conversion
+        if (currentIndex === 0) {
+            // Convert percentage to decimal value (50% → 0.5)
+            const percentValue = parseFloat(numericString)/100;
+            
+            // Return simple decimal form for first operand
+            return percentValue;
+        }
+        
+        // Subsequent operands: percentage relative to first operand
+        else {
+            // Calculate percentage relative to the first operand's value
+            const relativePercent = (parseFloat(numericString)/100) * parseFloat(operandStrings[0]);
+            
+            // Return calculated relative percentage value
+            return relativePercent;
+        }
+    }
+    
+    // Standard numeric conversion
+    else {
+        // Parse string to floating-point number
+        const numericValue = parseFloat(numericString);
+        
+        // Return converted number for calculation
+        return numericValue;
+    }
+}
+
 // Format and update number display with locale separators  
 function formatNumberDisplay() {
     // Extract raw number before formatting
@@ -156,7 +189,7 @@ function findNextOperation(operatorRegex, expression) {
         for (const subExpression of groupedExpressions) {
             
             // lLog grouped expression for debugging
-            // console.log('Groups:', groupedExpressions);
+            console.log('Groups:', groupedExpressions);
             
             // Check if sub-expression contains target operation
             if (operatorRegex.test(subExpression)) {
@@ -212,8 +245,10 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Get the full matched segment from the expression
     const matchedSegment = operatorGroup.input;
 
+    console.log('Operands Strings:', operandStrings);
+
     // Convert operand strings to numbers
-    const operands = operandStrings.map(Number);
+    const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
     console.log('Sub Expression:', subExpression);
@@ -289,12 +324,12 @@ function evaluateExpression(expression) {
 
         // Match numbers around operator, with optional parentheses if precedence was boosted
         const pattern = operatorRank > baseRank
-            ? `(\\-?\\d+\\.?\\d*)\\${currentOperator}(\\-?\\d+\\.?\\d*)`
-            : `\\(?(\\-?\\d+\\.?\\d*)\\)?\\${currentOperator}\\(?(\\-?\\d+\\.?\\d*)\\)?`;
+            ? `(\\-?\\d+\\.?\\d*\\%?)\\${currentOperator}(\\-?\\d+\\.?\\d*\\%?)`
+            : `\\(?(\\-?\\d+\\.?\\d*\\%?)\\)?\\${currentOperator}\\(?(\\-?\\d+\\.?\\d*\\%?)\\)?`;
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
-        // console.log('Regex:', regex);
+        console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
@@ -319,7 +354,7 @@ function processResult(displayElement, expression) {
     const lastCharacter = expression.at(-1);
 
     // Sanitize the expression
-    expression = expression.replace(/\s|\,/g, '')
+    expression = expression.replace(/\s|\,/g, '');
 
     // Check if expression contains scientific notation (e.g., 1.23e+4)
     if (/\d+\.\d+\e[+-]\d+/gi.test(expression)) {
@@ -336,7 +371,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*\-?\d+\.?\d*\)*[+−÷×]\(*\-?\d+\.?\d*\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
+        if (/\(*\-?\d+\.?\d*\%?\)*[+−÷×]\(*\-?\d+\.?\d*\%?\)*/.test(expression) && /\d|\)/.test(lastCharacter)) {
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
@@ -591,7 +626,7 @@ function updateDisplay(key) {
             const inParentheses = /\([\(\)+−÷×\d,\s]*\*/g.test(displayText);
 
             // Skip operator append for equals and decimal key
-            if  (keyId !== 'key-parentheses' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
+            if  (keyId !== 'key-parentheses' && keyId !== 'key-percent' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
 
                 // Get current depth of nested parentheses
                 const depthLevel = depthTracker.openingCount;
@@ -710,6 +745,17 @@ function updateDisplay(key) {
                         depthTracker.openingCount = 1;
                         depthTracker.closingCount = 0;
                     }
+                }
+            }
+
+            else if (keyId === 'key-percent') {
+                // Prevent duplicate percentage symbols
+                if (calculator.currentOperand.includes(keyAction) === false) {
+                    // Append the percentage symbol to the display
+                    expressionDisplay.value += keyAction;
+                    
+                    // Add the percentage symbol to the current operand value
+                    calculator.currentOperand += keyAction;
                 }
             }
 
