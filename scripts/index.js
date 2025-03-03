@@ -216,16 +216,16 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(Number);
 
     // Log the sub-expression
-    // console.log('Sub Expression:', subExpression);
+    console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    // console.log('Matched Segment:', matchedSegment);
+    console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    // console.log('Operands:', operands);
+    console.log('Operands:', operands);
 
     // Log the operator ID
-    // console.log('Operator Id:', operatorId);
+    console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
     const simplifiedResult = calculator.operatorConfig[operatorId].operation(operands);
@@ -237,14 +237,14 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment);
 
     // Log the result of the operation
-    // console.log('Simplified Result:', simplifiedResult);
+    console.log('Simplified Result:', simplifiedResult);
 
     // Log the simplified segment
-    // console.log('Simplified Segment:', simplifiedSegment);
+    console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
-    // console.log('Simplified Expression:', simplifiedExpression);
-    // console.log('\n');
+    console.log('Simplified Expression:', simplifiedExpression);
+    console.log('\n');
 
     // Return the simplified expression
     return simplifiedExpression;
@@ -275,7 +275,7 @@ function evaluateExpression(expression) {
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
-            // console.log('Normalized Expression', normalizedExpression);
+            console.log('Normalized Expression', normalizedExpression);
 
             // Update with normalized version
             expression = normalizedExpression;
@@ -300,8 +300,8 @@ function evaluateExpression(expression) {
         const operatorMatches = findNextOperation(regex, expression);
         
         // Log matched expressions for debugging
-        // console.log('Operator Matches:');
-        // console.table(operatorMatches);
+        console.log('Operator Matches:');
+        console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
@@ -643,9 +643,11 @@ function updateDisplay(key) {
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
                 // Match whitespace character indicating preceding operator
-                if (/\s|\(/.test(lastCharacter)) {
-                    // Begin new explicit group after operator
-                    expressionDisplay.value += openingParenthesis;
+                if (/\s|\(/.test(lastCharacter) || expressionDisplay.value === '0') {
+                    // Replace '0' with opening parenthesis or append to existing expression
+                    expressionDisplay.value = expressionDisplay.value === '0' 
+                    ? openingParenthesis 
+                    : expressionDisplay.value + openingParenthesis;
 
                     // Track opening parentheses in expression 
                     depthTracker.openingCount += 1;
