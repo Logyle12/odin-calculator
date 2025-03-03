@@ -246,9 +246,8 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // console.log('Simplified Expression:', simplifiedExpression);
     // console.log('\n');
 
-    // Update and return the expression
-    originalExpression = simplifiedExpression;
-    return originalExpression;
+    // Return the simplified expression
+    return simplifiedExpression;
 }
 
 // Evaluate expression by operator precedence
@@ -336,18 +335,21 @@ function processResult(displayElement, expression) {
             console.log('Expression:', expression);
 
             // Evaluate the current expression and store the result
-            const computedResult = evaluateExpression(expression);
+            const computedResult = parseFloat(evaluateExpression(expression), 10);
     
-            // Display the result using locale separators
-            displayElement.value = parseFloat(computedResult, 10).toLocaleString('en-GB');
-
             // Log the raw result for debugging
             console.log('Computed Result:', computedResult);
             
             // Switch to scientific notation if result exceeds digit limit         
-            if (computedResult.length > calculator.digitLimit) {
+            if (computedResult.toString().length > calculator.digitLimit) {
                 // Format result display as exponential notation
-                displayElement.value = parseFloat(computedResult).toExponential();
+                displayElement.value = computedResult.toExponential();
+            }
+
+            // Use comma separated notation if within digit limit
+            else {
+                // Display the result using locale separators
+                displayElement.value = computedResult.toLocaleString('en-GB');
             }
         }
 
