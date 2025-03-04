@@ -613,17 +613,11 @@ function updateDisplay(key) {
             break;
             
         case 'key-operator':
-            // Mark end for extraction  
-            displayText += '*';
-
             // Remove all white spaces from displayText 
             displayText = displayText.replaceAll(/\s/g, '');
             
             // Get the last displayed character
-            const lastCharacter = expressionDisplay.value.at(-1);
-
-            // Check if the operator is inside parentheses  
-            const inParentheses = /\([\(\)+−÷×\d,\s]*\*/g.test(displayText);
+            const lastCharacter = displayText.at(-1);
 
             // Skip operator append for equals and decimal key
             if  (keyId !== 'key-parentheses' && keyId !== 'key-percent' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
@@ -636,8 +630,8 @@ function updateDisplay(key) {
                     ? calculator.operatorConfig[keyId].rank + (2 * depthLevel)  
                     : calculator.operatorConfig[keyId].rank;
 
-                // Handle operator replacement when the last input is whitespace
-                if (/\s/.test(lastCharacter)) {
+                // Handle operator replacement
+                if (/[+−÷×]/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
                     const dequeuedOperator = calculator.operatorQueue.shift()[1];
                     
@@ -670,15 +664,12 @@ function updateDisplay(key) {
             }
 
             // Handle parentheses key press logic
-            else if (keyId === 'key-parentheses') {
-                // Debug current expression state
-                // console.log('Display Text:', displayText);
-                
+            else if (keyId === 'key-parentheses') {                
                 // Destructure parentheses from action tuple
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
-                // Match whitespace character indicating preceding operator
-                if (/\s|\(/.test(lastCharacter) || expressionDisplay.value === '0') {
+                // Match preceding operator
+                if (/[+−÷×]|\(/.test(lastCharacter) || expressionDisplay.value === '0') {
                     // Replace '0' with opening parenthesis or append to existing expression
                     expressionDisplay.value = expressionDisplay.value === '0' 
                     ? openingParenthesis 
@@ -707,7 +698,7 @@ function updateDisplay(key) {
                 }
             
                 // Close group after completed operand operator inside parentheses
-                else if (inParentheses) {
+                else if (calculator.depthTracker.openingCount > 0) {
                     // Only allow closing parenthesis if there are unclosed ones
                     if (depthTracker.closingCount < depthTracker.highestDepth) {
                         // Append closing parenthesis when there are unclosed ones
@@ -729,22 +720,22 @@ function updateDisplay(key) {
                         console.log('Highest Depth:', depthTracker.highestDepth);
                         console.log('\n');
                     }
+                }
 
-                    // Implicit multiplication case
-                    else if (/\d|\)/.test(lastCharacter)) {
-                        // Create padded multiplication symbol for display
-                        const timesOperator = '\u00D7'.padStart(2).padEnd(3);
-    
-                        // Insert implicit multiplication before new group
-                        expressionDisplay.value += `${timesOperator}${openingParenthesis}`;
-                        
-                        // Clear current operand
-                        calculator.currentOperand = '';
+                // Implicit multiplication case
+                else if (/\d|\)/.test(lastCharacter)) {
+                    // Create padded multiplication symbol for display
+                    const timesOperator = '\u00D7'.padStart(2).padEnd(3);
 
-                        // Reset nesting counts for new parentheses group
-                        depthTracker.openingCount = 1;
-                        depthTracker.closingCount = 0;
-                    }
+                    // Insert implicit multiplication before new group
+                    expressionDisplay.value += `${timesOperator}${openingParenthesis}`;
+                    
+                    // Clear current operand
+                    calculator.currentOperand = '';
+
+                    // Reset nesting counts for new parentheses group
+                    depthTracker.openingCount = 1;
+                    depthTracker.closingCount = 0;
                 }
             }
 
