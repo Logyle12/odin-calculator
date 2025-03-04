@@ -245,22 +245,22 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Get the full matched segment from the expression
     const matchedSegment = operatorGroup.input;
 
-    console.log('Operands Strings:', operandStrings);
+    // console.log('Operands Strings:', operandStrings);
 
     // Convert operand strings to numbers
     const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
-    console.log('Sub Expression:', subExpression);
+    // console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    console.log('Matched Segment:', matchedSegment);
+    // console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    console.log('Operands:', operands);
+    // console.log('Operands:', operands);
 
     // Log the operator ID
-    console.log('Operator Id:', operatorId);
+    // console.log('Operator Id:', operatorId);
 
     // Apply the corresponding operation based on operator precedence
     const simplifiedResult = calculator.operatorConfig[operatorId].operation(operands);
@@ -272,14 +272,14 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment);
 
     // Log the result of the operation
-    console.log('Simplified Result:', simplifiedResult);
+    // console.log('Simplified Result:', simplifiedResult);
 
     // Log the simplified segment
-    console.log('Simplified Segment:', simplifiedSegment);
+    // console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
-    console.log('Simplified Expression:', simplifiedExpression);
-    console.log('\n');
+    // console.log('Simplified Expression:', simplifiedExpression);
+    // console.log('\n');
 
     // Return the simplified expression
     return simplifiedExpression;
@@ -310,7 +310,7 @@ function evaluateExpression(expression) {
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
-            console.log('Normalized Expression', normalizedExpression);
+            // console.log('Normalized Expression', normalizedExpression);
 
             // Update with normalized version
             expression = normalizedExpression;
@@ -329,14 +329,14 @@ function evaluateExpression(expression) {
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
-        console.log('Regex:', regex);
+        // console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
         
         // Log matched expressions for debugging
-        console.log('Operator Matches:');
-        console.table(operatorMatches);
+        // console.log('Operator Matches:');
+        // console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
@@ -607,7 +607,6 @@ function updateDisplay(key) {
                         formatNumberDisplay();
                     }
                 }
-
             }
             
             break;
@@ -633,21 +632,51 @@ function updateDisplay(key) {
                 // Handle operator replacement
                 if (/[+−÷×]/.test(lastCharacter)) {
                     // Extract the previous operator from the queue
-                    const dequeuedOperator = calculator.operatorQueue.shift()[1];
+                    const previousOperator = lastCharacter;
+
+                    // Log the previously entered operator for debugging
+                    console.log('Previous Operator:', previousOperator);
+
+                    // Display current operation queue for debugging
+                    console.log('Current Queue:');
+                    console.table(calculator.operatorQueue);
+
+                    // Enable negative number entry 
+                    if (/[÷×]/.test(previousOperator) && keyId === 'key-subtract') {
+                        // Append negative sign to expression display
+                        expressionDisplay.value += '\u002D';
+
+                        // Update current operand with negative sign
+                        calculator.currentOperand += '\u002D';
+                    }
+
+                    else {
+                        // Create a regex to replace the previous operator, ensuring it's not followed by a digit
+                        const operatorRegex = new RegExp(`(?<=\\s)\\${previousOperator}(?=\\s$)`);
                     
-                    // Create a regex to replace the previous operator, ensuring it's not followed by a digit
-                    const operatorRegex = new RegExp(`\\${dequeuedOperator}(?=\\s(?!\\d))`);
+                        // Replace the old operator with the new one in the display
+                        const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
                     
-                    // Replace the old operator with the new one in the display
-                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
-                    
-                    // Update operator queue and display
-                    calculator.operatorQueue.push([keyId, keyAction, operatorRank]);
-                    expressionDisplay.value = updatedExpression;
+                        // Update operator queue and display
+                        expressionDisplay.value = updatedExpression;
+
+                        // Get the index of the last matching operator in the queue    
+                        const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
+
+                        // Dequeue the last matching operator
+                        const operatorEntry = calculator.operatorQueue[operatorIndex];
+
+                        // Update operator queue entry with new operator details
+                        [operatorEntry[0], operatorEntry[1], operatorEntry[2]] = [keyId, keyAction, operatorRank];
+                    }
+
+                    // Display updated operation queue for debugging
+                    console.log('Updated Queue:');
+                    console.table(calculator.operatorQueue);
                 }
 
                 // Append operator if value exists
-                if (calculator.currentOperand.length !== 0) {
+                else if (calculator.currentOperand.length !== 0 && Number.isFinite(parseFloat(calculator.currentOperand))) {
 
                     // Pad operator unless it's decimal key
                     const operator = keyAction.padStart(2).padEnd(3);
