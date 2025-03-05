@@ -98,6 +98,20 @@ function handleKeyActions() {
     });
 }
 
+// Calculates an operator's precedence, factoring in nesting depth
+function calculateOperatorRank(depthTracker, baseRank) {
+    // Get current depth of nested parentheses
+    const depthLevel = depthTracker.openingCount;
+
+    // Adjust rank if inside parentheses, scaling by nesting level
+    const operatorRank = depthLevel > 0  
+        ? baseRank + (2 * depthLevel)  
+        : baseRank;
+
+    // Returns the adjusted precedence value
+    return operatorRank;
+}
+
 // Derive the current operand from the display text  
 function setCurrentOperand(displayText) {
     // Extract all numbers from display text
@@ -621,13 +635,11 @@ function updateDisplay(key) {
             // Skip operator append for equals and decimal key
             if  (keyId !== 'key-parentheses' && keyId !== 'key-percent' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
 
-                // Get current depth of nested parentheses
-                const depthLevel = depthTracker.openingCount;
+                // Retrieve operator's inherent precedence level
+                const baseRank = calculator.operatorConfig[keyId].rank;
 
-                // Adjust rank if inside parentheses, scaling by nesting level
-                const operatorRank = depthLevel > 0  
-                    ? calculator.operatorConfig[keyId].rank + (2 * depthLevel)  
-                    : calculator.operatorConfig[keyId].rank;
+                // Compute rank according to nesting depth
+                const operatorRank = calculateOperatorRank(depthTracker, baseRank);
 
                 // Handle operator replacement
                 if (/[+−÷×]/.test(lastCharacter)) {
