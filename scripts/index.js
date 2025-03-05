@@ -130,16 +130,31 @@ function calculateOperatorRank(depthTracker, baseRank) {
 
 // Derive the current operand from the display text  
 function setCurrentOperand(displayText) {
-    // Extract all numbers from display text
-    const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
+    // Remove all whitespace from the display text
+    displayText = displayText.replaceAll(/\s/g, '');
 
-    // Log extracted operands for debugging
-    console.log('Operands:', operands);
+     // Proceed only if the display ends with a valid operand  
+    if (/[^+−÷×]$/g.test(displayText)) {
+        // Extract all numbers from display text
+        const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
+    
+        // Log extracted operands for debugging
+        console.log('Operands:', operands);
+    
+        // Log the current operand for debugging
+        console.log('Current Operand:', calculator.currentOperand);
+    
+        // Update current operand only if it differs from last number
+        if (calculator.currentOperand !== operands.at(-1)) {
+            // Get the latest operand 
+            return operands.pop();
+        }
+    }
 
-    // Update current operand only if it differs from last number
-    if (calculator.currentOperand !== operands.at(-1)) {
-        // Get the latest operand 
-        return operands.pop();
+    // No valid operand detected
+    else {
+        // Clear the current operand
+        calculator.currentOperand = '';
     }
 
     // Return the current operand unchanged 
