@@ -91,11 +91,27 @@ function handleKeyActions() {
     // Iterate through each key button
     keyButtons.forEach((key) => {
         // Add click event handler
-        key.onclick = () => {            
+        key.onclick = () => {           
             // Update display with key action
             updateDisplay(key);
         }
     });
+}
+
+// Handles implicit multiplication
+function insertMultiplication() {
+    // Find the multiplication key by its specific ID
+    const multiplyKey = [...keyButtons].find((key) => key.id === 'key-multiply');
+
+    // Simulate a click on the multiplication button
+    multiplyKey.click();
+
+    // Log the current state of the operator queue 
+    console.log('Operator Queue:');
+    console.table(calculator.operatorQueue);
+
+    // Clear the current operand for next input
+    calculator.currentOperand = '';
 }
 
 // Calculates an operator's precedence, factoring in nesting depth
@@ -473,17 +489,8 @@ function updateDisplay(key) {
 
                 // Check if the last character is a closing parenthesis
                 if (displayText.at(-1) === '\u0029') {
-                    // Create a padded multiplication operator
-                    const timesOperator = '\u00D7'.padStart(2).padEnd(3);
-                    
                     // Append the padded multiplication operator
-                    expressionDisplay.value += timesOperator;
-                    
-                    // Update the display text to reflect the change
-                    displayText = expressionDisplay.value;
-                    
-                    // Clear the current operand
-                    calculator.currentOperand = '';
+                    insertMultiplication();
                 }
 
                     // Append digit to tracked value
@@ -491,8 +498,6 @@ function updateDisplay(key) {
 
                     // Update display with current digit
                     expressionDisplay.value += keyAction;
-
-                    // console.log('Display Text:', displayText);
 
                     // Apply locale formatting  
                     formatNumberDisplay();
@@ -765,18 +770,14 @@ function updateDisplay(key) {
 
                 // Implicit multiplication case
                 else if (/\d|\)/.test(lastCharacter)) {
-                    // Create padded multiplication symbol for display
-                    const timesOperator = '\u00D7'.padStart(2).padEnd(3);
+                    // Append the padded multiplication operator
+                    insertMultiplication();
 
-                    // Insert implicit multiplication before new group
-                    expressionDisplay.value += `${timesOperator}${openingParenthesis}`;
-                    
-                    // Clear current operand
-                    calculator.currentOperand = '';
+                    // Find the parentheses key by its specific ID
+                    const parenthesesKey = [...keyButtons].find((key) => key.id === 'key-parentheses');
 
-                    // Reset nesting counts for new parentheses group
-                    depthTracker.openingCount = 1;
-                    depthTracker.closingCount = 0;
+                    // Simulate a click on the parentheses button
+                    parenthesesKey.click()
                 }
             }
 
