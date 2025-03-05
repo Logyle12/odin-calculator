@@ -269,7 +269,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedSegment = matchedSegment.replace(subExpression, simplifiedResult);
 
     // Add the simplified portion back into the full expression
-    const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment);
+    const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment).replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
     // Log the result of the operation
     // console.log('Simplified Result:', simplifiedResult);
@@ -310,7 +310,7 @@ function evaluateExpression(expression) {
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
-            // console.log('Normalized Expression', normalizedExpression);
+            console.log('Normalized Expression', normalizedExpression);
 
             // Update with normalized version
             expression = normalizedExpression;
@@ -339,7 +339,7 @@ function evaluateExpression(expression) {
         // console.table(operatorMatches);
 
         // Process the matched expressions
-        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
+        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression).replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
         // Update the main expression
         expression = simplifiedExpression;
