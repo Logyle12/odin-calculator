@@ -539,6 +539,15 @@ function updateDisplay(key) {
                 // Clear result display
                 resultDisplay.value = '';
 
+                // Reset depth counts
+                depthTracker.openingCount = depthTracker.closingCount = depthTracker.highestDepth = 0;
+
+                // Log depth details for debugging
+                console.log('Opening Count:', depthTracker.openingCount);
+                console.log('Closing Count:', depthTracker.closingCount);
+                console.log('Highest Depth:', depthTracker.highestDepth);
+                console.log('\n');
+
                 // If non-empty queue
                 if (calculator.operatorQueue.length !== 0) {
                     // Clear operator queue
@@ -584,6 +593,7 @@ function updateDisplay(key) {
                             depthTracker.highestDepth = depthTracker.openingCount;
                         }
 
+                        // Log depth details for debugging
                         console.log('Opening Count:', depthTracker.openingCount);
                         console.log('Closing Count:', depthTracker.closingCount);
                         console.log('Highest Depth:', depthTracker.highestDepth);
@@ -598,6 +608,7 @@ function updateDisplay(key) {
                         // Update the closing count
                         depthTracker.closingCount += 1;
 
+                        // Log depth details for debugging
                         console.log('Opening Count:', depthTracker.openingCount);
                         console.log('Closing Count:', depthTracker.closingCount);
                         console.log('Highest Depth:', depthTracker.highestDepth);
