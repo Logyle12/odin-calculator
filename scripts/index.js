@@ -660,59 +660,65 @@ function updateDisplay(key) {
             // Remove all white spaces from displayText 
             displayText = displayText.replaceAll(/\s/g, '');
             
-            // Get the last displayed character
-            const lastCharacter = displayText.at(-1);
+            // Extract the previous operator 
+            const previousOperator = displayText.at(-1);
+
+            // Log the previously entered operator for debugging
+            console.log('Previous Operator:', previousOperator);
 
             // Skip operator append for equals and decimal key
             if  (keyId !== 'key-parentheses' && keyId !== 'key-percent' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
-
                 // Retrieve operator's inherent precedence level
                 const baseRank = calculator.operatorConfig[keyId].rank;
 
                 // Compute rank according to nesting depth
                 const operatorRank = calculateOperatorRank(depthTracker, baseRank);
 
+                // Enable negative number entry 
+                if (/[÷×]|\(|0/.test(previousOperator) && keyId === 'key-subtract') {
+                    // If display shows only a zero
+                    if (expressionDisplay.value == '0') {
+                        // Replace '0' with negative sign
+                        expressionDisplay.value = '\u002D';
+
+                        // Reset current operand
+                        calculator.currentOperand = '';
+                    }
+
+                    // Otherwise append to existing expression
+                    else {
+                        // Append negative sign to expression display
+                        expressionDisplay.value += '\u002D';
+                    }
+
+                    // Update current operand with negative sign
+                    calculator.currentOperand += '\u002D';
+                }
+
                 // Handle operator replacement
-                if (/[+−÷×]/.test(lastCharacter)) {
-                    // Extract the previous operator from the queue
-                    const previousOperator = lastCharacter;
-
-                    // Log the previously entered operator for debugging
-                    console.log('Previous Operator:', previousOperator);
-
+                else if (/[+−÷×]/.test(previousOperator)) {
                     // Display current operation queue for debugging
                     console.log('Current Queue:');
                     console.table(calculator.operatorQueue);
 
-                    // Enable negative number entry 
-                    if (/[÷×]/.test(previousOperator) && keyId === 'key-subtract') {
-                        // Append negative sign to expression display
-                        expressionDisplay.value += '\u002D';
+                    // Create a regex to replace the previous operator, ensuring it's not followed by a digit
+                    const operatorRegex = new RegExp(`(?<=\\s)\\${previousOperator}(?=\\s$)`);
+                
+                    // Replace the old operator with the new one in the display
+                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
+                
+                    // Update operator queue and display
+                    expressionDisplay.value = updatedExpression;
 
-                        // Update current operand with negative sign
-                        calculator.currentOperand += '\u002D';
-                    }
+                    // Get the index of the last matching operator in the queue    
+                    const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
 
-                    else {
-                        // Create a regex to replace the previous operator, ensuring it's not followed by a digit
-                        const operatorRegex = new RegExp(`(?<=\\s)\\${previousOperator}(?=\\s$)`);
-                    
-                        // Replace the old operator with the new one in the display
-                        const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
-                    
-                        // Update operator queue and display
-                        expressionDisplay.value = updatedExpression;
+                    // Dequeue the last matching operator
+                    const operatorEntry = calculator.operatorQueue[operatorIndex];
 
-                        // Get the index of the last matching operator in the queue    
-                        const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
-
-                        // Dequeue the last matching operator
-                        const operatorEntry = calculator.operatorQueue[operatorIndex];
-
-                        // Update operator queue entry with new operator details
-                        [operatorEntry[0], operatorEntry[1], operatorEntry[2]] = [keyId, keyAction, operatorRank];
-                    }
-
+                    // Update operator queue entry with new operator details
+                    [operatorEntry[0], operatorEntry[1], operatorEntry[2]] = [keyId, keyAction, operatorRank];
+                
                     // Display updated operation queue for debugging
                     console.log('Updated Queue:');
                     console.table(calculator.operatorQueue);
@@ -720,7 +726,6 @@ function updateDisplay(key) {
 
                 // Append operator if value exists
                 else if (calculator.currentOperand.length !== 0 && Number.isFinite(parseFloat(calculator.currentOperand))) {
-
                     // Pad operator unless it's decimal key
                     const operator = keyAction.padStart(2).padEnd(3);
 
@@ -741,7 +746,7 @@ function updateDisplay(key) {
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
                 // Match preceding operator
-                if (/[+−÷×]|\(/.test(lastCharacter) || expressionDisplay.value === '0') {
+                if (/[+−÷×]|\(/.test(previousOperator) || expressionDisplay.value === '0') {
                     // Replace '0' with opening parenthesis or append to existing expression
                     expressionDisplay.value = expressionDisplay.value === '0' 
                     ? openingParenthesis 
@@ -795,7 +800,7 @@ function updateDisplay(key) {
                 }
 
                 // Implicit multiplication case
-                else if (/\d|\)/.test(lastCharacter)) {
+                else if (/\d|\)/.test(previousOperator)) {
                     // Append the padded multiplication operator
                     insertMultiplication();
 
