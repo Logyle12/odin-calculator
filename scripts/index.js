@@ -133,16 +133,13 @@ function setCurrentOperand(displayText) {
     // Remove all whitespace from the display text
     displayText = displayText.replaceAll(/\s/g, '');
 
-     // Proceed only if the display ends with a valid operand  
-    if (/[^+−÷×]$/g.test(displayText)) {
+    // Proceed only if the display ends with a valid operand  
+    if (/[^+−÷×(]$/g.test(displayText)) {
         // Extract all numbers from display text
         const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
     
         // Log extracted operands for debugging
         console.log('Operands:', operands);
-    
-        // Log the current operand for debugging
-        console.log('Current Operand:', calculator.currentOperand);
     
         // Update current operand only if it differs from last number
         if (calculator.currentOperand !== operands.at(-1)) {
@@ -444,11 +441,11 @@ function processResult(displayElement, expression) {
                 displayElement.value = computedResult.toLocaleString('en-GB');
             }
         }
+    }
 
-        // Clear the results display if the expression is incomplete  
-        else {
-            resultDisplay.value = '';
-        }
+    // Clear the results display if the expression is incomplete  
+    else {
+        resultDisplay.value = '';
     }
 
 }
@@ -613,6 +610,7 @@ function updateDisplay(key) {
                         console.log('Closing Count:', depthTracker.closingCount);
                         console.log('Highest Depth:', depthTracker.highestDepth);
                         console.log('\n');
+
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
@@ -620,37 +618,30 @@ function updateDisplay(key) {
                         ? expressionDisplay.value.slice(0, expressionDisplay.value.length - 3) 
                         : expressionDisplay.value.slice(0, -1);
 
-                    // Update display text for further processing
-                    displayText = updatedExpression;
+                    // Update display text; reset to '0' if expression is empty  
+                    displayText = expressionDisplay.value = 
+                        updatedExpression.length > 1 ? updatedExpression : '0';
+
+                    // Set current operand to last number in display  
+                    calculator.currentOperand = setCurrentOperand(displayText);
+
+                    // Log updated current operand value
+                    console.log('Current Operand:', calculator.currentOperand); 
             
-                    // Update display if there's more than one character left  
-                    if (expressionDisplay.value.length > 1) {  
-                        // Apply updated text to display 
-                        expressionDisplay.value = updatedExpression; 
-                        
+                    // Update the display if the current expression is not just '0'  
+                    if (expressionDisplay.value !== '0') {                         
                         // Compute new result and update display
                         processResult(resultDisplay, updatedExpression);
                         
                         // Log current queue state of operators
                         console.table(calculator.operatorQueue);
+                        
+                        // Check if current value exists
+                        if (calculator.currentOperand.length !== 0) {
+                            // Format number
+                            formatNumberDisplay();
+                        }
                     }  
-            
-                    else {  
-                        // Reset display to zero when last digit is removed  
-                        displayText = expressionDisplay.value = '0';  
-                    } 
-                    
-                    // Set current operand to last number in display  
-                    calculator.currentOperand = setCurrentOperand(displayText);
-
-                    // Log updated current operand value
-                    console.log('Current Operand:', calculator.currentOperand);
-
-                    // Check if current value exists
-                    if (calculator.currentOperand.length !== 0) {
-                        // Format number
-                        formatNumberDisplay();
-                    }
                 }
             }
             
