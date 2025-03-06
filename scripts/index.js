@@ -605,12 +605,17 @@ function updateDisplay(key) {
                         // Update the closing count
                         depthTracker.closingCount += 1;
 
+                        // Reset depth tracking when no opening parentheses remain  
+                        if (depthTracker.openingCount === 0) {  
+                            // Clear depth state  
+                            depthTracker.closingCount = depthTracker.highestDepth = 0;
+                        }  
+
                         // Log depth details for debugging
                         console.log('Opening Count:', depthTracker.openingCount);
                         console.log('Closing Count:', depthTracker.closingCount);
                         console.log('Highest Depth:', depthTracker.highestDepth);
                         console.log('\n');
-
                     }
 
                     // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
