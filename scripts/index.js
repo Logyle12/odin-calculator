@@ -10,10 +10,10 @@ const calculator = {
     // Store latest number value
     currentOperand: expressionDisplay.value,
 
-    // Max digits allowed
+    // Track max digits allowed
     digitLimit: 15,
 
-     // Track count of opening and closing parentheses
+    // Track count of opening and closing parentheses
     depthTracker: {
         'openingCount': 0,
         'closingCount': 0,
@@ -293,19 +293,21 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
-    // console.log('Sub Expression:', subExpression);
+    console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    // console.log('Matched Segment:', matchedSegment);
+    console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    // console.log('Operands:', operands);
+    console.log('Operands:', operands);
 
     // Log the operator ID
-    // console.log('Operator Id:', operatorId);
+    console.log('Operator Id:', operatorId);
 
-    // Apply the corresponding operation based on operator precedence
-    const simplifiedResult = calculator.operatorConfig[operatorId].operation(operands);
+    // Apply operation and round to current precision level
+    const simplifiedResult = parseFloat(
+        calculator.operatorConfig[operatorId].operation(operands).toFixed(calculator.digitLimit)
+    );
 
     // Substitute calculated value within the matched context
     const simplifiedSegment = matchedSegment.replace(subExpression, simplifiedResult);
@@ -314,13 +316,13 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment).replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
     // Log the result of the operation
-    // console.log('Simplified Result:', simplifiedResult);
+    console.log('Simplified Result:', simplifiedResult);
 
     // Log the simplified segment
-    // console.log('Simplified Segment:', simplifiedSegment);
+    console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
-    // console.log('Simplified Expression:', simplifiedExpression);
+    console.log('Simplified Expression:', simplifiedExpression);
     // console.log('\n');
 
     // Return the simplified expression
@@ -437,8 +439,10 @@ function processResult(displayElement, expression) {
 
             // Use comma separated notation if within digit limit
             else {
-                // Display the result using locale separators
-                displayElement.value = computedResult.toLocaleString('en-GB');
+                // Display the result using locale separators and display to current precision
+                displayElement.value = computedResult.toLocaleString('en-GB', {
+                    maximumFractionDigits: calculator.digitLimit
+                });
             }
         }
     }
@@ -499,11 +503,11 @@ function updateDisplay(key) {
             else {
                 if (calculator.currentOperand.length < calculator.digitLimit) {
 
-                // Check if the last character is a closing parenthesis
-                if (displayText.at(-1) === '\u0029') {
-                    // Append the padded multiplication operator
-                    insertMultiplication();
-                }
+                    // Check if the last character is a closing parenthesis
+                    if (displayText.at(-1) === '\u0029') {
+                        // Append the padded multiplication operator
+                        insertMultiplication();
+                    }
 
                     // Append digit to tracked value
                     calculator.currentOperand += keyAction;
