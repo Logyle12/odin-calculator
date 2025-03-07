@@ -136,10 +136,7 @@ function setCurrentOperand(displayText) {
     // Proceed only if the display ends with a valid operand  
     if (/[^+−÷×(]$/g.test(displayText)) {
         // Extract all numbers from display text
-        const operands = displayText.replaceAll(',', '').match(/(\d+)/g);
-    
-        // Log extracted operands for debugging
-        console.log('Operands:', operands);
+        const operands = displayText.replaceAll(',', '').match(/(\-?\d+\.?\d*)/g);
     
         // Update current operand only if it differs from last number
         if (calculator.currentOperand !== operands.at(-1)) {
@@ -525,10 +522,7 @@ function updateDisplay(key) {
 
             // Compute new result and update display
             processResult(resultDisplay, currentExpression);
-
-            // Log current calculator value
-            // console.log('Current Operand:', calculator.currentOperand);
-                        
+          
             break;
     
         case 'key-control':
