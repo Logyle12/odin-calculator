@@ -96,6 +96,12 @@
     row-gap: 21px;
 }
 
+#vertical-line {
+    height: 428px;
+    border-right: 0.25px solid rgba(198, 198, 198, 0.5);
+    margin: auto;
+}
+
 .key {
     display: flex;
     justify-content: center;
