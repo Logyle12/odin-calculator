@@ -20,66 +20,95 @@
                 </div>
             </section>
             <section class="calc-keypad">
-                <button class="key key-control" id="key-AC">
-                    <span class="key-text">AC</span>
-                </button>
-                <button class="key key-operator" id="key-parentheses">
-                    <span class="key-text">&lpar;&rpar;</span>
-                </button>
-                <button class="key key-operator" id="key-percent">
-                    <span class="key-text">&percnt;</span>
-                </button>
-                <button class="key key-control" id="key-del">
-                    <span class="key-text">del</span>
-                </button>
-                <button class="key key-digit" id="key-7">
-                    <span class="key-text">7</span>
-                </button>
-                <button class="key key-digit" id="key-8">
-                    <span class="key-text">8</span>
-                </button>
-                <button class="key key-digit" id="key-9">
-                    <span class="key-text">9</span>
-                </button>
-                <button class="key key-operator" id="key-multiply">
-                    <span class="key-text">&times;</span>
-                </button>
-                <button class="key key-digit" id="key-4">
-                    <span class="key-text">4</span>
-                </button>
-                <button class="key key-digit" id="key-5">
-                    <span class="key-text">5</span>
-                </button>
-                <button class="key key-digit" id="key-6">
-                    <span class="key-text">6</span>
-                </button>
-                <button class="key key-operator" id="key-add">
-                    <span class="key-text">&plus;</span>
-                </button>
-                <button class="key key-digit" id="key-1">
-                    <span class="key-text">1</span>
-                </button>
-                <button class="key key-digit" id="key-2">
-                    <span class="key-text">2</span>
-                </button>
-                <button class="key key-digit" id="key-3">
-                    <span class="key-text">3</span>
-                </button>
-                <button class="key key-operator" id="key-subtract">
-                    <span class="key-text">&minus;</span>
-                </button>
-                <button class="key key-operator" id="key-decimal">
-                    <span class="key-text">&#46;</span>
-                </button>
-                <button class="key key-digit" id="key-0">
-                    <span class="key-text">0</span>
-                </button>
-                <button class="key key-operator" id="key-divide">
-                    <span class="key-text">&divide;</span>
-                </button>
-                <button class="key key-operator" id="key-equals">
-                    <span class="key-text">&equals;</span>
-                </button>
+                <div class="keypad-column" id="keypad-column-0">
+                    <button class="key key-operator" id="key-natural-log">
+                        <span class="key-text">ln</span>
+                    </button>
+                    <button class="key key-operator" id="key-log">
+                        <span class="key-text">log</span>
+                    </button>
+                    <button class="key key-operator" id="key-square-root">
+                        <span class="key-text">&#8730;</span>
+                    </button>
+                    <button class="key key-operator" id="key-power">
+                        <span class="key-text">
+                            x<sup>y</sup>
+                        </span>
+                    </button>
+                    <button class="key key-operator" id="key-exponent">
+                        <span class="key-text">exp</span>
+                    </button>
+                </div>
+                <div id="vertical-line"></div>
+                <div class="keypad-column" id="keypad-column-1">
+                    <button class="key key-control" id="key-AC">
+                        <span class="key-text">AC</span>
+                    </button>
+                    <button class="key key-digit" id="key-7">
+                        <span class="key-text">7</span>
+                    </button>
+                    <button class="key key-digit" id="key-4">
+                        <span class="key-text">4</span>
+                    </button>
+                    <button class="key key-digit" id="key-1">
+                        <span class="key-text">1</span>
+                    </button>
+                    <button class="key key-operator" id="key-decimal">
+                        <span class="key-text">&#46;</span>
+                    </button>
+                </div>
+                <div class="keypad-column" id="keypad-column-2">
+                    <button class="key key-operator" id="key-parentheses">
+                        <span class="key-text">&lpar;&rpar;</span>
+                    </button>
+                    <button class="key key-digit" id="key-8">
+                        <span class="key-text">8</span>
+                    </button>
+                    <button class="key key-digit" id="key-5">
+                        <span class="key-text">5</span>
+                    </button>
+                    <button class="key key-digit" id="key-2">
+                        <span class="key-text">2</span>
+                    </button>
+                    <button class="key key-digit" id="key-0">
+                        <span class="key-text">0</span>
+                    </button>
+                </div>
+                <div class="keypad-column" id="keypad-column-3">
+                    <button class="key key-operator" id="key-percent">
+                        <span class="key-text">&percnt;</span>
+                    </button>
+                    <button class="key key-digit" id="key-9">
+                        <span class="key-text">9</span>
+                    </button>
+                    <button class="key key-digit" id="key-6">
+                        <span class="key-text">6</span>
+                    </button>
+                    <button class="key key-digit" id="key-3">
+                        <span class="key-text">3</span>
+                    </button>
+                    <button class="key key-operator" id="key-divide">
+                        <span class="key-text">&divide;</span>
+                    </button>
+                </div>
+                <div class="keypad-column" id="keypad-column-4">
+                    <button class="key key-control" id="key-del">
+                        <span class="key-text">del</span>
+                    </button>
+                    <button class="key key-operator" id="key-multiply">
+                        <span class="key-text">&times;</span>
+                    </button>
+                    <button class="key key-operator" id="key-add">
+                        <span class="key-text">&plus;</span>
+                    </button>
+                    <button class="key key-operator" id="key-subtract">
+                        <span class="key-text">&minus;</span>
+                    </button>
+
+                    <button class="key key-operator" id="key-equals">
+                        <span class="key-text">&equals;</span>
+                    </button>
+                </div>
             </section>
         </div>
     </div>
