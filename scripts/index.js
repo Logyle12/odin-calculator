@@ -380,7 +380,7 @@ function evaluateExpression(expression) {
         // console.table(operatorMatches);
 
         // Process the matched expressions
-        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression).replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
+        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
 
         // Update the main expression
         expression = simplifiedExpression;
