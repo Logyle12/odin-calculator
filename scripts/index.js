@@ -660,8 +660,8 @@ function updateDisplay(key) {
             // Log the previously entered operator for debugging
             console.log('Previous Operator:', previousOperator);
 
-            // Skip operator append for equals and decimal key
-            if  (keyId !== 'key-parentheses' && keyId !== 'key-percent' && keyId !== 'key-decimal' && keyId !== 'key-equals') {
+            // Only proceed for arithmetic operators
+            if  (key.classList.contains('arithmetic-operator')) {
                 // Retrieve operator's inherent precedence level
                 const baseRank = calculator.operatorConfig[keyId].rank;
 
