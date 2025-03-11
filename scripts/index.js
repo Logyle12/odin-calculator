@@ -193,7 +193,7 @@ function formatNumberDisplay() {
     // Extract raw number before formatting
     const unformattedNumber = calculator.currentOperand;
 
-    console.log('Unformatted Number:', unformattedNumber);
+    // console.log('Unformatted Number:', unformattedNumber);
 
     // Format number if it doesn't already contain a decimal point
     if (unformattedNumber.includes('.') === false) {
@@ -290,16 +290,16 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
-    console.log('Sub Expression:', subExpression);
+    // console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    console.log('Matched Segment:', matchedSegment);
+    // console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    console.log('Operands:', operands);
+    // console.log('Operands:', operands);
 
     // Log the operator ID
-    console.log('Operator Id:', operatorId);
+    // console.log('Operator Id:', operatorId);
 
     // Apply operation and round to current precision level
     const simplifiedResult = parseFloat(
@@ -320,7 +320,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
 
     // Log the updated expression
     console.log('Simplified Expression:', simplifiedExpression);
-    // console.log('\n');
+    console.log('\n');
 
     // Return the simplified expression
     return simplifiedExpression;
@@ -358,26 +358,21 @@ function evaluateExpression(expression) {
         }
 
         // Destructure priority operator's details from queue
-        const [operatorId, currentOperator, operatorRank] = calculator.operatorQueue[i];
+        const [operatorId, currentOperator] = calculator.operatorQueue[i];
 
-        // Get default rank for current operator
-        const baseRank = calculator.operatorConfig[operatorId].rank;
-
-        // Match numbers around operator, with optional parentheses if precedence was boosted
-        const pattern = operatorRank > baseRank
-            ? `(\\-?\\d+\\.?\\d*\\%?)\\${currentOperator}(\\-?\\d+\\.?\\d*\\%?)`
-            : `\\(?(\\-?\\d+\\.?\\d*\\%?)\\)?\\${currentOperator}\\(?(\\-?\\d+\\.?\\d*\\%?)\\)?`;
+        // Match operands around operator
+        const pattern = `([^()+−÷×]+)\\${currentOperator}([^()+−÷×]+)`;
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
-        // console.log('Regex:', regex);
+        console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
         
         // Log matched expressions for debugging
-        // console.log('Operator Matches:');
-        // console.table(operatorMatches);
+        console.log('Operator Matches:');
+        console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
@@ -412,7 +407,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*\-?\d+\.?\d*\%?\)*[+−÷×]\(*\-?\d+\.?\d*\%?\)*/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
+        if (/\(*[^()+−÷×]+\)*[+−÷×]\(*[^()+−÷×]+\)*/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
@@ -658,7 +653,7 @@ function updateDisplay(key) {
             const previousOperator = displayText.at(-1);
 
             // Log the previously entered operator for debugging
-            console.log('Previous Operator:', previousOperator);
+            // console.log('Previous Operator:', previousOperator);
 
             // Only proceed for arithmetic operators
             if  (key.classList.contains('arithmetic-operator')) {
