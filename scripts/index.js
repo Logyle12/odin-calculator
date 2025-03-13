@@ -25,30 +25,35 @@ const calculator = {
         // Power (a^b)
         'key-power': {
             'rank': 3,
+            'symbol': '^',
             'operation': raiseToPower,
         },
 
-        // Multiplication (a * b)
+        // Multiplication (a*b)
         'key-multiply': {
             'rank': 2,
+            'symbol': '\u00D7',
             'operation': multiply,
         },
 
-        // Division (a / b)
+        // Division (a/b)
         'key-divide': {
             'rank': 2,
+            'symbol': '\u00F7',
             'operation': divide,
         },
 
-        // Addition (a + b)
+        // Addition (a+b)
         'key-add': {
             'rank': 1,
+            'symbol': '\u002B',
             'operation': add,
         },
 
-        // Subtraction (a - b)
+        // Subtraction (a-b)
         'key-subtract': {
             'rank': 1,
+            'symbol': '\u2212',
             'operation': subtract,
         }
     },
@@ -272,7 +277,7 @@ function findOperatorIndex(operatorEntry) {
     const [keyId, keyAction, operatorRank] = operatorEntry;
     
     // Get operator's intrinsic precedence
-    const baseRank = calculator.operatorConfig[keyId].rank;
+    const baseRank = calculator.operators[keyId].rank;
  
     // Convert implicit 'this' to string for symbol comparison
     const operatorSymbol = String(this);
@@ -324,7 +329,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
 
     // Apply operation and round to current precision level
     const simplifiedResult = parseFloat(
-        calculator.operatorConfig[operatorId].operation(operands).toFixed(calculator.digitLimit)
+        calculator.operators[operatorId].operation(operands).toFixed(calculator.digitLimit)
     );
 
     // Substitute calculated value within the matched context
@@ -679,7 +684,7 @@ function updateDisplay(key) {
             // Only proceed for arithmetic operators
             if  (key.classList.contains('arithmetic-operator')) {
                 // Retrieve operator's inherent precedence level
-                const baseRank = calculator.operatorConfig[keyId].rank;
+                const baseRank = calculator.operators[keyId].rank;
 
                 // Compute rank according to nesting depth
                 const operatorRank = calculateOperatorRank(depthTracker, baseRank);
@@ -736,14 +741,19 @@ function updateDisplay(key) {
 
                 // Append operator if value exists
                 else if (calculator.currentOperand.length !== 0 && Number.isFinite(parseFloat(calculator.currentOperand))) {
-                    // Pad operator unless it's decimal key
-                    const operator = keyAction.padStart(2).padEnd(3);
+                    // Retrieve operator symbol for pressed key
+                    const keySymbol = calculator.operators[keyId].symbol;
+
+                    // Pad operator unless it's a power key
+                    const operator = keyId !== 'key-power' 
+                        ? keySymbol.padStart(2).padEnd(3) 
+                        : keySymbol;
 
                     // Append operator to display
                     expressionDisplay.value += operator;
 
                     // Add the operator and action to the queue
-                    calculator.operatorQueue.push([keyId, keyAction, operatorRank]);
+                    calculator.operatorQueue.push([keyId, keySymbol, operatorRank]);
 
                     // Reset tracked value after operator added
                     calculator.currentOperand = '';
