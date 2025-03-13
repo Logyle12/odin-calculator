@@ -386,20 +386,25 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
-    // console.log('Sub Expression:', subExpression);
+    console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    // console.log('Matched Segment:', matchedSegment);
+    console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    // console.log('Operands:', operands);
+    console.log('Operands:', operands);
 
     // Log the operator ID
     // console.log('Operator Id:', operatorId);
 
+    // Chooses between arithmetic and function handlers based on input
+    const operationHandler = /[+−÷×]/g.test(subExpression)  
+        ? calculator.operators  
+        : calculator.mathFunctions;
+
     // Apply operation and round to current precision level
     const simplifiedResult = parseFloat(
-        calculator.operators[operatorId].operation(operands).toFixed(calculator.digitLimit)
+        operationHandler[operatorId].operation(operands).toFixed(calculator.digitLimit)
     );
 
     // Substitute calculated value within the matched context
