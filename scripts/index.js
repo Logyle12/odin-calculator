@@ -456,8 +456,10 @@ function evaluateExpression(expression) {
         // Destructure priority operator's details from queue
         const [operatorId, currentOperator] = calculator.operatorQueue[i];
 
-        // Match operands around operator
-        const pattern = `([^()+−÷×]+)\\${currentOperator}([^()+−÷×]+)`;
+        // Match operands around operator or functions
+        const pattern = /[+−÷×]/.test(currentOperator)
+            ? `([^()+−÷×]+)\\${currentOperator}([^()+−÷×]+)`
+            : `\\${currentOperator}([^()+−÷×]+)`;
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
