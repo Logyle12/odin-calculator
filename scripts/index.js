@@ -510,7 +510,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*[^()+−÷×]+\)*[+−÷×^E]\(*[^()+−÷×]+\)*/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
+        if (/\(*[^()+−÷×]+\)*[+−÷×^E]\(*[^()+−÷×]+\)*/.test(expression) || /^(?:[+−÷×^(]|log|ln|√)/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
