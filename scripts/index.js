@@ -29,6 +29,13 @@ const calculator = {
             'operation': raiseToPower,
         },
 
+        // Powers of 10 (10^n)
+        'key-exponent': {
+            'rank': 3,
+            'symbol': 'E',
+            'operation': powerOfTen,
+        },
+
         // Multiplication (a*b)
         'key-multiply': {
             'rank': 2,
@@ -55,14 +62,14 @@ const calculator = {
             'rank': 1,
             'symbol': '\u2212',
             'operation': subtract,
-        }
+        },
     },
 
     // Store pending operations awaiting calculation
     operatorQueue: [],
 };
 
-// Math functions
+// Operator functions
 
 // Returns the result of raising a number to a given power
 function raiseToPower(operands) {
@@ -72,6 +79,18 @@ function raiseToPower(operands) {
     // Computes the operand raised to the given exponent
     const powerValue = Math.pow(base, exponent);
     
+    // Returns the computed power value
+    return powerValue;
+}
+
+// Multiplies a number by 10 raised to the given exponent
+function powerOfTen(operands) {
+    // Extract multiplier and exponent from operands
+    const [multiplier, exponent] = operands;
+
+    // Calculate multiplier × 10^exponent
+    const powerValue = multiplier * raiseToPower([10, exponent])
+
     // Returns the computed power value
     return powerValue;
 }
@@ -743,7 +762,7 @@ function updateDisplay(key) {
                     const keySymbol = calculator.operators[keyId].symbol;
 
                     // Pad operator unless it's a power key
-                    const operator = keyId !== 'key-power' 
+                    const operator = keyId !== 'key-power' && keyId !== 'key-exponent' 
                         ? keySymbol.padStart(2).padEnd(3) 
                         : keySymbol;
 
