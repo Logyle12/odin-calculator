@@ -974,7 +974,34 @@ function updateDisplay(key) {
 
             // console.table(calculator.operatorQueue);
             break;
-        
+
+        case 'math-function':
+            // Retrieve mathematical function symbol (e.g., 'ln', 'log', '√')
+            const keySymbol = calculator.mathFunctions[keyId].symbol;
+
+            // Get function's inherent precedence level before nesting adjustment
+            const baseRank = calculator.mathFunctions[keyId].rank;
+
+            // Compute function's effective precedence based on parentheses depth
+            const operatorRank = calculateOperatorRank(depthTracker, baseRank);
+
+            // Log base precedence for debugging
+            console.log('Base Rank:', baseRank);
+
+            // Log adjusted precedence for debugging
+            console.log('Operator Rank:', operatorRank);
+
+            // Replace zero or append function symbol to display
+
+            expressionDisplay.value = expressionDisplay.value === '0' 
+            ? keySymbol
+            : expressionDisplay.value + keySymbol;
+
+            // Enqueue function with its symbol and precedence for later evaluation
+            calculator.operatorQueue.push([keyId, keySymbol, operatorRank]); 
+
+            break;
+
         default:
             break;
     }
