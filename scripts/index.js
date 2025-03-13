@@ -559,6 +559,9 @@ function updateDisplay(key) {
     // Store reference to track parentheses depth
     const depthTracker = calculator.depthTracker;
 
+    // Find the parentheses key by its specific ID
+    const parenthesesKey = [...keyButtons].find((key) => key.id === 'key-parentheses');
+
     // Remove commas to standardize number formatting 
     calculator.currentOperand = calculator.currentOperand.replaceAll(',', '');
 
@@ -835,8 +838,8 @@ function updateDisplay(key) {
                 // Destructure parentheses from action tuple
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
-                // Match preceding operator
-                if (/[+−÷×^]|\(/.test(previousOperator) || expressionDisplay.value === '0') {
+                // Match preceding operator or math function (e.g. sqrt or log)
+                if (/(?:[+−÷×^(]|log|ln|√)$/g.test(displayText) || expressionDisplay.value === '0') {
                     // Replace '0' with opening parenthesis or append to existing expression
                     expressionDisplay.value = expressionDisplay.value === '0' 
                     ? openingParenthesis 
@@ -893,9 +896,6 @@ function updateDisplay(key) {
                 else if (/\d|\)/.test(previousOperator)) {
                     // Append the padded multiplication operator
                     insertMultiplication();
-
-                    // Find the parentheses key by its specific ID
-                    const parenthesesKey = [...keyButtons].find((key) => key.id === 'key-parentheses');
 
                     // Simulate a click on the parentheses button
                     parenthesesKey.click()
@@ -992,10 +992,12 @@ function updateDisplay(key) {
             console.log('Operator Rank:', operatorRank);
 
             // Replace zero or append function symbol to display
-
             expressionDisplay.value = expressionDisplay.value === '0' 
             ? keySymbol
             : expressionDisplay.value + keySymbol;
+
+            // Simulate a click on the parentheses button
+            parenthesesKey.click();
 
             // Enqueue function with its symbol and precedence for later evaluation
             calculator.operatorQueue.push([keyId, keySymbol, operatorRank]); 
