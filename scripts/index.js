@@ -21,7 +21,7 @@ const calculator = {
     },
 
     // Operator keys mapped to rank and function
-    operatorConfig: {
+    operators: {
         // Multiplication
         'key-multiply': {
             'rank': 2,
