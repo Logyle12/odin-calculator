@@ -22,22 +22,31 @@ const calculator = {
 
     // Operator keys mapped to rank and function
     operators: {
-        // Multiplication
+        // Power (a^b)
+        'key-power': {
+            'rank': 3,
+            'operation': raiseToPower,
+        },
+
+        // Multiplication (a * b)
         'key-multiply': {
             'rank': 2,
             'operation': multiply,
         },
-        // Division
+
+        // Division (a / b)
         'key-divide': {
             'rank': 2,
             'operation': divide,
         },
-        // Addition
+
+        // Addition (a + b)
         'key-add': {
             'rank': 1,
             'operation': add,
         },
-        // Subtraction
+
+        // Subtraction (a - b)
         'key-subtract': {
             'rank': 1,
             'operation': subtract,
@@ -49,6 +58,18 @@ const calculator = {
 };
 
 // Math functions
+
+// Returns the result of raising a number to a given power
+function raiseToPower(operands) {
+    // Extract base number and exponent from operands
+    const [base, exponent] = operands;
+    
+    // Computes the operand raised to the given exponent
+    const powerValue = Math.pow(base, exponent);
+    
+    // Returns the computed power value
+    return powerValue;
+}
 
 // Add all numbers in the array
 function add(operands) {
