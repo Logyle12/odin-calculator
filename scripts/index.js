@@ -65,6 +65,30 @@ const calculator = {
         },
     },
 
+    // Mathematical function keys mapped to symbols and operations
+    mathFunctions: {
+        // Natural logarithm (base e)
+        'key-natural-log': {
+            'rank': 3,
+            'symbol': 'ln',
+            'operation': naturalLog,
+        },
+        
+        // Common logarithm (base 10)
+        'key-log10': {
+            'rank': 3,
+            'symbol': 'log',
+            'operation': log10,
+        },
+        
+        // Square root function (√x)
+        'key-square-root': {
+            'rank': 3,
+            'symbol': '√',
+            'operation': squareRoot,
+        },
+    },
+
     // Store pending operations awaiting calculation
     operatorQueue: [],
 };
@@ -129,6 +153,35 @@ function divide(operands) {
         (quotient, number) => quotient / number,
     );
     return quotient; 
+}
+
+// Math functions
+
+// Returns the natural logarithm (base e) of a number
+function naturalLog(operands) {
+    // Computes the natural logarithm of the operand
+    const lnValue = Math.log(operands);
+
+    // Returns the computed natural logarithm
+    return lnValue;
+}
+
+// Returns the base-10 logarithm of a number
+function log10(operands) {
+    // Computes log base 10 of the operand
+    const log10Value = Math.log10(operands);
+
+    // Returns the computed log10 value
+    return log10Value;
+}
+
+// Returns the square root of a number
+function squareRoot(operands) {
+    // Computes the square root of the operand
+    const sqrtValue = Math.sqrt(operands);
+
+    // Returns the computed square root
+    return sqrtValue;
 }
 
 // Handle key button clicks
