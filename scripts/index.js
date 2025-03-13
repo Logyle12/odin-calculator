@@ -145,10 +145,8 @@ function calculateOperatorRank(depthTracker, baseRank) {
     // Get current depth of nested parentheses
     const depthLevel = depthTracker.openingCount;
 
-    // Adjust rank if inside parentheses, scaling by nesting level
-    const operatorRank = depthLevel > 0  
-        ? baseRank + (2 * depthLevel)  
-        : baseRank;
+    // Compute operator rank scaling by nesting level
+    const operatorRank = baseRank + (3 * depthLevel);
 
     // Returns the adjusted precedence value
     return operatorRank;
