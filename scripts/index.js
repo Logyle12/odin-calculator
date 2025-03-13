@@ -398,7 +398,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // console.log('Operator Id:', operatorId);
 
     // Chooses between arithmetic and function handlers based on input
-    const operationHandler = /[+−÷×]/g.test(subExpression)  
+    const operationHandler = /[+−÷×^E]/g.test(subExpression)  
         ? calculator.operators  
         : calculator.mathFunctions;
 
@@ -462,7 +462,7 @@ function evaluateExpression(expression) {
         const [operatorId, currentOperator] = calculator.operatorQueue[i];
 
         // Match operands around operator or functions
-        const pattern = /[+−÷×]/.test(currentOperator)
+        const pattern = /[+−÷×^E]/.test(currentOperator)
             ? `([^()+−÷×]+)\\${currentOperator}([^()+−÷×]+)`
             : `\\${currentOperator}([^()+−÷×]+)`;
     
@@ -510,7 +510,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*[^()+−÷×]+\)*[+−÷×]\(*[^()+−÷×]+\)*/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
+        if (/\(*[^()+−÷×]+\)*[+−÷×^E]\(*[^()+−÷×]+\)*/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
