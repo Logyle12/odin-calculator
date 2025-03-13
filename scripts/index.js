@@ -766,7 +766,7 @@ function updateDisplay(key) {
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
                 // Match preceding operator
-                if (/[+−÷×]|\(/.test(previousOperator) || expressionDisplay.value === '0') {
+                if (/[+−÷×^]|\(/.test(previousOperator) || expressionDisplay.value === '0') {
                     // Replace '0' with opening parenthesis or append to existing expression
                     expressionDisplay.value = expressionDisplay.value === '0' 
                     ? openingParenthesis 
