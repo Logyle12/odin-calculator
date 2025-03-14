@@ -491,9 +491,6 @@ function evaluateExpression(expression) {
 
 // Process and format the result of a mathematical expression
 function processResult(displayElement, expression) {
-    // Get the last displayed character
-    const lastCharacter = expression.at(-1);
-
     // Sanitize the expression
     expression = expression.replace(/\s|\,/g, '');
 
@@ -512,11 +509,7 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (
-            /\(*[^()+−÷×]+\)*[+−÷×^E]\(*[^()+−÷×]+\)*/.test(expression) ||
-            (/^(?:[+−÷×^(]|log|ln|√)/.test(expression) && /\d|\)|\%/.test(lastCharacter))
-        ) {
-        
+        if (/^(?:.+)(?:\d+|\)|\%)$/g.test(expressionDisplay.value)) {
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
