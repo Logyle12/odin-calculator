@@ -806,16 +806,22 @@ function updateDisplay(key) {
                 }
 
                 // Handle operator replacement
-                else if (/[+−÷×]/.test(previousOperator)) {
+                else if (/[+−÷×^E]/.test(previousOperator)) {
                     // Display current operation queue for debugging
                     console.log('Current Queue:');
                     console.table(calculator.operatorQueue);
 
-                    // Create a regex to replace the previous operator, ensuring it's not followed by a digit
-                    const operatorRegex = new RegExp(`(?<=\\s)\\${previousOperator}(?=\\s$)`);
+                    // Regex to match and replace the previous operator
+                    const operatorRegex =
+                        keyId !== 'key-power' && keyId !== 'key-exponent'
+                            ? new RegExp(`(?<=\\s)\\${previousOperator}(?=\\s$)`)
+                            : new RegExp(`\\s\\${previousOperator}\\s$`);
+                            
+                    // Retrieve operator symbol for pressed key
+                    const keySymbol = calculator.operators[keyId].symbol;
                 
                     // Replace the old operator with the new one in the display
-                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, keyAction);
+                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, keySymbol);
                 
                     // Update operator queue and display
                     expressionDisplay.value = updatedExpression;
@@ -827,7 +833,7 @@ function updateDisplay(key) {
                     const operatorEntry = calculator.operatorQueue[operatorIndex];
 
                     // Update operator queue entry with new operator details
-                    [operatorEntry[0], operatorEntry[1], operatorEntry[2]] = [keyId, keyAction, operatorRank];
+                    [operatorEntry[0], operatorEntry[1], operatorEntry[2]] = [keyId, keySymbol, operatorRank];
                 
                     // Display updated operation queue for debugging
                     console.log('Updated Queue:');
