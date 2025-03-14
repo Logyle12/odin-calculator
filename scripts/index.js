@@ -324,7 +324,7 @@ function findNextOperation(operatorRegex, expression) {
         for (const subExpression of groupedExpressions) {
             
             // lLog grouped expression for debugging
-            console.log('Groups:', groupedExpressions);
+            // console.log('Groups:', groupedExpressions);
             
             // Check if sub-expression contains target operation
             if (operatorRegex.test(subExpression)) {
@@ -411,7 +411,9 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedSegment = matchedSegment.replace(subExpression, simplifiedResult);
 
     // Add the simplified portion back into the full expression
-    const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment).replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
+    const simplifiedExpression = originalExpression
+        .replace(matchedSegment, simplifiedSegment)
+        .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
     // Log the result of the operation
     // console.log('Simplified Result:', simplifiedResult);
@@ -510,7 +512,11 @@ function processResult(displayElement, expression) {
     // Proceed only if there's a valid current operand  
     if (calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/\(*[^()+−÷×]+\)*[+−÷×^E]\(*[^()+−÷×]+\)*/.test(expression) || /^(?:[+−÷×^(]|log|ln|√)/.test(expression) && /\d|\)|\%/.test(lastCharacter)) {
+        if (
+            /\(*[^()+−÷×]+\)*[+−÷×^E]\(*[^()+−÷×]+\)*/.test(expression) ||
+            (/^(?:[+−÷×^(]|log|ln|√)/.test(expression) && /\d|\)|\%/.test(lastCharacter))
+        ) {
+        
             // Get count of unclosed parentheses
             const openingCount = calculator.depthTracker.openingCount;
 
@@ -518,13 +524,13 @@ function processResult(displayElement, expression) {
             expression = expression.concat(')'.repeat(openingCount));
             
             // Log the sanitized expression for debugging
-            console.log('Expression:', expression);
+            // console.log('Expression:', expression);
 
             // Evaluate the current expression and store the result
             const computedResult = parseFloat(evaluateExpression(expression), 10);
     
             // Log the raw result for debugging
-            console.log('Computed Result:', computedResult);
+            // console.log('Computed Result:', computedResult);
             
             // Switch to scientific notation if result exceeds digit limit         
             if (computedResult.toString().length > calculator.digitLimit) {
@@ -638,6 +644,9 @@ function updateDisplay(key) {
                 // Reset depth counts
                 depthTracker.openingCount = depthTracker.closingCount = depthTracker.highestDepth = 0;
 
+                // Clear console
+                console.clear();
+
                 // Log depth details for debugging
                 console.log('Opening Count:', depthTracker.openingCount);
                 console.log('Closing Count:', depthTracker.closingCount);
@@ -649,7 +658,6 @@ function updateDisplay(key) {
                     // Clear operator queue
                     calculator.operatorQueue = [];
                 }
-
             }
 
             // Otherwise, on delete press
@@ -664,12 +672,22 @@ function updateDisplay(key) {
                     const lastCharacter = displayText.at(-1);
 
                     // Check if the last character is an operator
-                    if (/[+−÷×]/.test(lastCharacter)) {
+                    if (/[+−÷×^E]/.test(lastCharacter)) {
                         // Get the index of the last matching operator in the queue    
                         const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, lastCharacter);
 
+                        // Log queue before dequeueing operator
+                        console.log('Queue (Before):');
+                        // Log current queue state of operators
+                        console.table(calculator.operatorQueue);
+
                         // Dequeue the last matching operator
                         calculator.operatorQueue.splice(operatorIndex, 1);
+
+                        // Log queue after dequeueing operator
+                        console.log('Queue (After):');
+                        // Log current queue state of operators
+                        console.table(calculator.operatorQueue);
                     }
 
                     // Increment opening count when deleting a closing parenthesis
@@ -736,9 +754,6 @@ function updateDisplay(key) {
                     if (expressionDisplay.value !== '0') {                         
                         // Compute new result and update display
                         processResult(resultDisplay, updatedExpression);
-                        
-                        // Log current queue state of operators
-                        console.table(calculator.operatorQueue);
                         
                         // Check if current value exists
                         if (calculator.currentOperand.length !== 0) {
