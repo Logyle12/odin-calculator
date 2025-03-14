@@ -344,7 +344,7 @@ function findNextOperation(operatorRegex, expression) {
 // Callback that locates operator in queue by matching rank and symbol
 function findOperatorIndex(operatorEntry) {
     // Destructure operator data
-    const [keyId, keyAction, operatorRank] = operatorEntry;
+    const [keyId, keySymbol, operatorRank] = operatorEntry;
     
     // Get operator's intrinsic precedence
     const baseRank = calculator.operators[keyId].rank;
@@ -356,18 +356,18 @@ function findOperatorIndex(operatorEntry) {
     const depthLevel = calculator.depthTracker.openingCount;
     
     // Calculate effective rank based on nesting
-    const currentRank = baseRank + (2 * depthLevel);
+    const currentRank = baseRank + (3 * depthLevel);
  
     // For nested expressions
     if (depthLevel > 0) {
         // Match if both rank and symbol match at current nesting level
-        if (operatorRank === currentRank && operatorSymbol === keyAction) {
+        if (operatorRank === currentRank && operatorSymbol === keySymbol) {
             return true;
         }  
     }
     
     // For top-level expressions
-    else if (operatorRank === baseRank && operatorSymbol === keyAction) {
+    else if (operatorRank === baseRank && operatorSymbol === keySymbol) {
         return true;
     }
 }
@@ -386,13 +386,13 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
-    console.log('Sub Expression:', subExpression);
+    // console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    console.log('Matched Segment:', matchedSegment);
+    // console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    console.log('Operands:', operands);
+    // console.log('Operands:', operands);
 
     // Log the operator ID
     // console.log('Operator Id:', operatorId);
@@ -414,14 +414,14 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const simplifiedExpression = originalExpression.replace(matchedSegment, simplifiedSegment).replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
     // Log the result of the operation
-    console.log('Simplified Result:', simplifiedResult);
+    // console.log('Simplified Result:', simplifiedResult);
 
     // Log the simplified segment
-    console.log('Simplified Segment:', simplifiedSegment);
+    // console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
-    console.log('Simplified Expression:', simplifiedExpression);
-    console.log('\n');
+    // console.log('Simplified Expression:', simplifiedExpression);
+    // console.log('\n');
 
     // Return the simplified expression
     return simplifiedExpression;
@@ -452,7 +452,7 @@ function evaluateExpression(expression) {
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
-            console.log('Normalized Expression', normalizedExpression);
+            // console.log('Normalized Expression', normalizedExpression);
 
             // Update with normalized version
             expression = normalizedExpression;
@@ -468,14 +468,14 @@ function evaluateExpression(expression) {
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
-        console.log('Regex:', regex);
+        // console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
         
         // Log matched expressions for debugging
-        console.log('Operator Matches:');
-        console.table(operatorMatches);
+        // console.log('Operator Matches:');
+        // console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
