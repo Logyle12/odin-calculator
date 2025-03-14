@@ -785,7 +785,7 @@ function updateDisplay(key) {
                 const operatorRank = calculateOperatorRank(depthTracker, baseRank);
 
                 // Enable negative number entry 
-                if (/[÷×]|\(|0/.test(previousOperator) && keyId === 'key-subtract') {
+                if (/[÷×^E]|\(|0/.test(previousOperator) && keyId === 'key-subtract') {
                     // If display shows only a zero
                     if (expressionDisplay.value == '0') {
                         // Replace '0' with negative sign
