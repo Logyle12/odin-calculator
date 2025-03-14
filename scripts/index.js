@@ -742,7 +742,7 @@ function updateDisplay(key) {
 
                     // Update display text; reset to '0' if expression is empty  
                     displayText = expressionDisplay.value = 
-                        updatedExpression.length > 1 ? updatedExpression : '0';
+                        updatedExpression.length >= 1 ? updatedExpression : '0';
 
                     // Set current operand to last number in display  
                     calculator.currentOperand = setCurrentOperand(displayText);
