@@ -230,7 +230,7 @@ function setCurrentOperand(displayText) {
     displayText = displayText.replaceAll(/\s/g, '');
 
     // Proceed only if the display ends with a valid operand  
-    if (/[^+−÷×(]$/g.test(displayText)) {
+    if (/\d+$/g.test(displayText)) {
         // Extract all numbers from display text
         const operands = displayText.replaceAll(',', '').match(/(\-?\d+\.?\d*)/g);
     
