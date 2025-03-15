@@ -125,6 +125,8 @@ function add(operands) {
     const sum = operands.reduce(
         (sum, number) => sum + number,
     );
+
+    // Return the computed sum
     return sum;
 }
 
@@ -134,6 +136,8 @@ function subtract(operands) {
     const difference = operands.reduce(
         (difference, number) => difference - number,
     );
+
+    // Return the computed difference
     return difference; 
 }
 
@@ -143,6 +147,8 @@ function multiply(operands) {
     const product = operands.reduce(
         (product, number) => product * number,
     );
+
+    // Return the computed product
     return product; 
 }
 
@@ -152,6 +158,8 @@ function divide(operands) {
     const quotient = operands.reduce(
         (quotient, number) => quotient / number,
     );
+
+    // Return the computed quotient
     return quotient; 
 }
 
@@ -532,6 +540,9 @@ function processResult(displayElement, expression) {
 
             // Convert computed result to string format 
             const resultString = computedResult.toString();
+
+            console.log('Check Queue:');
+            console.table(calculator.operatorQueue);
             
             // Switch to scientific notation if result exceeds digit limit         
             if (resultString.length > calculator.digitLimit || resultString.includes('e')) {
@@ -539,13 +550,25 @@ function processResult(displayElement, expression) {
                 displayElement.value = String(computedResult.toExponential(8)).toLocaleUpperCase();
             }   
 
-            // Use comma separated notation if within digit limit
-            else {
-                // Display the result using locale separators and display to current precision
-                displayElement.value = computedResult.toLocaleString('en-GB', {
-                    maximumFractionDigits: calculator.digitLimit
-                });
-            }
+            // Format if within digit limit  
+            else {  
+                // Ensure result is a valid number  
+                if (!isNaN(computedResult) ) {  
+                    // Check if result is a finite number (not ±Infinity)
+                    if (isFinite(computedResult)) {
+                        // Display result with locale separators, respecting precision  
+                        displayElement.value = computedResult.toLocaleString('en-GB', {  
+                            maximumFractionDigits: calculator.digitLimit  
+                        });  
+                    }
+
+                    // Handle ±Infinity separately  
+                    else {  
+                        // Display infinity without formatting
+                        displayElement.value = computedResult;  
+                    }  
+                } 
+            }  
         }
     }
 
