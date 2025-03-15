@@ -386,13 +386,13 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     const operands = operandStrings.map(processOperands);
 
     // Log the sub-expression
-    // console.log('Sub Expression:', subExpression);
+    console.log('Sub Expression:', subExpression);
 
     // Log the matched segment
-    // console.log('Matched Segment:', matchedSegment);
+    console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    // console.log('Operands:', operands);
+    console.log('Operands:', operands);
 
     // Log the operator ID
     // console.log('Operator Id:', operatorId);
@@ -402,13 +402,18 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
         ? calculator.operators  
         : calculator.mathFunctions;
 
-    // Apply operation and round to current precision level
+    // Apply respective operation
     const simplifiedResult = parseFloat(
-        operationHandler[operatorId].operation(operands).toFixed(calculator.digitLimit)
+        operationHandler[operatorId].operation(operands)
     );
 
+    // Keep scientific notation or fix decimal precision as needed
+    const formattedResult = simplifiedResult.toString().includes('e') 
+        ? simplifiedResult 
+        : simplifiedResult.toFixed(calculator.digitLimit);
+
     // Substitute calculated value within the matched context
-    const simplifiedSegment = matchedSegment.replace(subExpression, simplifiedResult);
+    const simplifiedSegment = matchedSegment.replace(subExpression, formattedResult);
 
     // Add the simplified portion back into the full expression
     const simplifiedExpression = originalExpression
@@ -416,14 +421,14 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
         .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
     // Log the result of the operation
-    // console.log('Simplified Result:', simplifiedResult);
+    console.log('Simplified Result:', simplifiedResult);
 
     // Log the simplified segment
-    // console.log('Simplified Segment:', simplifiedSegment);
+    console.log('Simplified Segment:', simplifiedSegment);
 
     // Log the updated expression
-    // console.log('Simplified Expression:', simplifiedExpression);
-    // console.log('\n');
+    console.log('Simplified Expression:', simplifiedExpression);
+    console.log('\n');
 
     // Return the simplified expression
     return simplifiedExpression;
@@ -454,7 +459,7 @@ function evaluateExpression(expression) {
                                             .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
 
             // Log simplified expression for debugging
-            // console.log('Normalized Expression', normalizedExpression);
+            console.log('Normalized Expression', normalizedExpression);
 
             // Update with normalized version
             expression = normalizedExpression;
@@ -470,14 +475,14 @@ function evaluateExpression(expression) {
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern);
-        // console.log('Regex:', regex);
+        console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
         
         // Log matched expressions for debugging
-        // console.log('Operator Matches:');
-        // console.table(operatorMatches);
+        console.log('Operator Matches:');
+        console.table(operatorMatches);
 
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
@@ -523,13 +528,16 @@ function processResult(displayElement, expression) {
             const computedResult = parseFloat(evaluateExpression(expression), 10);
     
             // Log the raw result for debugging
-            // console.log('Computed Result:', computedResult);
+            console.log('Computed Result:', computedResult);
+
+            // Convert computed result to string format 
+            const resultString = computedResult.toString();
             
             // Switch to scientific notation if result exceeds digit limit         
-            if (computedResult.toString().length > calculator.digitLimit) {
+            if (resultString.length > calculator.digitLimit || resultString.includes('e')) {
                 // Format result display as exponential notation
-                displayElement.value = computedResult.toExponential();
-            }
+                displayElement.value = String(computedResult.toExponential(8)).toLocaleUpperCase();
+            }   
 
             // Use comma separated notation if within digit limit
             else {
