@@ -507,6 +507,14 @@ function processResult(displayElement, expression) {
     // Sanitize the expression
     expression = expression.replace(/\s|\,/g, '');
 
+    // Check for division by zero in expression and abort if found
+    if (/÷0/g.test(expression)) {
+        // Show human-readable error message
+        displayElement.value = "Error: Division by Zero";
+        // Prevent further calculation attempts
+        return;
+    }
+
     // Check if expression contains scientific notation (e.g., 1.23e+4)
     if (/\d+\.\d+\e[+-]\d+/gi.test(expression)) {
         // Extract and convert notation strings to numbers
@@ -1002,8 +1010,8 @@ function updateDisplay(key) {
 
             // On equals press
             else { 
-                // Process expression only if a result is displayed
-                if (resultDisplay.value.length > 0) {
+                // Process expression only if results exist and no division by zero errors
+                if (resultDisplay.value.length > 0 && /÷0/g.test(displayText) === false) {
                     // Get the current expression from the display
                     const finalExpression = expressionDisplay.value;
     
