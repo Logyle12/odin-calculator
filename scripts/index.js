@@ -546,74 +546,95 @@ function processResult(displayElement, expression) {
         return;
     }
 
-    // Check if expression contains scientific notation (e.g., 1.23e+4)
-    if (/\d+\.\d+\e[+-]\d+/gi.test(expression)) {
-        // Extract and convert notation strings to numbers
-        const exponentialValues = expression.match(/\d+\.\d+\e[+-]\d+/gi).map(Number);
-
-        // Replace each notation instance with its numeric value
-        for (const exponentialValue of exponentialValues) {
-            // Substitute throughout the expression
-            expression = expression.replace(/\d+\.\d+\e[+-]\d+/gi, exponentialValue);
-        }
-    }
-
-    // Proceed only if there's a valid current operand  
-    if (calculator.currentOperand.length !== 0) {
-        // Check for a complete expression with a valid ending  
-        if (/^(?:.+)(?:\d+|\)|\%)$/g.test(expressionDisplay.value)) {
-            // Get count of unclosed parentheses
-            const openingCount = calculator.depthTracker.openingCount;
-
-            // Auto-close unclosed parentheses
-            expression = expression.concat(')'.repeat(openingCount));
-            
-            // Log the sanitized expression for debugging
-            // console.log('Expression:', expression);
-
-            // Evaluate the current expression and store the result
-            const computedResult = parseFloat(evaluateExpression(expression), 10);
-    
-            // Log the raw result for debugging
-            console.log('Computed Result:', computedResult);
-
-            // Convert computed result to string format 
-            const resultString = computedResult.toString();
-
-            console.log('Check Queue:');
-            console.table(calculator.operatorQueue);
-            
-            // Switch to scientific notation if result exceeds digit limit         
-            if (resultString.length > calculator.digitLimit || resultString.includes('e')) {
-                // Format result display as exponential notation
-                displayElement.value = String(computedResult.toExponential(8)).toLocaleUpperCase();
-            }   
-
-            // Format if within digit limit  
-            else {  
-                // Ensure result is a valid number  
-                if (!isNaN(computedResult) ) {  
-                    // Check if result is a finite number (not ±Infinity)
-                    if (isFinite(computedResult)) {
-                        // Display result with locale separators, respecting precision  
-                        displayElement.value = computedResult.toLocaleString('en-GB', {  
-                            maximumFractionDigits: calculator.digitLimit  
-                        });  
-                    }
-
-                    // Handle ±Infinity separately  
-                    else {  
-                        // Display infinity without formatting
-                        displayElement.value = computedResult;  
-                    }  
-                } 
-            }  
-        }
-    }
-
-    // Clear the results display if the expression is incomplete  
+    // If no errors, process expression
     else {
-        resultDisplay.value = '';
+        // Check if expression display has error styling
+        if (expressionDisplay.classList.contains('error-state')) {
+            // Remove error state styling from expression display
+            expressionDisplay.classList.remove('error-state');
+        }
+
+        // Check if result display has error styling
+        if (resultDisplay.classList.contains('error-state')) {
+            // Remove error state styling from result display
+            resultDisplay.classList.remove('error-state');
+        }
+
+        // Remove error styling from expression display
+        expressionDisplay.classList.remove('error-state');
+
+        // Remove error styling from result display
+        resultDisplay.classList.remove('error-state');
+
+        // Check if expression contains scientific notation (e.g., 1.23e+4)
+        if (/\d+\.\d+\e[+-]\d+/gi.test(expression)) {
+            // Extract and convert notation strings to numbers
+            const exponentialValues = expression.match(/\d+\.\d+\e[+-]\d+/gi).map(Number);
+    
+            // Replace each notation instance with its numeric value
+            for (const exponentialValue of exponentialValues) {
+                // Substitute throughout the expression
+                expression = expression.replace(/\d+\.\d+\e[+-]\d+/gi, exponentialValue);
+            }
+        }
+    
+        // Proceed only if there's a valid current operand  
+        if (calculator.currentOperand.length !== 0) {
+            // Check for a complete expression with a valid ending  
+            if (/^(?:.+)(?:\d+|\)|\%)$/g.test(expressionDisplay.value)) {
+                // Get count of unclosed parentheses
+                const openingCount = calculator.depthTracker.openingCount;
+    
+                // Auto-close unclosed parentheses
+                expression = expression.concat(')'.repeat(openingCount));
+                
+                // Log the sanitized expression for debugging
+                // console.log('Expression:', expression);
+    
+                // Evaluate the current expression and store the result
+                const computedResult = parseFloat(evaluateExpression(expression), 10);
+        
+                // Log the raw result for debugging
+                console.log('Computed Result:', computedResult);
+    
+                // Convert computed result to string format 
+                const resultString = computedResult.toString();
+    
+                console.log('Check Queue:');
+                console.table(calculator.operatorQueue);
+                
+                // Switch to scientific notation if result exceeds digit limit         
+                if (resultString.length > calculator.digitLimit || resultString.includes('e')) {
+                    // Format result display as exponential notation
+                    displayElement.value = String(computedResult.toExponential(8)).toLocaleUpperCase();
+                }   
+    
+                // Format if within digit limit  
+                else {  
+                    // Ensure result is a valid number  
+                    if (!isNaN(computedResult) ) {  
+                        // Check if result is a finite number (not ±Infinity)
+                        if (isFinite(computedResult)) {
+                            // Display result with locale separators, respecting precision  
+                            displayElement.value = computedResult.toLocaleString('en-GB', {  
+                                maximumFractionDigits: calculator.digitLimit  
+                            });  
+                        }
+    
+                        // Handle ±Infinity separately  
+                        else {  
+                            // Display infinity without formatting
+                            displayElement.value = computedResult;  
+                        }  
+                    } 
+                }  
+            }
+        }
+    
+        // Clear the results display if the expression is incomplete  
+        else {
+            resultDisplay.value = '';
+        }
     }
 
 }
