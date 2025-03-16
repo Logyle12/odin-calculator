@@ -318,6 +318,36 @@ function formatNumberDisplay() {
     }
 }
 
+// Function to create a shake animation effect on a DOM element
+function shakeDisplay(displayElement) {
+    // Define sequence of positions for the shake animation
+    const shakePositions = [
+        {left: '-12px'}, {left: '12px'}, 
+        {left: '-8px'}, {left: '8px'}, 
+        {left: '-4px'}, {left: '4px'},
+        {left: '-2px'}, {left: '2px'}, 
+        {left: '0px'}
+    ];
+    
+    // Loop through each position in the sequence
+    for (let i = 0; i < shakePositions.length; i++) {
+        // Get the current position value
+        const position = shakePositions[i].left;
+        
+        // Calculate delay with increasing time between movements
+        const delay = 100 + (i * 25);
+        
+        // Set element position after calculated delay
+        const timer = setTimeout(() => {
+            // Apply the position to the element's style
+            displayElement.style.left = position;
+            
+            // Clean up the timer to prevent memory leaks
+            clearTimeout(timer);
+        }, delay);
+    }
+}
+
 // Extracts the next operation to be evaluated based on "PEMDAS" order
 function findNextOperation(operatorRegex, expression) {
     // Will store our target operation once we find it
@@ -511,6 +541,7 @@ function processResult(displayElement, expression) {
     if (/÷0/g.test(expression)) {
         // Show human-readable error message
         displayElement.value = "Error: Division by Zero";
+
         // Prevent further calculation attempts
         return;
     }
@@ -1030,6 +1061,14 @@ function updateDisplay(key) {
                     // Reset operator queue after final calculation
                     calculator.operatorQueue = [];
                 } 
+
+                else {
+                    // Animate the expression display with a shaking effect
+                    shakeDisplay(expressionDisplay);
+
+                    // Animate the result display with a shaking effect
+                    shakeDisplay(resultDisplay);
+                }
             }
 
             // console.table(calculator.operatorQueue);
