@@ -1063,6 +1063,12 @@ function updateDisplay(key) {
                 } 
 
                 else {
+                    // Apply error styling to the expression display
+                    expressionDisplay.classList.add('error-state');
+
+                    // Apply error styling to the result display
+                    resultDisplay.classList.add('error-state');
+
                     // Animate the expression display with a shaking effect
                     shakeDisplay(expressionDisplay);
 
