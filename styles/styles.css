@@ -73,6 +73,10 @@
     height: 40%;
 }
 
+.error-state {
+    color:rgba(254, 85, 79, 0.886);
+}
+
 #expression-display, #result-display {
     position: relative;
 }
