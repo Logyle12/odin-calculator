@@ -73,6 +73,10 @@
     height: 40%;
 }
 
+#expression-display, #result-display {
+    position: relative;
+}
+
 #expression-display, #expression-display:focus, #result-display, #transition-result {
     border: none;
     outline: none;
