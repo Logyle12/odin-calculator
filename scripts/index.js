@@ -868,8 +868,13 @@ function updateDisplay(key) {
                 // Compute rank according to nesting depth
                 const operatorRank = calculateOperatorRank(depthTracker, baseRank);
 
+                // Check if calculator can begin a negative number entry in current context
+                const canStartNegative = 
+                    /[÷×^E]|\(/.test(previousOperator) || 
+                    calculator.currentOperand === '0';
+
                 // Enable negative number entry 
-                if (/[÷×^E]|\(|0/.test(previousOperator) && keyId === 'key-subtract') {
+                if ((canStartNegative) && keyId === 'key-subtract') {
                     // If display shows only a zero
                     if (expressionDisplay.value == '0') {
                         // Replace '0' with negative sign
