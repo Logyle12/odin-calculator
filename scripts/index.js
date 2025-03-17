@@ -875,13 +875,10 @@ function updateDisplay(key) {
 
                 // Enable negative number entry 
                 if ((canStartNegative) && keyId === 'key-subtract') {
-                    // If display shows only a zero
-                    if (expressionDisplay.value == '0') {
+                    // If display shows only a zero 
+                    if (expressionDisplay.value === '0') {
                         // Replace '0' with negative sign
                         expressionDisplay.value = '\u002D';
-
-                        // Reset current operand
-                        calculator.currentOperand = '';
                     }
 
                     // Otherwise append to existing expression
@@ -889,6 +886,9 @@ function updateDisplay(key) {
                         // Append negative sign to expression display
                         expressionDisplay.value += '\u002D';
                     }
+
+                    // Reset current operand
+                    calculator.currentOperand = '';
 
                     // Update current operand with negative sign
                     calculator.currentOperand += '\u002D';
