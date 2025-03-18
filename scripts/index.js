@@ -725,6 +725,9 @@ function updateDisplay(key) {
         case 'key-control':
             // Check for 'key-AC' press
             if (keyId === 'key-AC') {
+                // Clear error styling from all display elements
+                clearErrorState();
+
                 // Reset expression display and current operand to zero
                 expressionDisplay.value = calculator.currentOperand = '0';
 
