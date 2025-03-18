@@ -1110,40 +1110,44 @@ function updateDisplay(key) {
                 // Check expression for mathematical errors
                 const validationResult = validateExpression(finalExpression);
 
-                // Process expression only if valid results exist (non-empty and numeric)
-                if (validationResult.isValid && !isNaN(resultDisplay.value)) {
-                    // Compute new result and update display
-                    processResult(expressionDisplay, finalExpression);
+                // Process only if there's an equation to evaluate
+                if (finalExpression !== calculator.currentOperand) {
+                    // Process expression only if valid results exist (non-empty and numeric)
+                    if (validationResult.isValid && !isNaN(resultDisplay.value) && resultDisplay.value.length > 0) {
+                        // Compute new result and update display
+                        processResult(expressionDisplay, finalExpression);
+        
+                        // Update the current operand to the computed result
+                        calculator.currentOperand = resultDisplay.value;
+        
+                        // Hide the expression input field
+                        expressionDisplay.style['display'] = 'none';
+        
+                        // Apply transition animations
+                        resultDisplay.id = 'transition-result';
+        
+                        // Reset operator queue after final calculation
+                        calculator.operatorQueue = [];
+                    } 
     
-                    // Update the current operand to the computed result
-                    calculator.currentOperand = resultDisplay.value;
+                    
+                    // Handle invalid expressions or calculation errors
+                    else {
+                        // Display error message when validation fails
+                        resultDisplay.value = validationResult.errorMessage;
     
-                    // Hide the expression input field
-                    expressionDisplay.style['display'] = 'none';
+                        // Apply error styling to the expression display
+                        expressionDisplay.classList.add('error-state');
     
-                    // Apply transition animations
-                    resultDisplay.id = 'transition-result';
+                        // Apply error styling to the result display
+                        resultDisplay.classList.add('error-state');
     
-                    // Reset operator queue after final calculation
-                    calculator.operatorQueue = [];
-                } 
-
-                // Handle invalid expressions or calculation errors
-                else {
-                    // Display error message when validation fails
-                    resultDisplay.value = validationResult.errorMessage;
-
-                    // Apply error styling to the expression display
-                    expressionDisplay.classList.add('error-state');
-
-                    // Apply error styling to the result display
-                    resultDisplay.classList.add('error-state');
-
-                    // Animate the expression display with a shaking effect
-                    shakeDisplay(expressionDisplay);
-
-                    // Animate the result display with a shaking effect
-                    shakeDisplay(resultDisplay);
+                        // Animate the expression display with a shaking effect
+                        shakeDisplay(expressionDisplay);
+    
+                        // Animate the result display with a shaking effect
+                        shakeDisplay(resultDisplay);
+                    }
                 }
             }
 
