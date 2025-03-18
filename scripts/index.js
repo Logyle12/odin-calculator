@@ -318,6 +318,47 @@ function formatNumberDisplay() {
     }
 }
 
+// Centralized function for validating expressions and handling errors
+function validateExpression(expression) {
+    // Remove whitespace and commas for validation
+    const sanitizedExpression = expression.replace(/\s|\,/g, '');
+
+    console.log('Sanitized Expression:', sanitizedExpression)
+    
+    // Store error messages
+    let errorMessage = '';
+    
+    // Check for division by zero in expression
+    if (/÷0(?!\.)/g.test(sanitizedExpression)) {
+        // Human-readable error for division by zero
+        errorMessage = "Error: Division by Zero";
+    } 
+
+    // Check for logarithm of zero or negative number
+    else if (/(?:log|ln)\((?:0(?!\.)|-)/g.test(sanitizedExpression)) {
+        // More concise error for invalid logarithm input
+        errorMessage = "Error: Invalid log Input";
+    }
+
+    // Check for square root of negative number
+    else if (/√\(\-/g.test(sanitizedExpression)) {
+        // Human-readable error for invalid square root input
+        errorMessage = "Error: Negative Square Root";
+    }
+
+    // Check for other calculation errors
+    else if (/[+−÷×^]$|\((?!.+)|(?:(?<![+−÷×^\d\.]|(?:log|ln)\()\d+)$/g.test(sanitizedExpression)){
+        // Generic error message for other mathematical errors
+        errorMessage = "Error: Well... This is Awkward";
+    }
+    
+    // Return validation result
+    return {
+        isValid: errorMessage === '',
+        errorMessage: errorMessage
+    };
+}
+
 // Reset error styling on all display elements
 function clearErrorState() {
     // Check if expression display has error styling
@@ -330,6 +371,9 @@ function clearErrorState() {
     if (resultDisplay.classList.contains('error-state')) {
         // Remove error state styling from result display
         resultDisplay.classList.remove('error-state');
+
+        // Clear result display to refresh for the next entry
+        resultDisplay.value = '';
     }
 }
 
@@ -552,26 +596,14 @@ function processResult(displayElement, expression) {
     // Sanitize the expression
     expression = expression.replace(/\s|\,/g, '');
 
-    // Check for division by zero in expression and abort if found
-    if (/÷0/g.test(expression)) {
-        // Show human-readable error message
-        displayElement.value = "Error: Division by Zero";
+    // Check expression for mathematical errors
+    const validationResult = validateExpression(expression);
 
-        // Prevent further calculation attempts
-        return;
-    }
+    console.log('Validation Result:');
+    console.table(validationResult);
 
-    // If no errors, process expression
-    else {
-        // Clear error styling from all display elements
-        clearErrorState();
-
-        // Remove error styling from expression display
-        expressionDisplay.classList.remove('error-state');
-
-        // Remove error styling from result display
-        resultDisplay.classList.remove('error-state');
-
+    // Process expression only if valid results exist (non-empty and numeric)
+    if (validationResult.isValid) {    
         // Check if expression contains scientific notation (e.g., 1.23e+4)
         if (/\d+\.\d+\e[+-]\d+/gi.test(expression)) {
             // Extract and convert notation strings to numbers
@@ -605,9 +637,6 @@ function processResult(displayElement, expression) {
     
                 // Convert computed result to string format 
                 const resultString = computedResult.toString();
-    
-                console.log('Check Queue:');
-                console.table(calculator.operatorQueue);
                 
                 // Switch to scientific notation if result exceeds digit limit         
                 if (resultString.length > calculator.digitLimit || resultString.includes('e')) {
@@ -636,17 +665,19 @@ function processResult(displayElement, expression) {
                 }  
             }
         }
-    
-        // Clear the results display if the expression is incomplete  
-        else {
-            resultDisplay.value = '';
-        }
     }
 
+    // Clear the results display if the expression is incomplete  
+    else {
+        displayElement.value = '';
+    }
 }
 
 // Update display with pressed key
 function updateDisplay(key) {
+    // Clear error styling from all display elements
+    clearErrorState();
+
     // Get key action
     const keyAction = key.firstElementChild.textContent;
 
@@ -725,9 +756,6 @@ function updateDisplay(key) {
         case 'key-control':
             // Check for 'key-AC' press
             if (keyId === 'key-AC') {
-                // Clear error styling from all display elements
-                clearErrorState();
-
                 // Reset expression display and current operand to zero
                 expressionDisplay.value = calculator.currentOperand = '0';
 
@@ -1076,11 +1104,14 @@ function updateDisplay(key) {
 
             // On equals press
             else { 
+                // Get the current expression from the display
+                const finalExpression = expressionDisplay.value;
+
+                // Check expression for mathematical errors
+                const validationResult = validateExpression(finalExpression);
+
                 // Process expression only if valid results exist (non-empty and numeric)
-                if (resultDisplay.value.length > 0 && isNaN(resultDisplay.value) === false) {
-                    // Get the current expression from the display
-                    const finalExpression = expressionDisplay.value;
-    
+                if (validationResult.isValid && !isNaN(resultDisplay.value)) {
                     // Compute new result and update display
                     processResult(expressionDisplay, finalExpression);
     
@@ -1099,17 +1130,14 @@ function updateDisplay(key) {
 
                 // Handle invalid expressions or calculation errors
                 else {
+                    // Display error message when validation fails
+                    resultDisplay.value = validationResult.errorMessage;
+
                     // Apply error styling to the expression display
                     expressionDisplay.classList.add('error-state');
 
                     // Apply error styling to the result display
                     resultDisplay.classList.add('error-state');
-
-                    // Handle invalid or undefined mathematical operations
-                    if (/÷0/g.test(displayText) === false) {
-                        // Display human-readable error for invalid math operations
-                        resultDisplay.value = 'Error: Well... This is Awkward';
-                    }
 
                     // Animate the expression display with a shaking effect
                     shakeDisplay(expressionDisplay);
