@@ -318,6 +318,21 @@ function formatNumberDisplay() {
     }
 }
 
+// Reset error styling on all display elements
+function clearErrorState() {
+    // Check if expression display has error styling
+    if (expressionDisplay.classList.contains('error-state')) {
+        // Remove error state styling from expression display
+        expressionDisplay.classList.remove('error-state');
+    }
+ 
+    // Check if result display has error styling
+    if (resultDisplay.classList.contains('error-state')) {
+        // Remove error state styling from result display
+        resultDisplay.classList.remove('error-state');
+    }
+}
+
 // Function to create a shake animation effect on a DOM element
 function shakeDisplay(displayElement) {
     // Define sequence of positions for the shake animation
@@ -548,17 +563,8 @@ function processResult(displayElement, expression) {
 
     // If no errors, process expression
     else {
-        // Check if expression display has error styling
-        if (expressionDisplay.classList.contains('error-state')) {
-            // Remove error state styling from expression display
-            expressionDisplay.classList.remove('error-state');
-        }
-
-        // Check if result display has error styling
-        if (resultDisplay.classList.contains('error-state')) {
-            // Remove error state styling from result display
-            resultDisplay.classList.remove('error-state');
-        }
+        // Clear error styling from all display elements
+        clearErrorState();
 
         // Remove error styling from expression display
         expressionDisplay.classList.remove('error-state');
@@ -1067,8 +1073,8 @@ function updateDisplay(key) {
 
             // On equals press
             else { 
-                // Process expression only if results exist and no division by zero errors
-                if (resultDisplay.value.length > 0 && /÷0/g.test(displayText) === false) {
+                // Process expression only if valid results exist (non-empty and numeric)
+                if (resultDisplay.value.length > 0 && isNaN(resultDisplay.value) === false) {
                     // Get the current expression from the display
                     const finalExpression = expressionDisplay.value;
     
@@ -1088,12 +1094,19 @@ function updateDisplay(key) {
                     calculator.operatorQueue = [];
                 } 
 
+                // Handle invalid expressions or calculation errors
                 else {
                     // Apply error styling to the expression display
                     expressionDisplay.classList.add('error-state');
 
                     // Apply error styling to the result display
                     resultDisplay.classList.add('error-state');
+
+                    // Handle invalid or undefined mathematical operations
+                    if (/÷0/g.test(displayText) === false) {
+                        // Display human-readable error for invalid math operations
+                        resultDisplay.value = 'Error: Well... This is Awkward';
+                    }
 
                     // Animate the expression display with a shaking effect
                     shakeDisplay(expressionDisplay);
