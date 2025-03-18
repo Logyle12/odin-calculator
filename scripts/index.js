@@ -347,7 +347,7 @@ function validateExpression(expression) {
     }
 
     // Check for other calculation errors
-    else if (/[+−÷×^]$|\((?!.+)|(?:(?<![+−÷×^\d\.]|(?:log|ln)\()\d+)$/g.test(sanitizedExpression)){
+    else if (/[+−÷×^]$|\((?!.+)|(?:(?<![+−÷×^\d\.]|(?:log|ln|√)\()\d+)$/g.test(sanitizedExpression)){
         // Generic error message for other mathematical errors
         errorMessage = "Error: Well... This is Awkward";
     }
