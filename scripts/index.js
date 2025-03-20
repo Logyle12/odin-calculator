@@ -760,10 +760,13 @@ function updateDisplay(key) {
                 calculator.currentOperand = keyAction;
             }
 
-            // Otherwise append digit if under limit
+            // Otherwise append digit
             else {
-                if (calculator.currentOperand.length < calculator.digitLimit) {
+                // Count digits after decimal point or total digits if integer
+                const digitCount = calculator.currentOperand.replace(/\d+\./g, '').length;
 
+                // Only append digit if under configured limit
+                if (digitCount < calculator.digitLimit) {
                     // Check if the last character is a closing parenthesis
                     if (displayText.at(-1) === '\u0029') {
                         // Append the padded multiplication operator
