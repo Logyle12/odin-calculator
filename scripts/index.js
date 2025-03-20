@@ -318,6 +318,17 @@ function formatNumberDisplay() {
     }
 }
 
+// Ensure operators are evenly spaced for alignment
+function formatOperator(keySymbol) {
+    // Pad only non-exponential operators for consistent width  
+    const operator = /[+−÷×]/.test(keySymbol) 
+        ? keySymbol.padStart(2).padEnd(3) 
+        : keySymbol;
+
+    // Return formatted operator  
+    return operator;
+}
+
 // Centralized function for validating expressions and handling errors
 function validateExpression(expression) {
     // Remove whitespace and commas for validation
@@ -963,16 +974,16 @@ function updateDisplay(key) {
                     console.table(calculator.operatorQueue);
 
                     // Regex to match and replace the previous operator
-                    const operatorRegex =
-                        keyId !== 'key-power' && keyId !== 'key-exponent'
-                            ? new RegExp(`(?<=\\s)\\${previousOperator}(?=\\s$)`)
-                            : new RegExp(`\\s\\${previousOperator}\\s$`);
+                    const operatorRegex = new RegExp(`\\s?\\${previousOperator}\\s?$`);
                             
                     // Retrieve operator symbol for pressed key
                     const keySymbol = calculator.operators[keyId].symbol;
-                
+
+                    // Get formatted operator  
+                    const operator = formatOperator(keySymbol);
+
                     // Replace the old operator with the new one in the display
-                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, keySymbol);
+                    const updatedExpression = expressionDisplay.value.replace(operatorRegex, operator);
                 
                     // Update operator queue and display
                     expressionDisplay.value = updatedExpression;
@@ -996,10 +1007,8 @@ function updateDisplay(key) {
                     // Retrieve operator symbol for pressed key
                     const keySymbol = calculator.operators[keyId].symbol;
 
-                    // Pad operator unless it's a power key
-                    const operator = keyId !== 'key-power' && keyId !== 'key-exponent' 
-                        ? keySymbol.padStart(2).padEnd(3) 
-                        : keySymbol;
+                    // Get formatted operator  
+                    const operator = formatOperator(keySymbol);
 
                     // Append operator to display
                     expressionDisplay.value += operator;
