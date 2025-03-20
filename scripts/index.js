@@ -312,9 +312,10 @@ function formatNumberDisplay() {
         calculator.digitLimit = 15;
     }
 
+    // Otherwise we have a decimal value
     else {
-        // Set digit limit: 10 for decimals (11 for dp)
-        calculator.digitLimit = 11;
+        // Set digit limit: 10 for decimals
+        calculator.digitLimit = 10;
     }
 }
 
