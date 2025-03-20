@@ -69,21 +69,21 @@ const calculator = {
     mathFunctions: {
         // Natural logarithm (base e)
         'key-natural-log': {
-            'rank': 3,
+            'rank': 4,
             'symbol': 'ln',
             'operation': naturalLog,
         },
         
         // Common logarithm (base 10)
         'key-log10': {
-            'rank': 3,
+            'rank': 4,
             'symbol': 'log',
             'operation': log10,
         },
         
         // Square root function (√x)
         'key-square-root': {
-            'rank': 3,
+            'rank': 4,
             'symbol': '√',
             'operation': squareRoot,
         },
@@ -226,7 +226,7 @@ function calculateOperatorRank(depthTracker, baseRank) {
     const depthLevel = depthTracker.openingCount;
 
     // Compute operator rank scaling by nesting level
-    const operatorRank = baseRank + (3 * depthLevel);
+    const operatorRank = baseRank + (4 * depthLevel);
 
     // Returns the adjusted precedence value
     return operatorRank;
@@ -1176,7 +1176,8 @@ function updateDisplay(key) {
                 }
             }
 
-            // console.table(calculator.operatorQueue);
+            console.log('Queue');
+            console.table(calculator.operatorQueue);
             break;
 
         case 'math-function':
