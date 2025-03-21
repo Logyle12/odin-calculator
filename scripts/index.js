@@ -288,24 +288,33 @@ function setCurrentOperand(displayText) {
 
 // Converts operand strings to numeric values with percentage handling
 function processOperands(numericString, currentIndex, operandStrings) {
+    // Get operator ID from function context
+    const operatorId = String(this);
+
     // For percentage values (e.g., "50%")
     if (/(\d+)\%/.test(numericString)) {
+        // Convert percentage to decimal value (50% → 0.5)
+        const percentValue = parseFloat(numericString)/100;
+
         // First operand: direct percentage conversion
         if (currentIndex === 0) {
-            // Convert percentage to decimal value (50% → 0.5)
-            const percentValue = parseFloat(numericString)/100;
-            
-            // Return simple decimal form for first operand
+            // Return simple decimal form for percentage
             return percentValue;
         }
         
         // Subsequent operands: percentage relative to first operand
         else {
-            // Calculate percentage relative to the first operand's value
-            const relativePercent = (parseFloat(numericString)/100) * parseFloat(operandStrings[0]);
+              // Apply percentage change based on the first operand  
+            if (operatorId === 'key-add' || operatorId === 'key-subtract') {
+                // Calculate percentage relative to the first operand's value
+                const relativePercent = (parseFloat(numericString)/100) * parseFloat(operandStrings[0]);
             
-            // Return calculated relative percentage value
-            return relativePercent;
+                // Return calculated relative percentage value
+                return relativePercent;
+            }
+
+            // Return simple decimal form for percentage
+            return percentValue;
         }
     }
     
@@ -511,7 +520,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // console.log('Operands Strings:', operandStrings);
 
     // Convert operand strings to numbers
-    const operands = operandStrings.map(processOperands);
+    const operands = operandStrings.map(processOperands, operatorId);
 
     // Log the sub-expression
     console.log('Sub Expression:', subExpression);
