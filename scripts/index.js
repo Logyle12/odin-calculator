@@ -559,8 +559,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
 
     // Add the simplified portion back into the full expression
     const simplifiedExpression = originalExpression
-        .replace(matchedSegment, simplifiedSegment)
-        .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
+        .replace(matchedSegment, simplifiedSegment);
 
     // Log the result of the operation
     console.log('Simplified Result:', simplifiedResult);
@@ -597,11 +596,17 @@ function evaluateExpression(expression) {
 
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
+        // Matches nested expressions enclosed in redundant parentheses
+        const nestedGroupRegex = /(?<=\()\((\d+(?=[+−÷×])[^()]+)(?:\)(?=\)))/g;
+
+        // Matches single numbers wrapped in parentheses
+        const singleNumberRegex = /\((\-?\d+\.?\d*)\)/g;
+
         // Simplify nested parentheses patterns
-        while (/(?<=\()\((\d+(?=[+−÷×])[^()]+)(?:\)(?=\)))/g.test(expression)||/\((\-?\d+\.?\d*)\)/g.test(expression)) {
+        while (nestedGroupRegex.test(expression) || singleNumberRegex.test(expression)) {
             // Unwrap redundant groups and single numbers in parentheses
-            const normalizedExpression = expression.replaceAll(/(?<=\()\((\d+(?=[+−÷×])[^()]+)(?:\)(?=\)))/g, '$1')
-                                            .replaceAll(/\((\-?\d+\.?\d*)\)/g, '$1');
+            const normalizedExpression = expression.replaceAll(nestedGroupRegex, '$1')
+                                            .replaceAll(singleNumberRegex, '$1');
 
             // Log simplified expression for debugging
             console.log('Normalized Expression', normalizedExpression);
@@ -632,8 +637,8 @@ function evaluateExpression(expression) {
         // Process the matched expressions
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
 
-        // Update the main expression
-        expression = simplifiedExpression;
+        // Update expression, unwrapping single-number parentheses if present  
+        expression = simplifiedExpression.replaceAll(singleNumberRegex);
     }
 
     return expression;
