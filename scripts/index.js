@@ -111,6 +111,15 @@ function getDigitLimit(valueString) {
     return digitLimit;
 }
 
+// Counts total digits for integers or decimal places for floats
+function getDigitCount(valueString) {
+    // Count digits after decimal point or total digits if integer
+    const digitCount = valueString.replace(/\d+\./g, '').length
+
+    // Return the computed digit count 
+    return digitCount;
+}
+
 // Operator functions
 
 // Returns the result of raising a number to a given power
@@ -529,10 +538,12 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Determine maximum digits allowed for the result
     const digitLimit = getDigitLimit(simplifiedResult);
 
+    console.log('Digit Limit:', digitLimit);
+
     // Keep scientific notation or fix decimal precision as needed
     const formattedResult = simplifiedResult.toString().includes('e') 
         ? simplifiedResult 
-        : simplifiedResult.toFixed(digitLimit);
+        : parseFloat(simplifiedResult.toFixed(digitLimit));
 
     // Substitute calculated value within the matched context
     const simplifiedSegment = matchedSegment.replace(subExpression, formattedResult);
@@ -544,6 +555,9 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
 
     // Log the result of the operation
     console.log('Simplified Result:', simplifiedResult);
+
+    // Log the formatted result
+    console.log('Formatted Result:', formattedResult);
 
     // Log the simplified segment
     console.log('Simplified Segment:', simplifiedSegment);
@@ -680,15 +694,18 @@ function formatResult(displayElement, result) {
     // Get appropriate precision for the result value
     const digitLimit = getDigitLimit(resultString);
 
+    // Retrieve digit count from result 
+    const digitCount = getDigitCount(resultString);
+
     // Log raw result before formatting
     console.log('Result String:', resultString);
     
     // Use scientific notation if result exceeds digit limit or already has an exponent
-    if (resultString.length > digitLimit || resultString.includes('e')) {
+    if (digitCount > digitLimit || resultString.includes('e')) {
         // Convert to scientific notation
         displayElement.value = result.toExponential(8).toLocaleUpperCase(); 
     }  
-     
+
     // Otherwise, format with localized number formatting
     else {
         // Format number with locale settings and digit limit
@@ -786,8 +803,8 @@ function updateDisplay(key) {
                 // Determine digit limit based on number format (integer or decimal)
                 const digitLimit = getDigitLimit(calculator.currentOperand);
 
-                // Count digits after decimal point or total digits if integer
-                const digitCount = calculator.currentOperand.replace(/\d+\./g, '').length;
+                // Retrieve digit count from current operand
+                const digitCount = getDigitCount(calculator.currentOperand);
 
                 // Only append digit if under configured limit
                 if (digitCount < digitLimit) {
