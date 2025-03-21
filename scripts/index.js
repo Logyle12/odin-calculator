@@ -11,7 +11,10 @@ const calculator = {
     currentOperand: expressionDisplay.value,
 
     // Track max digits allowed
-    digitLimit: 15,
+    digitLimits: {
+        'INTEGER': 15,
+        'DECIMAL': 10,
+    },
 
     // Track count of opening and closing parentheses
     depthTracker: {
@@ -92,6 +95,21 @@ const calculator = {
     // Store pending operations awaiting calculation
     operatorQueue: [],
 };
+
+// Determines the appropriate digit limit 
+function getDigitLimit(valueString) {
+    // Default to the integer digit limit for whole numbers
+    let digitLimit = calculator.digitLimits.INTEGER;
+ 
+    // Check if the operand contains a decimal point
+    if (/\./g.test(valueString)) {
+        // Use fractional digit limit
+        digitLimit = calculator.digitLimits.DECIMAL;
+    }
+    
+    // Return the digit limit 
+    return digitLimit;
+}
 
 // Operator functions
 
@@ -308,14 +326,6 @@ function formatNumberDisplay() {
         expressionDisplay.value = expressionDisplay.value.replace(/[\d,-]+$/g, unformattedNumber)
                                             .replace(unformattedNumber, formattedNumber);
 
-        // Set digit limit: 15 for integers
-        calculator.digitLimit = 15;
-    }
-
-    // Otherwise we have a decimal value
-    else {
-        // Set digit limit: 10 for decimals
-        calculator.digitLimit = 10;
     }
 }
 
@@ -516,10 +526,13 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
         operationHandler[operatorId].operation(operands)
     );
 
+    // Determine maximum digits allowed for the result
+    const digitLimit = getDigitLimit(simplifiedResult);
+
     // Keep scientific notation or fix decimal precision as needed
     const formattedResult = simplifiedResult.toString().includes('e') 
         ? simplifiedResult 
-        : simplifiedResult.toFixed(calculator.digitLimit);
+        : simplifiedResult.toFixed(digitLimit);
 
     // Substitute calculated value within the matched context
     const simplifiedSegment = matchedSegment.replace(subExpression, formattedResult);
@@ -664,16 +677,23 @@ function formatResult(displayElement, result) {
     // Convert result to a string
     const resultString = result.toString();
     
+    // Get appropriate precision for the result value
+    const digitLimit = getDigitLimit(resultString);
+
+    // Log raw result before formatting
+    console.log('Result String:', resultString);
+    
     // Use scientific notation if result exceeds digit limit or already has an exponent
-    if (resultString.length > calculator.digitLimit || resultString.includes('e')) {
+    if (resultString.length > digitLimit || resultString.includes('e')) {
         // Convert to scientific notation
         displayElement.value = result.toExponential(8).toLocaleUpperCase(); 
-    }   
+    }  
+     
     // Otherwise, format with localized number formatting
     else {
         // Format number with locale settings and digit limit
         displayElement.value = result.toLocaleString('en-GB', {
-            maximumFractionDigits: calculator.digitLimit 
+            maximumFractionDigits: digitLimit 
         });
     }
 }
@@ -763,11 +783,14 @@ function updateDisplay(key) {
 
             // Otherwise append digit
             else {
+                // Determine digit limit based on number format (integer or decimal)
+                const digitLimit = getDigitLimit(calculator.currentOperand);
+
                 // Count digits after decimal point or total digits if integer
                 const digitCount = calculator.currentOperand.replace(/\d+\./g, '').length;
 
                 // Only append digit if under configured limit
-                if (digitCount < calculator.digitLimit) {
+                if (digitCount < digitLimit) {
                     // Check if the last character is a closing parenthesis
                     if (displayText.at(-1) === '\u0029') {
                         // Append the padded multiplication operator
