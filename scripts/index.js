@@ -120,6 +120,28 @@ function getDigitCount(valueString) {
     return digitCount;
 }
 
+// Removes the last input element based on expression type
+function removeLastInput(expression) {
+    // Remove just the final character (digit, decimal, parenthesis, etc.)
+    let updatedExpression = expression.slice(0, -1);
+    
+    // Handle operators which have special formatting
+    if (/\s[+−÷×]\s$/.test(expression)) {
+      // Remove the operator and its surrounding spaces (3 characters total)
+      updatedExpression = expression.slice(0, expression.length - 3);
+    } 
+    
+    // Handle mathematical functions that end with an opening parenthesis
+    else if (/(?:log|ln|√)\($/.test(expression)) {
+      // Remove the entire function call syntax
+      updatedExpression = expression.replace(/(?:log|ln|√)\($/gi, '');
+
+    } 
+    
+    // Return the expression with last input removed
+    return updatedExpression;
+  }
+
 // Operator functions
 
 // Returns the result of raising a number to a given power
@@ -950,10 +972,8 @@ function updateDisplay(key) {
                         console.log('\n');
                     }
 
-                    // Trim 3 characters if operator (padded) or 1 if digit or decimal point  
-                    const updatedExpression = /[+−÷×]/.test(lastCharacter)
-                        ? expressionDisplay.value.slice(0, expressionDisplay.value.length - 3) 
-                        : expressionDisplay.value.slice(0, -1);
+                    // Get expression with last input removed 
+                    const updatedExpression = removeLastInput(expressionDisplay.value);
 
                     // Update display text; reset to '0' if expression is empty  
                     displayText = expressionDisplay.value = 
