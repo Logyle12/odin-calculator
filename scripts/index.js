@@ -760,6 +760,8 @@ function processResult(displayElement, expression) {
     const validationResult = validateExpression(expression);
     console.log('Validation Result:');
     console.table(validationResult);
+
+    console.log('Current Operand:', calculator.currentOperand);
     
     // Process expression only if valid results exist (non-empty and numeric)
     if (validationResult.isValid && calculator.currentOperand.length !== 0) {
@@ -995,10 +997,10 @@ function updateDisplay(key) {
                     calculator.currentOperand = setCurrentOperand(updatedExpression);
 
                     // Log updated current operand value
-                    console.log('Current Operand:', calculator.currentOperand); 
+                    console.log('Current Operand (Delete):', calculator.currentOperand); 
             
-                    // Update the display if the current expression is not just '0'  
-                    if (expressionDisplay.value !== '0') {                         
+                    // Update only if the expression isn't '0' and isn't already complete 
+                    if (expressionDisplay.value !== '0' && /[^)]/.test(lastCharacter)) {                         
                         // Compute new result and update display
                         processResult(resultDisplay, updatedExpression);
                         
