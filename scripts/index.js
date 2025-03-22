@@ -270,9 +270,9 @@ function insertMultiplication() {
 }
 
 // Calculates an operator's precedence, factoring in nesting depth
-function calculateOperatorRank(depthTracker, baseRank) {
+function calculateOperatorRank(baseRank) {
     // Get current depth of nested parentheses
-    const depthLevel = depthTracker.openingCount;
+    const depthLevel = calculator.depthTracker.openingCount;
 
     // Compute operator rank scaling by nesting level
     const operatorRank = baseRank + (4 * depthLevel);
@@ -504,19 +504,31 @@ function findNextOperation(operatorRegex, expression) {
 function findOperatorIndex(operatorEntry) {
     // Destructure operator data
     const [keyId, keySymbol, operatorRank] = operatorEntry;
+
+    console.log('Key Id:', keyId);
+    console.log('Key Symbol:', keySymbol);
+    console.log('Operator Rank:', operatorRank);
+
+    // Chooses between arithmetic and function handlers based on input
+    const operationHandler = /[+−÷×^E]/g.test(keySymbol)  
+        ? calculator.operators  
+        : calculator.mathFunctions;
     
     // Get operator's intrinsic precedence
-    const baseRank = calculator.operators[keyId].rank;
+    const baseRank = operationHandler[keyId].rank;
  
+    console.log('Base Rank:', baseRank);
+
     // Convert implicit 'this' to string for symbol comparison
     const operatorSymbol = String(this);
- 
-    // Get current parentheses depth
-    const depthLevel = calculator.depthTracker.openingCount;
-    
+
+    console.log('Operator Symbol:', operatorSymbol);
     // Calculate effective rank based on nesting
-    const currentRank = baseRank + (3 * depthLevel);
- 
+    const currentRank = calculateOperatorRank(baseRank);
+
+    console.log('Current Rank:', currentRank);
+    console.log('\n');
+
     // For nested expressions
     if (depthLevel > 0) {
         // Match if both rank and symbol match at current nesting level
@@ -901,6 +913,27 @@ function updateDisplay(key) {
 
             // Otherwise, on delete press
             else {  
+                // Decrement opening count when deleting an opening parenthesis
+                if (/\($/g.test(displayText)) {
+                    // Update the opening count
+                    depthTracker.openingCount -= 1;
+
+                    // Update the closing count
+                    depthTracker.closingCount += 1;
+
+                    // Reset depth tracking when no opening parentheses remain  
+                    if (depthTracker.openingCount === 0) {  
+                        // Clear depth state  
+                        depthTracker.closingCount = depthTracker.highestDepth = 0;
+                    }  
+
+                    // Log depth details for debugging
+                    console.log('Opening Count:', depthTracker.openingCount);
+                    console.log('Closing Count:', depthTracker.closingCount);
+                    console.log('Highest Depth:', depthTracker.highestDepth);
+                    console.log('\n');
+                }
+
                 // Remove the last character if display is not zero  
                 if (expressionDisplay.value !== '0') { 
                     // Remove all whitespace characters
@@ -908,9 +941,11 @@ function updateDisplay(key) {
                     // console.log(displayText);
 
                     // Check if the last character is an operator
-                    if (/[+−÷×^E]$/gi.test(displayText)) {
+                    if (/(?:[+−÷×^E]|(?:log|ln|√)\()$/gi.test(displayText)) {
                         // Extract the last operator from the expression 
-                        const previousOperator = displayText.match(/[+−÷×^E]$/gi)[0];
+                        const previousOperator = displayText.match(/(?:[+−÷×^E]|(?:log|ln|√)\()$/gi)[0].replace('(', '');
+
+                        console.log('Previous Operator:', previousOperator);
 
                         // Get the index of the last matching operator in the queue    
                         const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
@@ -945,27 +980,6 @@ function updateDisplay(key) {
                             // Reset to current depth
                             depthTracker.highestDepth = depthTracker.openingCount;
                         }
-
-                        // Log depth details for debugging
-                        console.log('Opening Count:', depthTracker.openingCount);
-                        console.log('Closing Count:', depthTracker.closingCount);
-                        console.log('Highest Depth:', depthTracker.highestDepth);
-                        console.log('\n');
-                    }
-                    
-                    // Decrement opening count when deleting an opening parenthesis
-                    else if (/\($/g.test(displayText)) {
-                        // Update the opening count
-                        depthTracker.openingCount -= 1;
-
-                        // Update the closing count
-                        depthTracker.closingCount += 1;
-
-                        // Reset depth tracking when no opening parentheses remain  
-                        if (depthTracker.openingCount === 0) {  
-                            // Clear depth state  
-                            depthTracker.closingCount = depthTracker.highestDepth = 0;
-                        }  
 
                         // Log depth details for debugging
                         console.log('Opening Count:', depthTracker.openingCount);
@@ -1031,7 +1045,7 @@ function updateDisplay(key) {
                 const baseRank = calculator.operators[keyId].rank;
 
                 // Compute rank according to nesting depth
-                const operatorRank = calculateOperatorRank(depthTracker, baseRank);
+                const operatorRank = calculateOperatorRank(baseRank);
 
                 // Check if calculator can begin a negative number entry in current context
                 const canStartNegative = 
@@ -1290,7 +1304,7 @@ function updateDisplay(key) {
             const baseRank = calculator.mathFunctions[keyId].rank;
 
             // Compute function's effective precedence based on parentheses depth
-            const operatorRank = calculateOperatorRank(depthTracker, baseRank);
+            const operatorRank = calculateOperatorRank(baseRank);
 
             // Log base precedence for debugging
             console.log('Base Rank:', baseRank);
