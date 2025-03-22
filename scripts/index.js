@@ -1148,9 +1148,10 @@ function updateDisplay(key) {
                 }
             }
 
+            // Handle percent key logic
             else if (keyId === 'key-percent') {
-                // Prevent duplicate percentage symbols
-                if (calculator.currentOperand.includes(keyAction) === false) {
+                // Prevent duplicate percentage symbols and append only after a number  
+                if (!calculator.currentOperand.includes(keyAction) && /\d+$/g.test(expressionDisplay.value)) {
                     // Append the percentage symbol to the display
                     expressionDisplay.value += keyAction;
 
