@@ -660,7 +660,7 @@ function evaluateExpression(expression) {
         const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
 
         // Update expression, unwrapping single-number parentheses if present  
-        expression = simplifiedExpression.replaceAll(singleNumberRegex);
+        expression = simplifiedExpression.replaceAll(singleNumberRegex, '$1');
     }
 
     return expression;
