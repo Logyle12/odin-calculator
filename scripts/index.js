@@ -383,7 +383,7 @@ function formatOperator(keySymbol) {
 // Centralized function for validating expressions and handling errors
 function validateExpression(expression) {
     // Remove whitespace and commas for validation
-    const sanitizedExpression = expression.replace(/\s|\,/g, '');
+    const sanitizedExpression = sanitizeExpression(expression);
 
     console.log('Sanitized Expression:', sanitizedExpression)
     
@@ -770,7 +770,7 @@ function processResult(displayElement, expression) {
         expression = autoCloseParentheses(expression);
         
         // Check for a complete expression with a valid ending  
-        if (/^(?:.+)(?:\d+|\)|\%)$/g.test(expressionDisplay.value)) {
+        if (/^(?:.+)(?:\d+|\)|\%)$/g.test(expression)) {
             // Compute display the result if it's a finite number
             displayComputedResult(displayElement, expression);
         }
@@ -904,14 +904,14 @@ function updateDisplay(key) {
                     // Remove all whitespace characters
                     displayText = displayText.replaceAll(/\s/g, '');
                     // console.log(displayText);
-                    
-                    // Retrieve the last character using negative indexing
-                    const lastCharacter = displayText.at(-1);
 
                     // Check if the last character is an operator
-                    if (/[+−÷×^E]/.test(lastCharacter)) {
+                    if (/[+−÷×^E]$/gi.test(displayText)) {
+                        // Extract the last operator from the expression 
+                        const previousOperator = displayText.match(/[+−÷×^E]$/gi)[0];
+
                         // Get the index of the last matching operator in the queue    
-                        const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, lastCharacter);
+                        const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
 
                         // Log queue before dequeueing operator
                         console.log('Queue (Before):');
@@ -928,7 +928,7 @@ function updateDisplay(key) {
                     }
 
                     // Increment opening count when deleting a closing parenthesis
-                    else if (/\)/.test(lastCharacter)) {
+                    else if (/\)$/g.test(displayText)) {
                         // Update the opening count
                         depthTracker.openingCount += 1;
 
@@ -952,7 +952,7 @@ function updateDisplay(key) {
                     }
                     
                     // Decrement opening count when deleting an opening parenthesis
-                    else if (/\(/.test(lastCharacter)) {
+                    else if (/\($/g.test(displayText)) {
                         // Update the opening count
                         depthTracker.openingCount -= 1;
 
@@ -973,14 +973,26 @@ function updateDisplay(key) {
                     }
 
                     // Get expression with last input removed 
-                    const updatedExpression = removeLastInput(expressionDisplay.value);
+                    let updatedExpression = removeLastInput(expressionDisplay.value);
 
                     // Update display text; reset to '0' if expression is empty  
                     displayText = expressionDisplay.value = 
                         updatedExpression.length >= 1 ? updatedExpression : '0';
 
+                    // Clean up the expression
+                    updatedExpression = sanitizeExpression(updatedExpression);
+
+                    // Get the last character to check if it's an operator 
+                    const lastCharacter = updatedExpression.at(-1);
+
+                    // Fix incomplete expressions ending in an operator  
+                    if (/[+−÷×]/.test(lastCharacter) && calculator.operatorQueue.length > 1) {
+                        // Append '1' for multiplicative operators and'0' for additive operators 
+                        updatedExpression += /[÷×]/.test(lastCharacter) ? '1' : '0';
+                    }
+
                     // Set current operand to last number in display  
-                    calculator.currentOperand = setCurrentOperand(displayText);
+                    calculator.currentOperand = setCurrentOperand(updatedExpression);
 
                     // Log updated current operand value
                     console.log('Current Operand:', calculator.currentOperand); 
