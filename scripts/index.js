@@ -597,10 +597,10 @@ function evaluateExpression(expression) {
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Matches nested expressions enclosed in redundant parentheses
-        const nestedGroupRegex = /(?<=\()\((\d+(?=[+−÷×])[^()]+)(?:\)(?=\)))/g;
+        const nestedGroupRegex = /(?<=\()\((\d+\e?\%?(?=[+−÷×])[^()]+)(?:\)(?=\)))/gi;
 
         // Matches single numbers wrapped in parentheses
-        const singleNumberRegex = /\((\-?\d+\.?\d*)\)/g;
+        const singleNumberRegex = /\((\-?\d+\.?\d*\e?[-+]?\d*\%?)\)/gi;
 
         // Simplify nested parentheses patterns
         while (nestedGroupRegex.test(expression) || singleNumberRegex.test(expression)) {
