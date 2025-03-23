@@ -475,7 +475,7 @@ function findNextOperation(operatorRegex, expression) {
     let currentOperation;
     
     // Finds any expressions within parentheses - they get priority
-    const groupedExpressions = expression.match(/\(\d+[+−÷×]+[^()]+\)/g);
+    const groupedExpressions = expression.match(/\(\-?\d+\.?\d*\%?[+−÷×^E]+[^()]+\)/gi);
  
     // Process any parenthesized expressions first
     if (groupedExpressions !== null) {
