@@ -864,6 +864,12 @@ function updateDisplay(key) {
                         insertMultiplication();
                     }
 
+                    // Prevent leading zeros when entering a number
+                    if (calculator.currentOperand === '0') {
+                        // Reset operand to allow proper number input
+                        calculator.currentOperand = '';
+                    }
+
                     // Append digit to tracked value
                     calculator.currentOperand += keyAction;
 
