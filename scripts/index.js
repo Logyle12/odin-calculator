@@ -630,7 +630,7 @@ function evaluateExpression(expression) {
         const nestedGroupRegex = /(?<=\()\((\d+\.?\d*\%?(?=[+−÷×^E])[^()]+)(?:\)(?=\)))/gi;
 
         // Matches single numbers wrapped in parentheses
-        const singleNumberRegex = /\((\-?\d+\.?\d*(?:\E?(?<=\E)\+\d+)?\%?)\)/gi;
+        const singleNumberRegex = /\((\-?\d+\.?\d*(?:\E?(?<=\E)[+-]\d+)?\%?)\)/gi;
 
         // Simplify nested parentheses patterns
         while (nestedGroupRegex.test(expression) || singleNumberRegex.test(expression)) {
