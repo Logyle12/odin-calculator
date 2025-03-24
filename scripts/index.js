@@ -1309,40 +1309,43 @@ function updateDisplay(key) {
             break;
 
         case 'math-function':
-            // Retrieve mathematical function symbol (e.g., 'ln', 'log', '√')
-            const keySymbol = calculator.mathFunctions[keyId].symbol;
-
-            // Get function's inherent precedence level before nesting adjustment
-            const baseRank = calculator.mathFunctions[keyId].rank;
-
-            // Compute function's effective precedence based on parentheses depth
-            const operatorRank = calculateOperatorRank(baseRank);
-
-            // Log base precedence for debugging
-            console.log('Base Rank:', baseRank);
-
-            // Log adjusted precedence for debugging
-            console.log('Operator Rank:', operatorRank);
-
-            // Remove spaces and formatting for clean evaluation  
-            const sanitizedInput = sanitizeExpression(expressionDisplay.value);  
-
-            // Add implicit multiplication before a function if needed  
-            if (/[^+−÷×^.(]$|^0$/gi.test(sanitizedInput)) { 
-                // Simulate a multiplication key press  
-                insertMultiplication(); 
+            // Block math functions after 'E' (exponent) to simplify parsing 
+            if (/[^E]$/gi.test(expressionDisplay.value)) {
+                // Retrieve mathematical function symbol (e.g., 'ln', 'log', '√')
+                const keySymbol = calculator.mathFunctions[keyId].symbol;
+    
+                // Get function's inherent precedence level before nesting adjustment
+                const baseRank = calculator.mathFunctions[keyId].rank;
+    
+                // Compute function's effective precedence based on parentheses depth
+                const operatorRank = calculateOperatorRank(baseRank);
+    
+                // Log base precedence for debugging
+                console.log('Base Rank:', baseRank);
+    
+                // Log adjusted precedence for debugging
+                console.log('Operator Rank:', operatorRank);
+    
+                // Remove spaces and formatting for clean evaluation  
+                const sanitizedInput = sanitizeExpression(expressionDisplay.value);  
+    
+                // Add implicit multiplication before a function if needed  
+                if (/[^+−÷×^.(]$|^0$/gi.test(sanitizedInput)) { 
+                    // Simulate a multiplication key press  
+                    insertMultiplication(); 
+                }
+    
+                // Replace zero or append function symbol to display
+                expressionDisplay.value = expressionDisplay.value === '0' 
+                    ? keySymbol
+                    : expressionDisplay.value + keySymbol;
+    
+                // Simulate a click on the parentheses button
+                parenthesesKey.click();
+    
+                // Enqueue function with its symbol and precedence for later evaluation
+                calculator.operatorQueue.push([keyId, keySymbol, operatorRank]); 
             }
-
-            // Replace zero or append function symbol to display
-            expressionDisplay.value = expressionDisplay.value === '0' 
-            ? keySymbol
-            : expressionDisplay.value + keySymbol;
-
-            // Simulate a click on the parentheses button
-            parenthesesKey.click();
-
-            // Enqueue function with its symbol and precedence for later evaluation
-            calculator.operatorQueue.push([keyId, keySymbol, operatorRank]); 
 
             break;
 
