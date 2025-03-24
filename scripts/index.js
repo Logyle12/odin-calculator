@@ -1318,6 +1318,15 @@ function updateDisplay(key) {
             // Log adjusted precedence for debugging
             console.log('Operator Rank:', operatorRank);
 
+            // Remove spaces and formatting for clean evaluation  
+            const sanitizedInput = sanitizeExpression(expressionDisplay.value);  
+
+            // Add implicit multiplication before a function if needed  
+            if (/[^+−÷×^.(]$|^0$/gi.test(sanitizedInput)) { 
+                // Simulate a multiplication key press  
+                insertMultiplication(); 
+            }
+
             // Replace zero or append function symbol to display
             expressionDisplay.value = expressionDisplay.value === '0' 
             ? keySymbol
