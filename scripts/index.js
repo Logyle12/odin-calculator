@@ -604,10 +604,6 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Log the simplified segment
     console.log('Simplified Segment:', simplifiedSegment);
 
-    // Log the updated expression
-    console.log('Simplified Expression:', simplifiedExpression);
-    console.log('\n');
-
     // Return the simplified expression
     return simplifiedExpression;
 }
@@ -654,11 +650,11 @@ function evaluateExpression(expression) {
 
         // Match operands around operator or functions
         const pattern = /[+−÷×^E]/.test(currentOperator)
-            ? `([^()+−÷×]+)\\${currentOperator}([^()+−÷×]+)`
+            ? `([^()+−÷×]+(?:\\E?(?<=\\E)[+-]\\d+)?)\\${currentOperator}([^()+−÷×]+(?:\\E?(?<=\\E)[+-]\\d+)?)`
             : `${currentOperator}([^()+−÷×]+)`;
     
         // Convert the pattern to a regular expression
-        const regex = new RegExp(pattern);
+        const regex = new RegExp(pattern, 'i');
         console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
@@ -673,6 +669,10 @@ function evaluateExpression(expression) {
 
         // Update expression, unwrapping single-number parentheses if present  
         expression = simplifiedExpression.replaceAll(singleNumberRegex, '$1');
+
+        // Log the updated expression
+        console.log('Simplified Expression:', expression);
+        console.log('\n');
     }
 
     return expression;
