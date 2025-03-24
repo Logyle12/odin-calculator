@@ -1330,7 +1330,7 @@ function updateDisplay(key) {
                 const sanitizedInput = sanitizeExpression(expressionDisplay.value);  
     
                 // Add implicit multiplication before a function if needed  
-                if (/[^+−÷×^.(]$|^0$/gi.test(sanitizedInput)) { 
+                if (/[^+−÷×^.(](?<!^0)$/gi.test(sanitizedInput)) { 
                     // Simulate a multiplication key press  
                     insertMultiplication(); 
                 }
