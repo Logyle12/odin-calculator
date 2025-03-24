@@ -811,18 +811,6 @@ function updateDisplay(key) {
     // Get the key ID for reference in actions
     const keyId = key.id;
 
-    // Copy of display content for manipulation
-    let displayText = expressionDisplay.value;
-
-    // Store reference to track parentheses depth
-    const depthTracker = calculator.depthTracker;
-
-    // Find the parentheses key by its specific ID
-    const parenthesesKey = [...keyButtons].find((key) => key.id === 'key-parentheses');
-
-    // Remove commas to standardize number formatting 
-    calculator.currentOperand = calculator.currentOperand.replaceAll(',', '');
-
     // If result display has transitions active
     if (resultDisplay.id === 'transition-result') {
         // Remove transition animations  
@@ -834,6 +822,24 @@ function updateDisplay(key) {
         // Show expression input field
         expressionDisplay.style['display'] = 'inline-block';
     }
+
+    // Fix trailing decimal point when pressing a non-digit key  
+    if (/\.$/.test(expressionDisplay.value) && keyType !== 'key-digit') {
+        // Append zero to complete the number 
+        expressionDisplay.value += 0;
+    }
+
+    // Copy of display content for manipulation
+    let displayText = expressionDisplay.value;
+
+    // Store reference to track parentheses depth
+    const depthTracker = calculator.depthTracker;
+
+    // Find the parentheses key by its specific ID
+    const parenthesesKey = [...keyButtons].find((key) => key.id === 'key-parentheses');
+
+    // Remove commas to standardize number formatting 
+    calculator.currentOperand = calculator.currentOperand.replaceAll(',', '');
 
     // Process the action based on the key type
     switch (keyType) {
