@@ -409,7 +409,7 @@ function validateExpression(expression) {
     }
 
     // Check for other calculation errors
-    else if (/[+−÷×^]$|^\(*\d+[^E^()+−÷×]*$|\((?!.+)|(?:(?<![^)])\d+)$/gi.test(sanitizedExpression)){
+    else if (/[+−÷×^E]$|\((?!.+)/gi.test(sanitizedExpression)){
         // Generic error message for other mathematical errors
         errorMessage = "Error: Well... This is Awkward";
     }
