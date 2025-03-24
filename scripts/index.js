@@ -1260,13 +1260,16 @@ function updateDisplay(key) {
                 // Get the current expression from the display
                 const finalExpression = expressionDisplay.value;
 
+                // Convert the displayed result to a number for validation  
+                const numericResult = parseFloat(resultDisplay.value.replaceAll(',', ''));
+
                 // Check expression for mathematical errors
                 const validationResult = validateExpression(finalExpression);
 
                 // Process only if there's an equation to evaluate
                 if (finalExpression !== calculator.currentOperand) {
                     // Process expression only if valid results exist (non-empty and numeric)
-                    if (validationResult.isValid && !isNaN(resultDisplay.value) && resultDisplay.value.length > 0) {
+                    if (validationResult.isValid && !isNaN(numericResult) && resultDisplay.value.length > 0) {
                         // Compute new result and update display
                         processResult(expressionDisplay, finalExpression);
         
