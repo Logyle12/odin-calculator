@@ -784,7 +784,7 @@ function processResult(displayElement, expression) {
         expression = autoCloseParentheses(expression);
         
         // Check for a complete expression with a valid ending  
-        if (/^(?:.+)(?:\d+|\)|\%)$/g.test(expression)) {
+        if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$)/gi.test(expression)) {
             // Compute display the result if it's a finite number
             displayComputedResult(displayElement, expression);
         }
