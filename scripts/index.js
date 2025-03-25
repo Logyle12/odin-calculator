@@ -382,34 +382,29 @@ function formatOperator(keySymbol) {
 
 // Centralized function for validating expressions and handling errors
 function validateExpression(expression) {
-    // Remove whitespace and commas for validation
-    const sanitizedExpression = sanitizeExpression(expression);
-
-    console.log('Sanitized Expression:', sanitizedExpression)
-    
     // Store error messages
     let errorMessage = '';
     
     // Check for division by zero in expression
-    if (/÷0(?!\.)/g.test(sanitizedExpression)) {
+    if (/÷0(?!\.)/g.test(expression)) {
         // Human-readable error for division by zero
         errorMessage = "Error: Division by Zero";
     } 
 
     // Check for logarithm of zero or negative number
-    else if (/(?:log|ln)\((?:0(?!\.)|-)/g.test(sanitizedExpression)) {
+    else if (/(?:log|ln)\((?:0(?!\.)|-)/g.test(expression)) {
         // More concise error for invalid logarithm input
         errorMessage = "Error: Invalid log Input";
     }
 
     // Check for square root of negative number
-    else if (/√\(\-/g.test(sanitizedExpression)) {
+    else if (/√\(\-/g.test(expression)) {
         // Human-readable error for invalid square root input
         errorMessage = "Error: Negative Square Root";
     }
 
     // Check for other calculation errors
-    else if (/[+−÷×^E]$|\((?!.+)/gi.test(sanitizedExpression)){
+    else if (/[+−÷×^E]$|\((?!.+)/gi.test(expression)){
         // Generic error message for other mathematical errors
         errorMessage = "Error: Well... This is Awkward";
     }
@@ -765,7 +760,7 @@ function formatResult(displayElement, result) {
 
 // Process and format the result of a mathematical expression
 function processResult(displayElement, expression) {
-    // Sanitize the expression
+    // Remove whitespace and commas for validation
     expression = sanitizeExpression(expression);
     
     // Check expression for mathematical errors
@@ -1258,7 +1253,7 @@ function updateDisplay(key) {
             // On equals press
             else { 
                 // Get the current expression from the display
-                const finalExpression = expressionDisplay.value;
+                const finalExpression = sanitizeExpression(expressionDisplay.value);
 
                 // Convert the displayed result to a number for validation  
                 const numericResult = parseFloat(resultDisplay.value.replaceAll(',', ''));
