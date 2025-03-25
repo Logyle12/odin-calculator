@@ -620,9 +620,15 @@ function evaluateExpression(expression) {
     // console.table(calculator.operatorQueue);
 
     // Check if the expression is a lone number in parentheses 
-    if (/^\(\-?\d+\.?\d*\%?\)$/g.test(expression)) {
+    if (/^\(*\-?\d+\.?\d*\%?\)*$/g.test(expression)) {
         // Remove the parentheses and extract the number 
-        const unwrappedNumber = expression.replaceAll(/\((\-?\d+\.?\d*\%?)\)/g, '$1');
+        const unwrappedNumber = expression.replaceAll(/[()]/g, '');
+
+        // Convert percentage to decimal if the number ends with '%' 
+        if (/\%$/g.test(unwrappedNumber)) {
+            // Divide by 100 to get the decimal value 
+            return parseFloat(unwrappedNumber) / 100;
+        }
 
         // Return the unwrapped number
         return unwrappedNumber;
