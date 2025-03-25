@@ -619,6 +619,15 @@ function evaluateExpression(expression) {
     // Log the sorted operator queue for debugging
     // console.table(calculator.operatorQueue);
 
+    // Check if the expression is a lone number in parentheses 
+    if (/^\(\-?\d+\.?\d*\%?\)$/g.test(expression)) {
+        // Remove the parentheses and extract the number 
+        const unwrappedNumber = expression.replaceAll(/\((\-?\d+\.?\d*\%?)\)/g, '$1');
+
+        // Return the unwrapped number
+        return unwrappedNumber;
+    }
+
     // Process each expression based on operator precedence
     for (let i = 0; i < queueSize; i++) {
         // Matches nested expressions enclosed in redundant parentheses
