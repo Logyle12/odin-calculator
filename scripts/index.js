@@ -96,6 +96,50 @@ const calculator = {
     operatorQueue: [],
 };
 
+// Maps keyboard keys to their corresponding calculator buttons
+const keyMap = {
+    // Percent (%)
+    'Digit5': { shift: 'key-percent' },
+
+    // Decimal (.)
+    'Period': { normal: 'key-decimal' },
+
+    // Power (a^b)
+    'Digit6': { shift: 'key-power' },
+
+    // Powers of 10 (10^n)
+    'KeyE': { normal: 'key-exponent', shift: 'key-exponent' },
+
+    // Multiplication (a*b)
+    'Digit8': { shift: 'key-multiply' },
+
+    // Division (a/b)
+    'Slash': { normal: 'key-divide' },
+
+    // Addition (a+b)
+    'Equal': { normal: 'key-equals', shift: 'key-add' },
+
+    // Subtraction (a-b)
+    'Minus': { normal: 'key-subtract' },
+
+    // Natural logarithm (base e)
+    'KeyL': { normal: 'key-natural-log', shift: 'key-natural-log' },
+
+    // Common logarithm (base 10)
+    'KeyG': { normal: 'key-log10', shift: 'key-log10' },
+
+    // Square root function (√x)
+    'KeyR': { normal: 'key-square-root', shift: 'key-square-root' },
+
+    // Clear (AC)
+    'KeyC': { normal: 'key-AC', shift: 'key-AC' },
+
+    // Delete (DEL) - Supports both Backspace and Delete keys
+    'Backspace': { normal: 'key-del', shift: 'key-del' },
+    'Delete':    { normal: 'key-del', shift: 'key-del' },
+};
+
+
 // Determines the appropriate digit limit 
 function getDigitLimit(valueString) {
     // Default to the integer digit limit for whole numbers
