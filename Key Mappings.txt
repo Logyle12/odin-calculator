@@ -1,0 +1,19 @@
+| Calculator Key    | Keyboard Key(s)  |
+|-------------------|------------------|
+| 0-9 (Digits)      | 0-9              |
+| Decimal (.)       | . (Period)       |
+| Add (+)           | +                |
+| Subtract (−)      | -                |
+| Multiply (×)      | * (Asterisk)     |
+| Divide (÷)        | / (Slash)        |
+| Power (^)         | ^ (Caret)        |
+| Exponent (E)      | E                |
+| Percent (%)       | %                |
+| Parentheses (())  | ( and )          |
+| Natural Log (ln)  | L (Shift+L?)     |
+| Logarithm (log)   | G (Shift+G?)     |
+| Square Root (√)   | R (Shift+R?)     |
+| Equals (=)        | =, Enter         |
+| Delete (DEL)      | Backspace, Delete|
+| Clear (AC)        | Esc (Escape)     |
+
