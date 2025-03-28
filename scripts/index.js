@@ -622,8 +622,11 @@ function findOperatorIndex(operatorEntry) {
     console.log('Current Rank:', currentRank);
     console.log('\n');
 
+    // Store depth tracker reference to track parentheses depth
+    const depthTracker = calculator.depthTracker;
+
     // For nested expressions
-    if (depthLevel > 0) {
+    if (depthTracker.openingCount > 0) {
         // Match if both rank and symbol match at current nesting level
         if (operatorRank === currentRank && operatorSymbol === keySymbol) {
             return true;
@@ -940,7 +943,7 @@ function updateDisplay(key) {
     // Copy of display content for manipulation
     let displayText = expressionDisplay.value;
 
-    // Store reference to track parentheses depth
+    // Store depth tracker reference to track parentheses depth
     const depthTracker = calculator.depthTracker;
 
     // Find the parentheses key by its specific ID
