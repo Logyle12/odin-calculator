@@ -118,6 +118,7 @@ const keyMap = {
 
     // Addition (a+b)
     'Equal': { normal: 'key-equals', shift: 'key-add' },
+    'Enter': {normal: 'key-equals', shift: 'key-equals'},
 
     // Subtraction (a-b)
     'Minus': { normal: 'key-subtract' },
@@ -132,9 +133,11 @@ const keyMap = {
     'KeyR': { normal: 'key-square-root', shift: 'key-square-root' },
 
     // Clear (AC)
+    'Escape': { normal: 'key-AC', shift: 'key-AC' },
+    'KeyA': { normal: 'key-AC', shift: 'key-AC' },
     'KeyC': { normal: 'key-AC', shift: 'key-AC' },
 
-    // Delete (DEL) - Supports both Backspace and Delete keys
+    // Delete (DEL)
     'Backspace': { normal: 'key-del', shift: 'key-del' },
     'Delete':    { normal: 'key-del', shift: 'key-del' },
 };
