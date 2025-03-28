@@ -139,6 +139,60 @@ const keyMap = {
     'Delete':    { normal: 'key-del', shift: 'key-del' },
 };
 
+// Handles keydown events and triggers corresponding button clicks  
+function processKeyEvent(event) {  
+    // Get the event's key code  
+    const keyCode = event.code  
+    // Log the key code for debugging  
+    console.log('Key Code:', keyCode)  
+
+    // Get the key's actual value  
+    const keyValue = event.key  
+    // Log the key value for debugging  
+    console.log('Key Value:', keyValue)  
+
+    // If a digit (0-9) is pressed without Shift, find the matching button  
+    if (/[0-9]/.test(keyValue) && !event.shiftKey) {  
+        // Locate the button corresponding to the pressed digit  
+        const digitButton = [...keyButtons].find((key) => key.id === `key-${keyValue}`)  
+        
+        // Log the matched button for debugging  
+        console.log('Digit Button:', digitButton)  
+        
+        // Simulate a click on the digit button  
+        digitButton.click()  
+        
+        // Exit the function after handling the digit input  
+        return;  
+    }  
+
+    // If the key exists in keyMap, determine the correct key ID  
+    else if (keyMap[keyCode]) {  
+        // Get the appropriate key ID based on whether Shift is pressed  
+        const keyId = event.shiftKey ? keyMap[keyCode].shift : keyMap[keyCode].normal  
+        
+        // Locate the button corresponding to the mapped key  
+        const keyButton = [...keyButtons].find((key) => key.id === keyId)  
+        
+        // Log the matched button for debugging  
+        console.log('Key Button')  
+        
+        // Simulate a click on the mapped key button  
+        keyButton.click()  
+        
+        // Log the resolved key ID for debugging  
+        console.log('Key Id:', keyId)  
+    }  
+
+    // Print a newline for log separation  
+    console.log('\n')  
+}
+
+// Sets up a listener for keyboard input events  
+function handleKeyboardInput() {  
+    // Attach the keydown event listener to trigger processKeyEvent  
+    document.addEventListener('keydown', processKeyEvent)  
+}
 
 // Determines the appropriate digit limit 
 function getDigitLimit(valueString) {
@@ -1420,4 +1474,9 @@ function updateDisplay(key) {
     });
 }
 
-handleKeyActions();
+// Initialize event listener for key actions  
+handleKeyActions()  
+
+// Initialize event listener for keyboard input  
+handleKeyboardInput()  
+
