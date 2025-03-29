@@ -45,6 +45,14 @@
     align-items: last baseline;
 }
 
+.theme-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 8px;
+}
+
 .calc-display, .calc-keypad {
     background-color: rgb(24, 31, 51);
     padding: 28px 32px;
