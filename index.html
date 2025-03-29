@@ -14,11 +14,17 @@
     <div class="calc-container">
         <div class="calc-body">
             <section class="calc-header">
-                <h1 class="calc-title">Calculator</h1>
+                <div id="title-container">
+                    <h1 class="calc-title">Calculator</h1>
+                </div>
                 <div class="theme-container">
                     <div class="theme-toggle">
-                        <input class="theme-checkbox" type="checkbox">
-                        <span class="theme-indicator"></span>
+                        <div class="theme-indicator">
+                            <span class="theme-choice" id="theme-choice-1">1</span>
+                            <span class="theme-choice" id="theme-choice-2">2</span>
+                            <span class="theme-choice" id="theme-choice-3">3</span>
+                        </div>
+                        <input id="theme-switch" role="switch" type="range" min="1" max="3" value="1">
                     </div>
                 </div>
             </section>
