@@ -64,6 +64,11 @@
     column-gap: 1px;
 }
 
+.theme-choice {
+    width: 16px;
+    height: 16px;
+}
+
 .calc-display, .calc-keypad {
     background-color: rgb(24, 31, 51);
     padding: 28px 32px;
