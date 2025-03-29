@@ -86,6 +86,27 @@
     cursor: pointer;
 }
 
+/* WebKit Browsers (Chrome, Safari, Edge) */
+#theme-switch[role='switch']::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(208, 63, 47);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+#theme-switch[role='switch']::-moz-range-thumb {
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(208, 63, 47);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
 .calc-display, .calc-keypad {
     background-color: rgb(24, 31, 51);
     padding: 28px 32px;
