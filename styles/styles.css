@@ -38,6 +38,13 @@
     padding: 0px 18px;
 }
 
+#title-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: last baseline;
+}
+
 .calc-display, .calc-keypad {
     background-color: rgb(24, 31, 51);
     padding: 28px 32px;
