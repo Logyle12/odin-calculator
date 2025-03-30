@@ -1,0 +1,202 @@
+
+/* Theme 1 (Default) */
+
+/* Calculator Styles */
+.theme-default {
+    background-color: rgb(58, 70, 99);
+    color: rgb(255, 255, 255);
+}
+
+.theme-default .calc-display {
+    background-color: rgb(24, 31, 51);
+}
+
+/* Vertical Separator */
+.theme-default #vertical-line {
+    border-right-color: rgba(198, 198, 198, 0.5);
+}
+
+/* Keypad Styles */
+.theme-default .calc-keypad {
+    background-color: rgb(24, 31, 51);
+    color: rgb(0, 0, 0);
+}
+
+.theme-default .calc-keypad .key {
+    background: linear-gradient(to top, rgb(234, 227, 220) 50%, rgb(255, 255, 254) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(179, 164, 151);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.theme-default .calc-keypad .key-control {
+    background: linear-gradient(to top, rgb(100, 113, 152) 50%, rgb(163, 178, 225) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(65, 78, 115);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.theme-default .calc-keypad #key-equals {
+    background: linear-gradient(to top, rgb(178, 50, 50) 50%, rgb(220, 70, 70) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(140, 35, 35);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); 
+}
+
+/* Slider Styles */
+.theme-default #theme-switch[role='switch'] {
+    background-color: rgb(36, 45, 68);
+}
+
+.theme-default #theme-switch[role='switch']::-webkit-slider-thumb {
+    background-color: rgb(208, 63, 47);
+}
+
+.theme-default #theme-switch[role='switch']::-moz-range-thumb {
+    background-color: rgb(208, 63, 47);
+}
+
+.theme-default #theme-switch[role='switch']::-webkit-slider-thumb:hover {
+    background-color: rgb(249, 107, 91);
+}
+
+.theme-default #theme-switch[role='switch']::-moz-range-thumb:hover {
+    background-color: rgb(249, 107, 91);
+}
+
+/* Theme 2 (Light) */
+
+/* Calculator styles */
+.theme-light {
+    background-color: rgb(176, 176, 176);
+    color: rgb(54, 54, 44);
+}
+
+.theme-light .calc-display {
+    background-color: rgb(210, 205, 205);
+}
+
+/* Vertical Separator */
+.theme-light #vertical-line {
+    border-right-color: rgb(54, 54, 44, 0.5);
+}
+
+/* Keypad Styles */
+.theme-light .calc-keypad {
+    background-color: rgb(210, 205, 205);
+}
+
+.theme-light .calc-keypad .key {
+    background: linear-gradient(to top, rgb(229, 228, 225) 50%, rgb(255, 255, 255) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(211, 211, 209);
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.15));
+}
+
+.theme-light .calc-keypad .key-control {
+    background: linear-gradient(to top, rgb(55, 129, 135) 50%, rgb(98, 181, 188) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(55, 129, 135);
+}
+
+.theme-light .calc-keypad #key-equals {
+    background: linear-gradient(to top, rgb(200, 84, 2) 50%, rgb(241, 115, 26) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(160, 50, 20);
+}
+
+/* Slider Styles */
+.theme-light #theme-switch[role='switch'] {
+    background-color: rgb(210, 205, 205);
+}
+
+.theme-light #theme-switch[role='switch']::-webkit-slider-thumb {
+    background-color: rgb(200, 84, 2);
+}
+
+.theme-light #theme-switch[role='switch']::-moz-range-thumb {
+    background-color: rgb(200, 84, 2);
+}
+
+.theme-light #theme-switch[role='switch']::-webkit-slider-thumb:hover {
+    background-color: rgb(255, 138, 56);
+}
+
+.theme-light #theme-switch[role='switch']::-moz-range-thumb:hover {
+    background-color: rgb(255, 138, 56);
+}
+
+/* Theme 3 (Dark) */
+
+/* Calculator Styles */
+.theme-dark {
+    background-color: rgb(23, 6, 42);
+    color: rgb(255, 229, 61);
+}
+
+.theme-dark .calc-display {
+    background-color: rgb(30, 9, 54)
+}
+
+/* Vertical Separator */
+.theme-dark #vertical-line {
+    border-right-color: rgb(255, 229, 61, 0.5);
+}
+
+/* Keypad Styles */
+.theme-dark .calc-keypad {
+    background-color: rgb(30, 9, 54);
+}
+
+.theme-dark .calc-keypad .key {
+    background: linear-gradient(to top, rgb(51, 28, 77) 50%, rgb(108, 52, 172) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(90, 40, 130);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.3));
+}
+
+.theme-dark .calc-keypad .key-control {
+    background: linear-gradient(to top, rgb(86, 7, 124) 50%, rgb(134, 49, 175) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(100, 30, 145);
+}
+
+.theme-dark .calc-keypad #key-equals {
+    background: linear-gradient(to top, rgb(120, 90, 0) 50%, rgb(150, 115, 10) 50%);
+    background-size: 100% 200%;
+    background-position: bottom;
+    box-shadow: inset 0px -4px 0px rgb(90, 70, 0);
+}
+
+.theme-dark .calc-keypad #key-equals > .key-text {
+    color: rgb(255, 255, 255);
+}
+
+/* Slider Styles */
+.theme-dark #theme-switch[role='switch'] {
+    background-color: rgb(65, 35, 95);
+}
+
+.theme-dark #theme-switch[role='switch']::-webkit-slider-thumb {
+    background-color: rgb(200, 180, 40);;
+}
+
+.theme-dark #theme-switch[role='switch']::-moz-range-thumb {
+    background-color: rgb(200, 180, 40);;
+}
+
+.theme-dark #theme-switch[role='switch']::-webkit-slider-thumb:hover {
+    background-color: rgb(225, 200, 50);
+}
+
+.theme-dark #theme-switch[role='switch']::-moz-range-thumb:hover {
+    background-color: rgb(225, 200, 50);
+}
