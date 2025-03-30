@@ -1,3 +1,34 @@
+// Get the theme switch input to detect user selection
+const themeSwitch = document.querySelector('#theme-switch');
+
+// Get the calculator container to update its theme
+const calculatorUI = document.querySelector('.calc-container');
+
+// Map switch values to corresponding theme class names
+const themeOptions = {
+    '1': 'theme-default', 
+    '2': 'theme-light',   
+    '3': 'theme-dark',    
+};
+
+// Updates the calculator theme based on user selection
+function applyTheme() {
+    // Get the currently applied theme 
+    const currentTheme = calculatorUI.classList[1];
+    
+    // Determine the theme corresponding to the selected switch value
+    const selectedTheme = themeOptions[themeSwitch.value];
+    
+    // Replace the old theme with the new one to reflect the change
+    calculatorUI.classList.replace(currentTheme, selectedTheme);  
+}
+
+// Adds an event listener to update the theme on user input
+function handleThemeSwitch() {
+    // Listen for clicks on the switch and apply the chosen theme
+    themeSwitch.addEventListener('click', applyTheme);
+}
+
 // Retrieve display elements
 const expressionDisplay = document.querySelector('#expression-display');
 const resultDisplay = document.querySelector('#result-display');
@@ -1481,8 +1512,11 @@ function updateDisplay(key) {
 }
 
 // Initialize event listener for key actions  
-handleKeyActions()  
+handleKeyActions();  
 
 // Initialize event listener for keyboard input  
-handleKeyboardInput()  
+handleKeyboardInput(); 
+
+// Initialize event listener for theme switch 
+handleThemeSwitch(); 
 
