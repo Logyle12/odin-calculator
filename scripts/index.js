@@ -184,8 +184,8 @@ function processKeyEvent(event) {
     // Log the key value for debugging  
     console.log('Key Value:', keyValue)  
 
-    // If a digit (0-9) is pressed without Shift, find the matching button  
-    if (/[0-9]/.test(keyValue) && !event.shiftKey) {  
+    // If a digit key (0-9) is pressed without Shift, find the matching button  
+    if (/[0-9]/.test(keyValue) && !event.shiftKey && (keyCode.includes('Digit') || keyCode.includes('Numpad'))) {  
         // Locate the button corresponding to the pressed digit  
         const digitButton = [...keyButtons].find((key) => key.id === `key-${keyValue}`)  
         
