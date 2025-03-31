@@ -523,13 +523,13 @@ function validateExpression(expression) {
     } 
 
     // Check for logarithm of zero or negative number
-    else if (/(?:log|ln)\((?:0(?!\.)|-)/g.test(expression)) {
+    else if (/(?:log|ln)\(?(?:0(?!\.)|-)/g.test(expression)) {
         // More concise error for invalid logarithm input
         errorMessage = "Error: Invalid log Input";
     }
 
     // Check for square root of negative number
-    else if (/√\(\-/g.test(expression)) {
+    else if (/√\(?\-/g.test(expression)) {
         // Human-readable error for invalid square root input
         errorMessage = "Error: Negative Square Root";
     }
