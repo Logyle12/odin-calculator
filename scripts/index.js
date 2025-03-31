@@ -808,15 +808,30 @@ function evaluateExpression(expression) {
         console.log('Operator Matches:');
         console.table(operatorMatches);
 
-        // Process the matched expressions
-        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression);
-
-        // Update expression, unwrapping single-number parentheses if present  
-        expression = simplifiedExpression.replaceAll(singleNumberRegex, '$1');
+        // Process the matched expressions unwrapping single-number parentheses if present 
+        const simplifiedExpression = simplifyExpression(operatorId, operatorMatches, expression).replaceAll(singleNumberRegex, '$1');
 
         // Log the updated expression
-        console.log('Simplified Expression:', expression);
+        console.log('Simplified Expression:', simplifiedExpression);
         console.log('\n');
+
+        // Check expression for mathematical errors
+        const validationResult = validateExpression(simplifiedExpression);
+
+        // Check if the expression is structurally valid before proceeding
+        if (validationResult.isValid) {
+            // Update expression 
+            expression = simplifiedExpression;
+        }
+
+        // Otherwise store validation result and stop evaluation
+        else {
+            // Attach validation outcome to calculator for access on equals press 
+            calculator['validationResult'] = validationResult;
+
+            // Prevent further evaluation of an invalid expression
+            return;
+        }
     }
 
     return expression;
@@ -914,9 +929,11 @@ function processResult(displayElement, expression) {
     
     // Check expression for mathematical errors
     const validationResult = validateExpression(expression);
-    console.log('Validation Result:');
-    console.table(validationResult);
+    
+    // Attach validation outcome to calculator for access on equals press 
+    calculator['validationResult'] = validationResult;
 
+    // Log current operand for debugging
     console.log('Current Operand:', calculator.currentOperand);
     
     // Process expression only if valid results exist (non-empty and numeric)
@@ -1407,8 +1424,8 @@ function updateDisplay(key) {
                 // Convert the displayed result to a number for validation  
                 const numericResult = parseFloat(resultDisplay.value.replaceAll(',', ''));
 
-                // Check expression for mathematical errors
-                const validationResult = validateExpression(finalExpression);
+                // Check for mathematical errors in expression  
+                const validationResult = calculator.validationResult;
 
                 // Process only if there's an equation to evaluate
                 if (finalExpression !== calculator.currentOperand) {
