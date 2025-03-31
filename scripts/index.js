@@ -891,6 +891,12 @@ function displayComputedResult(displayElement, expression) {
             displayElement.value = computedResult;
         }
     }
+
+    // Otherwise clear display if result is NaN or undefined 
+    else {
+        // Remove previous valid result to prevent confusion  
+        displayElement.value = '';
+    }
 }
 
 // Format result, switching to scientific notation if it exceeds digit limit
