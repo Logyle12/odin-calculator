@@ -166,7 +166,6 @@ const keyMap = {
     // Clear (AC)
     'Escape': { normal: 'key-AC', shift: 'key-AC' },
     'KeyA': { normal: 'key-AC', shift: 'key-AC' },
-    'KeyC': { normal: 'key-AC', shift: 'key-AC' },
 
     // Delete (DEL)
     'Backspace': { normal: 'key-del', shift: 'key-del' },
