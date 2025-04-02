@@ -7,8 +7,14 @@
     color: rgb(255, 255, 255);
 }
 
+/* Display Styles */
 .theme-default .calc-display {
     background-color: rgb(24, 31, 51);
+}
+
+
+.theme-default .menu-btn:hover {
+    background-color: rgb(83, 93, 121);
 }
 
 /* Vertical Separator */
@@ -75,8 +81,13 @@
     color: rgb(54, 54, 44);
 }
 
+/* Display Styles */
 .theme-light .calc-display {
     background-color: rgb(210, 205, 205);
+}
+
+.theme-light .menu-btn:hover {
+    background-color: rgb(180, 180, 180);
 }
 
 /* Vertical Separator */
@@ -140,8 +151,13 @@
     color: rgb(255, 229, 61);
 }
 
+/* Display Styles */
 .theme-dark .calc-display {
     background-color: rgb(30, 9, 54)
+}
+
+.theme-dark .menu-btn:hover {
+    background-color: rgb(75, 35, 145);
 }
 
 /* Vertical Separator */
