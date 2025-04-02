@@ -12,7 +12,6 @@
     background-color: rgb(24, 31, 51);
 }
 
-
 .theme-default .menu-btn:hover {
     background-color: rgb(83, 93, 121);
 }
@@ -50,6 +49,23 @@
     background-position: bottom;
     box-shadow: inset 0px -4px 0px rgb(140, 35, 35);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); 
+}
+
+/* Help Styles */
+.theme-default .calc-help-sidebar {
+    background: linear-gradient(to right, rgb(60, 75, 115), rgb(48, 60, 89));
+    color: rgb(230, 230, 230); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.theme-default .shortcut-item:hover {
+    background-color: rgba(120, 133, 172, 0.6); 
+    box-shadow: 0 0 10px rgba(120, 133, 172, 0.5); 
+}
+
+.theme-default .calc-help-sidebar .shortcut-key {
+    background-color: rgba(100, 113, 152, 0.5);
+    outline: 1.5px solid rgb(230, 230, 230);
 }
 
 /* Slider Styles */
@@ -120,6 +136,23 @@
     background-size: 100% 200%;
     background-position: bottom;
     box-shadow: inset 0px -4px 0px rgb(160, 50, 20);
+}
+
+/* Help Styles */
+.theme-light .calc-help-sidebar {
+    background: linear-gradient(to right, rgb(220, 220, 220), rgb(245, 245, 245));
+    color: rgb(40, 40, 40);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-light .shortcut-item:hover {
+    background-color: rgba(100, 100, 100, 0.2); 
+    box-shadow: 0 0 10px rgba(100, 100, 100, 0.4); 
+}
+
+.theme-light .calc-help-sidebar .shortcut-key {
+    background-color: rgba(80, 80, 80, 0.15);
+    outline: 1.5px solid rgb(40, 40, 40);
 }
 
 /* Slider Styles */
@@ -194,6 +227,23 @@
 
 .theme-dark .calc-keypad #key-equals > .key-text {
     color: rgb(255, 255, 255);
+}
+
+/* Help Styles */
+.theme-dark .calc-help-sidebar {
+    background: linear-gradient(to right, rgb(40, 20, 80), rgb(25, 10, 50));
+    color: rgb(206, 206, 43);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.theme-dark .shortcut-item:hover {
+    background-color: rgba(255, 229, 61, 0.4); 
+    box-shadow: 0 0 12px rgba(255, 229, 61, 0.6);
+}
+
+.theme-dark .calc-help-sidebar .shortcut-key {
+    background-color: rgba(255, 229, 61, 0.3);
+    outline: 1.5px solid rgb(220, 220, 220);
 }
 
 /* Slider Styles */
