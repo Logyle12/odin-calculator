@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    overflow: hidden;
+}
+
 .calc-container {
     display: flex;
     justify-content: center;
@@ -40,6 +44,15 @@
     align-items: last baseline;
 }
 
+.calc-settings {
+    display: flex;
+    justify-content: center;
+    align-items: first baseline;
+    width: 10%;
+    height: 100%;
+    column-gap: 5px;
+}
+
 .calc-ui {
     display: flex;
     flex-direction: column;
@@ -63,20 +76,74 @@
     row-gap: 18px;
 }
 
-#title-container {
-    height: 100%;
+.calc-help-sidebar {
     display: flex;
     justify-content: center;
-    align-items: last baseline;
+    align-items: flex-start;
+    width: 300px;
+    min-height: 100svh;
+    padding: 20px;
+    border-radius: 22px 0 0 22px;
+    position: absolute;
+    right: 0px;
+    transform: translateX(300px);
+    transition: transform 0.3s ease-in-out;
 }
 
-.calc-settings {
+.calc-help-sidebar {
+    font-family: 'League Spartan';
+    line-height: 1.5; 
+    letter-spacing: 0.5px; 
+}
+
+.calc-help-sidebar-active {
+    transform: translateX(0px);
+}
+
+.sidebar-heading {
+    font-size: 18px; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+}
+
+.shortcut-list {
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    row-gap: 4px;
+    min-height: 95svh;
+    list-style-type: none;
+    font-style: normal;
+    font-optical-sizing: auto;
+    cursor: pointer;
+    margin: 2px;
+}
+
+.shortcut-item {
+    border-radius: 6px;
+}
+
+.shortcut-item, .sidebar-heading {
+    padding: 5px 10px;
+}
+
+.shortcut-key {
+    display: inline-flex;
+    font-size: 12.5px;
+    font-weight: 550;
+    padding: 4.5px 8.5px;
+    border-radius: 6px;
+    min-width: 26px;
+    min-height: 26px;
     justify-content: center;
-    align-items: first baseline;
-    width: 10%;
-    height: 100%;
-    column-gap: 5px;
+    align-items: center;
+    text-align: center;
+}
+
+.shortcut-description {
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .menu-btn {
@@ -134,7 +201,6 @@
     width: 71px;
     height: 26px;
     border-radius: 15px;
-    position: relative;
     padding: 1px 6.5px;
     outline: none;
     opacity: 0.95; 
@@ -162,6 +228,7 @@
 }
 
 .calc-display, .calc-keypad {
+    padding: 28px 32px 28px 22px;
     border-radius: 10px;
 }
 
@@ -171,7 +238,6 @@
     align-items: center;
     width: 100%;
     height: 138px;
-    padding: 28px 32px 28px 22px;
 }
 
 #display-value-container {
@@ -180,8 +246,8 @@
     align-items: center;
     flex-direction: column;
     row-gap: 5px;
-    width: 90%;
     height: 94px;
+    width: 90%;
 }
 
 .number-display {
@@ -215,10 +281,6 @@
     color:rgba(254, 85, 79, 0.886);
 }
 
-#expression-display, #result-display {
-    position: relative;
-}
-
 #expression-display, #expression-display:focus, #result-display, #transition-result {
     border: none;
     outline: none;
@@ -233,6 +295,7 @@
 .calc-keypad {
     display: flex;
     width: 100%;
+    height: 458px;
     padding: 32px;
     column-gap: 21px;
 }
