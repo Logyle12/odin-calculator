@@ -1,3 +1,9 @@
+// Store keyboard button
+const keyboardBtn = document.querySelector('#keyboard-btn');  
+
+// Store sidebar element  
+const calcHelpSidebar = document.querySelector('.calc-help-sidebar');  
+
 // Get the theme switch input to detect user selection
 const themeSwitch = document.querySelector('#theme-switch');
 
@@ -10,24 +16,6 @@ const themeOptions = {
     '2': 'theme-light',   
     '3': 'theme-dark',    
 };
-
-// Updates the calculator theme based on user selection
-function applyTheme() {
-    // Get the currently applied theme 
-    const currentTheme = calculatorUI.classList[1];
-    
-    // Determine the theme corresponding to the selected switch value
-    const selectedTheme = themeOptions[themeSwitch.value];
-    
-    // Replace the old theme with the new one to reflect the change
-    calculatorUI.classList.replace(currentTheme, selectedTheme);  
-}
-
-// Adds an event listener to update the theme on user input
-function handleThemeSwitch() {
-    // Listen for clicks on the switch and apply the chosen theme
-    themeSwitch.addEventListener('click', applyTheme);
-}
 
 // Retrieve display elements
 const expressionDisplay = document.querySelector('#expression-display');
@@ -221,10 +209,60 @@ function processKeyEvent(event) {
     console.log('\n')  
 }
 
+// Handle key button clicks
+function handleKeyActions() {
+    // Iterate through each key button
+    keyButtons.forEach((key) => {
+        // Add click event handler
+        key.onclick = () => {           
+            // Update display with key action
+            updateDisplay(key);
+        }
+    });
+}
+
 // Sets up a listener for keyboard input events  
 function handleKeyboardInput() {  
     // Attach the keydown event listener to trigger processKeyEvent  
     document.addEventListener('keydown', processKeyEvent)  
+}
+
+// Updates the calculator theme based on user selection
+function applyTheme() {
+    // Get the currently applied theme 
+    const currentTheme = calculatorUI.classList[1];
+    
+    // Determine the theme corresponding to the selected switch value
+    const selectedTheme = themeOptions[themeSwitch.value];
+    
+    // Replace the old theme with the new one to reflect the change
+    calculatorUI.classList.replace(currentTheme, selectedTheme);  
+}
+
+// Adds an event listener to update the theme on user input
+function handleThemeSwitch() {
+    // Listen for clicks on the switch and apply the chosen theme
+    themeSwitch.addEventListener('click', applyTheme);
+}
+
+// Function to handle sidebar visibility 
+function toggleHelpSidebar() {
+    // Remove active state if currently active  
+    if (calcHelpSidebar.classList.contains('calc-help-sidebar-active')) { 
+        // Hide the sidebar 
+        calcHelpSidebar.classList.remove('calc-help-sidebar-active');  
+    }  
+    // Otherwise, toggled the active state  
+    else {  
+        // Toggle sidebar visibility
+        calcHelpSidebar.classList.toggle('calc-help-sidebar-active');  
+    }  
+}
+
+// Toggles the keyboard shortcut sidebar with an event listener
+function handleHelpSidebar() {
+    // Toggle the sidebar when clicked  
+    keyboardBtn.addEventListener('click', toggleHelpSidebar); 
 }
 
 // Determines the appropriate digit limit 
@@ -370,18 +408,6 @@ function squareRoot(operands) {
 
     // Returns the computed square root
     return sqrtValue;
-}
-
-// Handle key button clicks
-function handleKeyActions() {
-    // Iterate through each key button
-    keyButtons.forEach((key) => {
-        // Add click event handler
-        key.onclick = () => {           
-            // Update display with key action
-            updateDisplay(key);
-        }
-    });
 }
 
 // Handles implicit multiplication
@@ -609,7 +635,7 @@ function findNextOperation(operatorRegex, expression) {
         for (const subExpression of groupedExpressions) {
             
             // lLog grouped expression for debugging
-            // console.log('Groups:', groupedExpressions);
+            console.log('Groups:', groupedExpressions);
             
             // Check if sub-expression contains target operation
             if (operatorRegex.test(subExpression)) {
@@ -751,7 +777,8 @@ function evaluateExpression(expression) {
     }
 
     // Log the sorted operator queue for debugging
-    // console.table(calculator.operatorQueue);
+    console.log('Queue');
+    console.table(calculator.operatorQueue);
 
     // Check if the expression is a lone number in parentheses 
     if (/^\(*\-?\d+\.?\d*\%?\)*$/g.test(expression)) {
@@ -1473,9 +1500,6 @@ function updateDisplay(key) {
                     }
                 }
             }
-
-            console.log('Queue');
-            console.table(calculator.operatorQueue);
             break;
 
         case 'math-function':
@@ -1541,4 +1565,7 @@ handleKeyboardInput();
 
 // Initialize event listener for theme switch 
 handleThemeSwitch(); 
+
+// Initialize event listener for help sidebar
+handleHelpSidebar(); 
 
