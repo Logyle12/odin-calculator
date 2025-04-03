@@ -205,6 +205,40 @@ function processKeyEvent(event) {
         console.log('Key Id:', keyId)  
     }  
 
+    // Otherwise handle parentheses entry
+    else {
+        // Store depth tracker reference to track parentheses depth
+        const depthTracker = calculator.depthTracker;
+
+        // Only process when shift key is held down
+        if (event.shiftKey) {
+            // Check which key was pressed with shift
+            switch (keyCode) {
+                // Opening parenthesis (shift+9)
+                case 'Digit9':
+                    // Implicit multiplication case
+                    if (/(?:\d|\))$/g.test(expressionDisplay.value) && expressionDisplay.value !== '0') {
+                        // Append the padded multiplication operator
+                        insertMultiplication();
+                    }
+
+                    // Add opening parenthesis and update depth counter
+                    addOpeningParenthesis(keyValue, depthTracker);
+                    break;
+
+                // Closing parenthesis (shift+0)
+                case 'Digit0':
+                    // Add closing parenthesis if balance allows and update depth counter
+                    addClosingParenthesis(keyValue, depthTracker);
+                    break;
+
+                // Ignore other shift key combinations
+                default:
+                    break;
+            }
+        }
+    }
+
     // Print a newline for log separation  
     console.log('\n')  
 }
@@ -424,6 +458,57 @@ function insertMultiplication() {
 
     // Clear the current operand for next input
     calculator.currentOperand = '';
+}
+
+// Adds an opening parenthesis to start a nested expression
+function addOpeningParenthesis(openingSymbol, depthTracker) {    
+    // Update the opening count
+    depthTracker.openingCount += 1;
+
+    // Adjust nesting balance when opening previously closed groups
+    if (depthTracker.closingCount > 0) {
+        // Decrement closing count to maintain proper parentheses tracking
+        depthTracker.closingCount -= 1;
+    }
+    
+    // Update maximum nesting depth for parentheses validation
+    if (depthTracker.openingCount > depthTracker.highestDepth) {
+        // Record new highest depth to ensure proper closing of all parentheses
+        depthTracker.highestDepth = depthTracker.openingCount;
+    }
+
+    // Replace '0' with opening parenthesis or append to existing expression
+    expressionDisplay.value = expressionDisplay.value === '0' 
+        ? openingSymbol 
+        : expressionDisplay.value + openingSymbol;
+
+    // Log opening count for debugging
+    console.log('Opening Count:', depthTracker.openingCount);
+}
+
+// Adds a closing parenthesis to complete expression
+function addClosingParenthesis(closingSymbol, depthTracker) {
+    // Only allow closing parenthesis if there are unclosed ones
+    if (depthTracker.closingCount < depthTracker.highestDepth) {
+        // Append closing parenthesis when there are unclosed ones
+        expressionDisplay.value += closingSymbol;
+
+        // Track closing parentheses in expression  
+        depthTracker.closingCount += 1;
+        depthTracker.openingCount -= 1;
+
+        // Reset trackers when parentheses are balanced
+        if (depthTracker.closingCount === depthTracker.highestDepth) {
+            // Zero out both depth counters
+            depthTracker.closingCount = depthTracker.highestDepth = 0;
+        }
+
+        // Log closing parentheses state
+        console.log('Opening Count:', depthTracker.openingCount);
+        console.log('Closing Count:', depthTracker.closingCount);
+        console.log('Highest Depth:', depthTracker.highestDepth);
+        console.log('\n');
+    }
 }
 
 // Calculates an operator's precedence, factoring in nesting depth
@@ -1338,58 +1423,16 @@ function updateDisplay(key) {
                 // Destructure parentheses from action tuple
                 const [openingParenthesis, closingParenthesis] = keyAction;
 
-                // Match preceding operator or math function (e.g. sqrt or log)
+                // Check if parenthesis follows an operator or function
                 if (/(?:[+−÷×^(]|log|ln|√)$/g.test(displayText) || expressionDisplay.value === '0') {
-                    // Replace '0' with opening parenthesis or append to existing expression
-                    expressionDisplay.value = expressionDisplay.value === '0' 
-                    ? openingParenthesis 
-                    : expressionDisplay.value + openingParenthesis;
-
-                    // Track opening parentheses in expression 
-                    depthTracker.openingCount += 1;
-
-                    // Adjust nesting balance when opening previously closed groups
-                    if (depthTracker.closingCount > 0) {
-                        // Decrement closing count to maintain proper parentheses tracking
-                        depthTracker.closingCount -= 1;
-                    }
-                    
-                    // Update maximum nesting depth for parentheses validation
-                    if (depthTracker.openingCount > depthTracker.highestDepth) {
-                        // Record new highest depth to ensure proper closing of all parentheses
-                        depthTracker.highestDepth = depthTracker.openingCount;
-                    }
-
-                    // Log opening parentheses state
-                    console.log('Opening Count:', depthTracker.openingCount);
-                    console.log('Closing Count:', depthTracker.closingCount);
-                    console.log('Highest Depth:', depthTracker.highestDepth);
-                    console.log('\n');
+                    // Add opening parenthesis in appropriate context
+                    addOpeningParenthesis(openingParenthesis, depthTracker);
                 }
             
-                // Close group after completed operand operator inside parentheses
+                // Check if we can close an existing group of parentheses
                 else if (calculator.depthTracker.openingCount > 0) {
-                    // Only allow closing parenthesis if there are unclosed ones
-                    if (depthTracker.closingCount < depthTracker.highestDepth) {
-                        // Append closing parenthesis when there are unclosed ones
-                        expressionDisplay.value += closingParenthesis;
-                    
-                        // Track closing parentheses in expression  
-                        depthTracker.closingCount += 1;
-                        depthTracker.openingCount -= 1;
-
-                        // Reset trackers when parentheses are balanced
-                        if (depthTracker.closingCount === depthTracker.highestDepth) {
-                            // Zero out both depth counters
-                            depthTracker.closingCount = depthTracker.highestDepth = 0;
-                        }
-
-                        // Log closing parentheses state
-                        console.log('Opening Count:', depthTracker.openingCount);
-                        console.log('Closing Count:', depthTracker.closingCount);
-                        console.log('Highest Depth:', depthTracker.highestDepth);
-                        console.log('\n');
-                    }
+                    // Add closing parenthesis only when there are open parentheses to match
+                    addClosingParenthesis(closingParenthesis, depthTracker);
                 }
 
                 // Implicit multiplication case
