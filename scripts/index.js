@@ -163,25 +163,25 @@ const keyMap = {
 // Handles keydown events and triggers corresponding button clicks  
 function processKeyEvent(event) {  
     // Get the event's key code  
-    const keyCode = event.code  
+    const keyCode = event.code;
     // Log the key code for debugging  
-    console.log('Key Code:', keyCode)  
+    console.log('Key Code:', keyCode);
 
     // Get the key's actual value  
-    const keyValue = event.key  
+    const keyValue = event.key; 
     // Log the key value for debugging  
-    console.log('Key Value:', keyValue)  
+    console.log('Key Value:', keyValue);
 
     // If a digit key (0-9) is pressed without Shift, find the matching button  
     if (/[0-9]/.test(keyValue) && !event.shiftKey && (keyCode.includes('Digit') || keyCode.includes('Numpad'))) {  
         // Locate the button corresponding to the pressed digit  
-        const digitButton = [...keyButtons].find((key) => key.id === `key-${keyValue}`)  
+        const digitButton = [...keyButtons].find((key) => key.id === `key-${keyValue}`);
         
         // Log the matched button for debugging  
-        console.log('Digit Button:', digitButton)  
+        console.log('Digit Button:', digitButton);  
         
         // Simulate a click on the digit button  
-        digitButton.click()  
+        digitButton.click();  
         
         // Exit the function after handling the digit input  
         return;  
@@ -190,19 +190,19 @@ function processKeyEvent(event) {
     // If the key exists in keyMap, determine the correct key ID  
     else if (keyMap[keyCode]) {  
         // Get the appropriate key ID based on whether Shift is pressed  
-        const keyId = event.shiftKey ? keyMap[keyCode].shift : keyMap[keyCode].normal  
+        const keyId = event.shiftKey ? keyMap[keyCode].shift : keyMap[keyCode].normal;  
         
         // Locate the button corresponding to the mapped key  
-        const keyButton = [...keyButtons].find((key) => key.id === keyId)  
+        const keyButton = [...keyButtons].find((key) => key.id === keyId);  
         
         // Log the matched button for debugging  
-        console.log('Key Button')  
+        console.log('Key Button');  
         
         // Simulate a click on the mapped key button  
-        keyButton.click()  
+        keyButton.click();
         
         // Log the resolved key ID for debugging  
-        console.log('Key Id:', keyId)  
+        console.log('Key Id:', keyId);  
     }  
 
     // Otherwise handle parentheses entry
@@ -240,7 +240,21 @@ function processKeyEvent(event) {
     }
 
     // Print a newline for log separation  
-    console.log('\n')  
+    console.log('\n');
+}
+
+// Ensures newest input is visible by auto-scrolling to the end
+function scrollToLatestInput() {
+    // Get full width of scrollable content
+    const scrollWidth = expressionDisplay.scrollWidth;
+
+    // Auto-scroll to keep newest input visible
+    expressionDisplay.scrollTo({
+        // Scroll to full width of content
+        left: scrollWidth, 
+        // Immediate scroll without animation
+        behavior: 'instant', 
+    });
 }
 
 // Handle key button clicks
@@ -251,6 +265,9 @@ function handleKeyActions() {
         key.onclick = () => {           
             // Update display with key action
             updateDisplay(key);
+
+            // Keep view scrolled to show the newest input
+            scrollToLatestInput();
         }
     });
 }
@@ -258,7 +275,13 @@ function handleKeyActions() {
 // Sets up a listener for keyboard input events  
 function handleKeyboardInput() {  
     // Attach the keydown event listener to trigger processKeyEvent  
-    document.addEventListener('keydown', processKeyEvent)  
+    document.addEventListener('keydown', (event) => {
+        // Converts keyboard press into appropriate calculator action
+        processKeyEvent(event);
+
+        // Keep view scrolled to show the newest input
+        scrollToLatestInput();
+    });
 }
 
 // Updates the calculator theme based on user selection
@@ -317,7 +340,7 @@ function getDigitLimit(valueString) {
 // Counts total digits for integers or decimal places for floats
 function getDigitCount(valueString) {
     // Count digits after decimal point or total digits if integer
-    const digitCount = valueString.replace(/\d+\./g, '').length
+    const digitCount = valueString.replace(/\d+\./g, '').length;
 
     // Return the computed digit count 
     return digitCount;
@@ -365,7 +388,7 @@ function powerOfTen(operands) {
     const [multiplier, exponent] = operands;
 
     // Calculate multiplier × 10^exponent
-    const powerValue = multiplier * raiseToPower([10, exponent])
+    const powerValue = multiplier * raiseToPower([10, exponent]);
 
     // Returns the computed power value
     return powerValue;
@@ -1589,15 +1612,6 @@ function updateDisplay(key) {
         default:
             break;
     }
-
-    // Get full width of scrollable content
-    const scrollWidth = expressionDisplay.scrollWidth;
-
-    // Auto-scroll to keep newest input visible
-    expressionDisplay.scrollTo({
-        left: scrollWidth, // Scroll to full width of content
-        behavior: 'instant', // Immediate scroll without animation
-    });
 }
 
 // Initialize event listener for key actions  
