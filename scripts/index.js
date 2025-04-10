@@ -735,28 +735,66 @@ function findNextOperation(operatorRegex, expression) {
     let currentOperation;
     
     // Finds any expressions within parentheses - they get priority
-    const groupedExpressions = expression.match(/\(\-?\d+\.?\d*\%?[+−÷×^E]+[^()]+\)/gi);
+    const groupedExpressions = Array.from(expression.matchAll(/\(.+?\)+/g));
  
     // Process any parenthesized expressions first
     if (groupedExpressions !== null) {
-        // Iterate through each parenthesized expression
-        for (const subExpression of groupedExpressions) {
-            
-            // lLog grouped expression for debugging
-            console.log('Groups:', groupedExpressions);
-            
-            // Check if sub-expression contains target operation
+        // Loop through each matched group of parenthesized expressions
+        for (let i = 0; i < groupedExpressions.length; i++) {
+            // Track how deeply nested each expression is
+            let depthLevel = 0;
+
+            // Extract just the subexpression string
+            const subexpression = groupedExpressions[i][0];
+
+            // Loop through each character in the subexpression
+            for (let charIndex = 0; charIndex < subexpression.length; charIndex++) {
+                // Get the current character
+                const character = subexpression[charIndex];
+
+                // Increase depth level for every opening parenthesis
+                if (character === '(') {
+                    // Track nesting level
+                    depthLevel += 1;
+                }
+
+                // Assign depth once end of expression is reached
+                if (charIndex + 1 === subexpression.length) {
+                    // Store the calculated depth value in the array
+                    groupedExpressions[i][1] = depthLevel;
+                }
+            }
+        }
+
+        // Sort groups by nesting depth, deepest first
+        groupedExpressions.sort((matchA, matchB) => matchB[1] - matchA[1]);
+
+        // Log grouped matches for debugging
+        console.log('Groups:');
+        
+        // Visualize grouped expressions and their depth
+        console.table(groupedExpressions);
+
+        // Loop through each group starting with the deepest
+        for (const group of groupedExpressions) {
+            // Get the subexpression from the group
+            const subExpression = group[0];
+
+            // If it contains a valid operator, extract and return it
             if (operatorRegex.test(subExpression)) {
-                
-                // Extract and return first matching operation
+                // Extract and store the operation matching our pattern 
                 currentOperation = subExpression.match(operatorRegex);
+
+                // Return the matched operation for processing
                 return currentOperation;
             }
         }
     }
  
-    // Find and return operation from main expression if no parenthesized matches
+    // Match the operation pattern in the main expression when no groups exist
     currentOperation = expression.match(operatorRegex);
+
+    // Return the matched operation for processing
     return currentOperation;
 }
 
