@@ -967,8 +967,8 @@ function evaluateExpression(expression) {
 
         // Match operands around operator or functions
         const pattern = /[+−÷×^E]/.test(currentOperator)
-            ? `([^()+−÷×]+(?:\\E?(?<=\\E)[+-]\\d+)?)\\${currentOperator}([^()+−÷×]+(?:\\E?(?<=\\E)[+-]\\d+)?)`
-            : `${currentOperator}([^()+−÷×]+)`;
+            ? `([^()+−÷×^logn√]+(?:\\E?(?<=\\E)[+-]\\d+)?)\\${currentOperator}([^()+−÷×^logn√]+(?:\\E?(?<=\\E)[+-]\\d+)?)`
+            : `${currentOperator}([^()+−÷×^]+)`;
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern, 'i');
