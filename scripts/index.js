@@ -26,6 +26,8 @@ const keyButtons = document.querySelectorAll('.key');
 
 // Calculator object holding state and configurations
 const calculator = {
+    calculationHistory: [],
+
     // Store latest number value
     currentOperand: expressionDisplay.value,
 
@@ -112,7 +114,7 @@ const calculator = {
     },
 
     // Store pending operations awaiting calculation
-    operatorQueue: [],
+    operationsQueue: [],
 };
 
 // Maps keyboard keys to their corresponding calculator buttons
@@ -487,7 +489,7 @@ function insertMultiplication() {
 
     // Log the current state of the operator queue 
     console.log('Operator Queue:');
-    console.table(calculator.operatorQueue);
+    console.table(calculator.operationsQueue);
 
     // Clear the current operand for next input
     calculator.currentOperand = '';
@@ -877,7 +879,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     console.log('Matched Segment:', matchedSegment);
 
     // Log the extracted operands for debugging
-    console.log('Operands:', operands);
+    // console.log('Operands:', operands);
 
     // Log the operator ID
     // console.log('Operator Id:', operatorId);
@@ -895,7 +897,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
     // Determine maximum digits allowed for the result
     const digitLimit = getDigitLimit(simplifiedResult);
 
-    console.log('Digit Limit:', digitLimit);
+    // console.log('Digit Limit:', digitLimit);
 
     // Keep scientific notation or fix decimal precision as needed
     const formattedResult = simplifiedResult.toString().includes('e') 
@@ -910,7 +912,7 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
         .replace(matchedSegment, simplifiedSegment);
 
     // Log the result of the operation
-    console.log('Simplified Result:', simplifiedResult);
+    // console.log('Simplified Result:', simplifiedResult);
 
     // Log the formatted result
     console.log('Formatted Result:', formattedResult);
@@ -925,19 +927,19 @@ function simplifyExpression(operatorId, operatorGroup, originalExpression) {
 // Evaluate expression by operator precedence
 function evaluateExpression(expression) {
     // Get the current size of the operator queue   
-    const queueSize = calculator.operatorQueue.length;
+    const queueSize = calculator.operationsQueue.length;
         
     // If the queue has more than one operator, sort by precedence
     if (queueSize > 1) {
         // Arrange operators by their precedence
-        calculator.operatorQueue.sort(
+        calculator.operationsQueue.sort(
             (operatorA, operatorB) => operatorB[2] - operatorA[2]
         );    
     }
 
     // Log the sorted operator queue for debugging
-    console.log('Queue');
-    console.table(calculator.operatorQueue);
+    // console.log('Queue');
+    // console.table(calculator.operationsQueue);
 
     // Check if the expression is a lone number in parentheses 
     if (/^\(*\-?\d+\.?\d*\%?\)*$/g.test(expression)) {
@@ -976,7 +978,7 @@ function evaluateExpression(expression) {
         }
 
         // Destructure priority operator's details from queue
-        const [operatorId, currentOperator] = calculator.operatorQueue[i];
+        const [operatorId, currentOperator] = calculator.operationsQueue[i];
 
         // Match operands around operator or functions
         const pattern = /[+−÷×^E]/.test(currentOperator)
@@ -985,7 +987,7 @@ function evaluateExpression(expression) {
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern, 'i');
-        console.log('Regex:', regex);
+        // console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
@@ -1126,7 +1128,7 @@ function processResult(displayElement, expression) {
     calculator['validationResult'] = validationResult;
 
     // Log current operand for debugging
-    console.log('Current Operand:', calculator.currentOperand);
+    // console.log('Current Operand:', calculator.currentOperand);
     
     // Process expression only if valid results exist (non-empty and numeric)
     if (validationResult.isValid && calculator.currentOperand.length !== 0) {
@@ -1270,9 +1272,9 @@ function updateDisplay(key) {
                 console.log('\n');
 
                 // If non-empty queue
-                if (calculator.operatorQueue.length !== 0) {
+                if (calculator.operationsQueue.length !== 0) {
                     // Clear operator queue
-                    calculator.operatorQueue = [];
+                    calculator.operationsQueue = [];
                 }
             }
 
@@ -1313,20 +1315,20 @@ function updateDisplay(key) {
                         console.log('Previous Operator:', previousOperator);
 
                         // Get the index of the last matching operator in the queue    
-                        const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
+                        const operatorIndex = calculator.operationsQueue.findLastIndex(findOperatorIndex, previousOperator);
 
                         // Log queue before dequeueing operator
                         console.log('Queue (Before):');
                         // Log current queue state of operators
-                        console.table(calculator.operatorQueue);
+                        console.table(calculator.operationsQueue);
 
                         // Dequeue the last matching operator
-                        calculator.operatorQueue.splice(operatorIndex, 1);
+                        calculator.operationsQueue.splice(operatorIndex, 1);
 
                         // Log queue after dequeueing operator
                         console.log('Queue (After):');
                         // Log current queue state of operators
-                        console.table(calculator.operatorQueue);
+                        console.table(calculator.operationsQueue);
                     }
 
                     // Increment opening count when deleting a closing parenthesis
@@ -1367,7 +1369,7 @@ function updateDisplay(key) {
                     const lastCharacter = updatedExpression.at(-1);
 
                     // Fix incomplete expressions ending in an operator  
-                    if (/[+−÷×]/.test(lastCharacter) && calculator.operatorQueue.length > 1) {
+                    if (/[+−÷×]/.test(lastCharacter) && calculator.operationsQueue.length > 1) {
                         // Append '1' for multiplicative operators and'0' for additive operators 
                         updatedExpression += /[÷×]/.test(lastCharacter) ? '1' : '0';
                     }
@@ -1448,7 +1450,7 @@ function updateDisplay(key) {
                 else if (/[+−÷×^E]/.test(previousOperator)) {
                     // Display current operation queue for debugging
                     console.log('Current Queue:');
-                    console.table(calculator.operatorQueue);
+                    console.table(calculator.operationsQueue);
 
                     // Regex to match and replace the previous operator
                     const operatorRegex = new RegExp(`\\s?\\${previousOperator}\\s?$`);
@@ -1466,17 +1468,17 @@ function updateDisplay(key) {
                     expressionDisplay.value = updatedExpression;
 
                     // Get the index of the last matching operator in the queue    
-                    const operatorIndex = calculator.operatorQueue.findLastIndex(findOperatorIndex, previousOperator);
+                    const operatorIndex = calculator.operationsQueue.findLastIndex(findOperatorIndex, previousOperator);
 
                     // Dequeue the last matching operator
-                    const operatorEntry = calculator.operatorQueue[operatorIndex];
+                    const operatorEntry = calculator.operationsQueue[operatorIndex];
 
                     // Update operator queue entry with new operator details
                     [operatorEntry[0], operatorEntry[1], operatorEntry[2]] = [keyId, keySymbol, operatorRank];
                 
                     // Display updated operation queue for debugging
                     console.log('Updated Queue:');
-                    console.table(calculator.operatorQueue);
+                    console.table(calculator.operationsQueue);
                 }
 
                 // Add operator if we have a valid number and proper expression ending
@@ -1491,7 +1493,7 @@ function updateDisplay(key) {
                     expressionDisplay.value += operator;
 
                     // Add the operator and action to the queue
-                    calculator.operatorQueue.push([keyId, keySymbol, operatorRank]);
+                    calculator.operationsQueue.push([keyId, keySymbol, operatorRank]);
 
                     // Reset tracked value after operator added
                     calculator.currentOperand = '';
@@ -1587,6 +1589,35 @@ function updateDisplay(key) {
                 if (finalExpression !== calculator.currentOperand) {
                     // Process expression only if valid results exist (non-empty and numeric)
                     if (validationResult.isValid && !isNaN(numericResult) && resultDisplay.value.length > 0) {
+                        // Clear console
+                        console.clear();
+
+                        // Store calculation state for history tracking
+                        const calculationState = {
+                            inputExpression: expressionDisplay.value,
+                            operationsQueue: calculator.operationsQueue.slice(), 
+                        };
+
+                        // Add current calculation to history array
+                        calculator.calculationHistory.push(calculationState);
+
+                        // Log history data for debugging
+                        console.log('Calculation History:');
+                        console.table(calculator.calculationHistory);
+
+                        // Display each saved calculation for debugging
+                        calculator.calculationHistory.forEach((historyEntry) => {
+                            // Log the stored expression
+                            console.log('Input Expression:', historyEntry.inputExpression);
+                            
+                            // Log the associated operation queue
+                            console.log('Operations Queue:');
+                            console.table(historyEntry.operationsQueue);
+                            
+                            // Add separator for readability
+                            console.log('\n');
+                        });
+
                         // Compute new result and update display
                         processResult(expressionDisplay, finalExpression);
         
@@ -1600,7 +1631,7 @@ function updateDisplay(key) {
                         resultDisplay.id = 'transition-result';
         
                         // Reset operator queue after final calculation
-                        calculator.operatorQueue = [];
+                        calculator.operationsQueue = [];
                     } 
     
                     
@@ -1661,7 +1692,7 @@ function updateDisplay(key) {
                 parenthesesKey.click();
     
                 // Enqueue function with its symbol and precedence for later evaluation
-                calculator.operatorQueue.push([keyId, keySymbol, operatorRank]); 
+                calculator.operationsQueue.push([keyId, keySymbol, operatorRank]); 
             }
 
             break;
