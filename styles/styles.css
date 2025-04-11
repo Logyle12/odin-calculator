@@ -47,10 +47,13 @@ body {
 .calc-settings {
     display: flex;
     justify-content: center;
-    align-items: first baseline;
-    width: 10%;
-    height: 100%;
+    align-items: center;
+    width: fit-content;
+    position: absolute;
     column-gap: 5px;
+    bottom: 28px;
+    left: 24px;
+    z-index: 1;
 }
 
 .calc-ui {
@@ -238,6 +241,7 @@ body {
     align-items: center;
     width: 100%;
     height: 138px;
+    position: relative;
 }
 
 #display-value-container {
@@ -247,7 +251,7 @@ body {
     flex-direction: column;
     row-gap: 5px;
     height: 94px;
-    width: 90%;
+    width: 98%;
 }
 
 .number-display {
@@ -273,7 +277,7 @@ body {
 }
 
 #expression-display, #transition-result {
-    font-size: 38px;
+    font-size: 32.5px;
     margin-top: 5px;
     height: 60%;
 }
