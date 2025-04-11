@@ -261,6 +261,7 @@ body {
     color: inherit;
     text-align: end;
     background-color: transparent;
+    position: relative;
 }
 
 #transition-result {
