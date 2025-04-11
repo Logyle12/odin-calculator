@@ -243,6 +243,14 @@ function processKeyEvent(event) {
     console.log('\n');
 }
 
+// Helper functions
+
+// Check if an expression ends with a number or closing parenthesis
+function endsWithValidToken(expression) {
+    // Verify expression ends with a valid token
+    return /(?:\-?\d+\.?\d*\%?)$|\)$/gi.test(expression);
+}
+
 // Ensures newest input is visible by auto-scrolling to the end
 function scrollToLatestInput() {
     // Get full width of scrollable content
@@ -256,6 +264,8 @@ function scrollToLatestInput() {
         behavior: 'instant', 
     });
 }
+
+// Event listeners
 
 // Handle key button clicks
 function handleKeyActions() {
@@ -511,8 +521,11 @@ function addOpeningParenthesis(openingSymbol, depthTracker) {
 
 // Adds a closing parenthesis to complete expression
 function addClosingParenthesis(closingSymbol, depthTracker) {
-    // Only allow closing parenthesis if there are unclosed ones
-    if (depthTracker.closingCount < depthTracker.highestDepth) {
+    // Check if expression ends with a number or closing parenthesis
+    const isValidEnd = endsWithValidToken(expressionDisplay.value);
+
+    // Close parenthesis if there are unclosed ones and expression ends properly
+    if (depthTracker.closingCount < depthTracker.highestDepth && isValidEnd) {
         // Append closing parenthesis when there are unclosed ones
         expressionDisplay.value += closingSymbol;
 
@@ -1393,6 +1406,12 @@ function updateDisplay(key) {
 
             // Only proceed for arithmetic operators
             if  (key.classList.contains('arithmetic-operator')) {
+                // Check if current operand is a valid finite number
+                const isValidNumber = Number.isFinite(parseFloat(calculator.currentOperand));
+
+                // Check if expression ends with a number or closing parenthesis
+                const isValidEnd = endsWithValidToken(expressionDisplay.value);
+
                 // Retrieve operator's inherent precedence level
                 const baseRank = calculator.operators[keyId].rank;
 
@@ -1460,8 +1479,8 @@ function updateDisplay(key) {
                     console.table(calculator.operatorQueue);
                 }
 
-                // Append operator if value exists
-                else if (calculator.currentOperand.length !== 0 && Number.isFinite(parseFloat(calculator.currentOperand))) {
+                // Add operator if we have a valid number and proper expression ending
+                else if (calculator.currentOperand.length !== 0 && isValidNumber && isValidEnd) {
                     // Retrieve operator symbol for pressed key
                     const keySymbol = calculator.operators[keyId].symbol;
 
