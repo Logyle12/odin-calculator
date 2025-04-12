@@ -1,8 +1,7 @@
-// Store keyboard button
-const keyboardBtn = document.querySelector('#keyboard-btn');  
-
-// Store sidebar element  
-const calcHelpSidebar = document.querySelector('.calc-help-sidebar');  
+// Store reference to buttons and sidebars
+const menuButtons = document.querySelectorAll('.menu-btn');  
+const historySidebar = document.querySelector('#history-sidebar');  
+const keyboardSidebar = document.querySelector('#keyboard-sidebar');   
 
 // Get the theme switch input to detect user selection
 const themeSwitch = document.querySelector('#theme-switch');
@@ -162,6 +161,76 @@ const keyMap = {
     'Delete':    { normal: 'key-del', shift: 'key-del' },
 };
 
+// Helper functions
+
+// Check if an expression ends with a number or closing parenthesis
+function endsWithValidToken(expression) {
+    // Verify expression ends with a valid token
+    return /(?:\-?\d+\.?\d*\%?)$|\)$/gi.test(expression);
+}
+
+// Ensures newest input is visible by auto-scrolling to the end
+function scrollToLatestInput() {
+    // Get full width of scrollable content
+    const scrollWidth = expressionDisplay.scrollWidth;
+
+    // Auto-scroll to keep newest input visible
+    expressionDisplay.scrollTo({
+        // Scroll to full width of content
+        left: scrollWidth, 
+        // Immediate scroll without animation
+        behavior: 'instant', 
+    });
+}
+
+// Determines the appropriate digit limit 
+function getDigitLimit(valueString) {
+    // Default to the integer digit limit for whole numbers
+    let digitLimit = calculator.digitLimits.INTEGER;
+ 
+    // Check if the operand contains a decimal point
+    if (/\./g.test(valueString)) {
+        // Use fractional digit limit
+        digitLimit = calculator.digitLimits.DECIMAL;
+    }
+    
+    // Return the digit limit 
+    return digitLimit;
+}
+
+// Counts total digits for integers or decimal places for floats
+function getDigitCount(valueString) {
+    // Count digits after decimal point or total digits if integer
+    const digitCount = valueString.replace(/\d+\./g, '').length;
+
+    // Return the computed digit count 
+    return digitCount;
+}
+
+// Removes the last input element based on expression type
+function removeLastInput(expression) {
+    // Remove just the final character (digit, decimal, parenthesis, etc.)
+    let updatedExpression = expression.slice(0, -1);
+    
+    // Handle operators which have special formatting
+    if (/\s[+−÷×]\s$/.test(expression)) {
+      // Remove the operator and its surrounding spaces (3 characters total)
+      updatedExpression = expression.slice(0, expression.length - 3);
+    } 
+    
+    // Handle mathematical functions that end with an opening parenthesis
+    else if (/(?:log|ln|√)\($/.test(expression)) {
+      // Remove the entire function call syntax
+      updatedExpression = expression.replace(/(?:log|ln|√)\($/gi, '');
+
+    } 
+    
+    // Return the expression with last input removed
+    return updatedExpression;
+}
+
+// Event Listener Callbacks
+
 // Handles keydown events and triggers corresponding button clicks  
 function processKeyEvent(event) {  
     // Get the event's key code  
@@ -245,26 +314,30 @@ function processKeyEvent(event) {
     console.log('\n');
 }
 
-// Helper functions
-
-// Check if an expression ends with a number or closing parenthesis
-function endsWithValidToken(expression) {
-    // Verify expression ends with a valid token
-    return /(?:\-?\d+\.?\d*\%?)$|\)$/gi.test(expression);
+// Updates the calculator theme based on user selection
+function applyTheme() {
+    // Get the currently applied theme 
+    const currentTheme = calculatorUI.classList[1];
+    
+    // Determine the theme corresponding to the selected switch value
+    const selectedTheme = themeOptions[themeSwitch.value];
+    
+    // Replace the old theme with the new one to reflect the change
+    calculatorUI.classList.replace(currentTheme, selectedTheme);  
 }
 
-// Ensures newest input is visible by auto-scrolling to the end
-function scrollToLatestInput() {
-    // Get full width of scrollable content
-    const scrollWidth = expressionDisplay.scrollWidth;
-
-    // Auto-scroll to keep newest input visible
-    expressionDisplay.scrollTo({
-        // Scroll to full width of content
-        left: scrollWidth, 
-        // Immediate scroll without animation
-        behavior: 'instant', 
-    });
+// Function to handle sidebar visibility 
+function toggleSidebar(sidebarPanel) {
+    // Remove active state if currently active  
+    if (sidebarPanel.classList.contains('calc-help-sidebar-active')) { 
+        // Hide the sidebar 
+        sidebarPanel.classList.remove('calc-help-sidebar-active');  
+    }  
+    // Otherwise, toggled the active state  
+    else {  
+        // Toggle sidebar visibility
+        sidebarPanel.classList.toggle('calc-help-sidebar-active');  
+    }  
 }
 
 // Event listeners
@@ -296,16 +369,33 @@ function handleKeyboardInput() {
     });
 }
 
-// Updates the calculator theme based on user selection
-function applyTheme() {
-    // Get the currently applied theme 
-    const currentTheme = calculatorUI.classList[1];
-    
-    // Determine the theme corresponding to the selected switch value
-    const selectedTheme = themeOptions[themeSwitch.value];
-    
-    // Replace the old theme with the new one to reflect the change
-    calculatorUI.classList.replace(currentTheme, selectedTheme);  
+// Sets up event handlers for sidebar toggle buttons
+function handleSidebar() {
+    // Iterates through each menu button to attach click handlers
+    menuButtons.forEach((menuButton) => {
+        // Defines the click event behavior for each button
+        menuButton.onclick = () => {
+            // Gets the ID of the clicked button to determine which sidebar to toggle
+            const buttonId = menuButton.id;
+
+            // Determines which sidebar to show based on button ID
+            switch (buttonId) {
+                // Shows calculation history when history button clicked
+                case 'history-btn':
+                    toggleSidebar(historySidebar);
+                    break;
+
+                // Shows keyboard shortcuts when keyboard button clicked
+                case 'keyboard-btn':
+                    toggleSidebar(keyboardSidebar);
+                    break;
+
+                // Handles any unexpected button IDs
+                default:
+                    break;
+            }
+        }
+    });
 }
 
 // Adds an event listener to update the theme on user input
@@ -313,72 +403,6 @@ function handleThemeSwitch() {
     // Listen for clicks on the switch and apply the chosen theme
     themeSwitch.addEventListener('click', applyTheme);
 }
-
-// Function to handle sidebar visibility 
-function toggleHelpSidebar() {
-    // Remove active state if currently active  
-    if (calcHelpSidebar.classList.contains('calc-help-sidebar-active')) { 
-        // Hide the sidebar 
-        calcHelpSidebar.classList.remove('calc-help-sidebar-active');  
-    }  
-    // Otherwise, toggled the active state  
-    else {  
-        // Toggle sidebar visibility
-        calcHelpSidebar.classList.toggle('calc-help-sidebar-active');  
-    }  
-}
-
-// Toggles the keyboard shortcut sidebar with an event listener
-function handleHelpSidebar() {
-    // Toggle the sidebar when clicked  
-    keyboardBtn.addEventListener('click', toggleHelpSidebar); 
-}
-
-// Determines the appropriate digit limit 
-function getDigitLimit(valueString) {
-    // Default to the integer digit limit for whole numbers
-    let digitLimit = calculator.digitLimits.INTEGER;
- 
-    // Check if the operand contains a decimal point
-    if (/\./g.test(valueString)) {
-        // Use fractional digit limit
-        digitLimit = calculator.digitLimits.DECIMAL;
-    }
-    
-    // Return the digit limit 
-    return digitLimit;
-}
-
-// Counts total digits for integers or decimal places for floats
-function getDigitCount(valueString) {
-    // Count digits after decimal point or total digits if integer
-    const digitCount = valueString.replace(/\d+\./g, '').length;
-
-    // Return the computed digit count 
-    return digitCount;
-}
-
-// Removes the last input element based on expression type
-function removeLastInput(expression) {
-    // Remove just the final character (digit, decimal, parenthesis, etc.)
-    let updatedExpression = expression.slice(0, -1);
-    
-    // Handle operators which have special formatting
-    if (/\s[+−÷×]\s$/.test(expression)) {
-      // Remove the operator and its surrounding spaces (3 characters total)
-      updatedExpression = expression.slice(0, expression.length - 3);
-    } 
-    
-    // Handle mathematical functions that end with an opening parenthesis
-    else if (/(?:log|ln|√)\($/.test(expression)) {
-      // Remove the entire function call syntax
-      updatedExpression = expression.replace(/(?:log|ln|√)\($/gi, '');
-
-    } 
-    
-    // Return the expression with last input removed
-    return updatedExpression;
-  }
 
 // Operator functions
 
@@ -1712,5 +1736,5 @@ handleKeyboardInput();
 handleThemeSwitch(); 
 
 // Initialize event listener for help sidebar
-handleHelpSidebar(); 
+handleSidebar(); 
 
