@@ -3,6 +3,9 @@ const menuButtons = document.querySelectorAll('.menu-btn');
 const historySidebar = document.querySelector('#history-sidebar');  
 const keyboardSidebar = document.querySelector('#keyboard-sidebar');   
 
+// Get reference to the history list in the DOM
+const historyList = document.querySelector('.history-list');
+
 // Get the theme switch input to detect user selection
 const themeSwitch = document.querySelector('#theme-switch');
 
@@ -227,6 +230,41 @@ function removeLastInput(expression) {
     
     // Return the expression with last input removed
     return updatedExpression;
+}
+
+// Adds a calculation to the history sidebar
+function saveHistory(expression, result) {
+    // Create main list item container
+    const entryItem = document.createElement('li');
+    
+    // Create separate spans for each component of the history entry
+    const expressionSpan = document.createElement('span');
+    const equalsSpan = document.createElement('span');
+    const resultSpan = document.createElement('span');
+    
+    // Create text nodes with the calculation values
+    const expressionText = document.createTextNode(`${expression}`);
+    const equalsText = document.createTextNode(' = ');
+    const resultText = document.createTextNode(`${result}`);
+    
+    // Add appropriate CSS classes for styling
+    entryItem.className = 'history-item';
+    expressionSpan.className = 'history-expression';
+    equalsSpan.className = 'history-equals';
+    resultSpan.className = 'history-result';
+    
+    // Append text nodes to their respective span elements
+    expressionSpan.appendChild(expressionText);
+    equalsSpan.appendChild(equalsText);
+    resultSpan.appendChild(resultText);
+    
+    // Assemble the history item by adding all spans
+    entryItem.appendChild(expressionSpan);
+    entryItem.appendChild(equalsSpan);
+    entryItem.appendChild(resultSpan);
+    
+    // Add the complete history item to the history list
+    historyList.appendChild(entryItem);
 }
 
 // Event Listener Callbacks
@@ -1621,6 +1659,9 @@ function updateDisplay(key) {
                             inputExpression: expressionDisplay.value,
                             operationsQueue: calculator.operationsQueue.slice(), 
                         };
+
+                        // Add current calculation to history sidebar
+                        saveHistory(calculationState.inputExpression, resultDisplay.value);
 
                         // Add current calculation to history array
                         calculator.calculationHistory.push(calculationState);
