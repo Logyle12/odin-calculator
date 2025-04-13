@@ -110,7 +110,7 @@ body {
     text-transform: uppercase; 
 }
 
-.shortcut-list {
+.shortcut-list, .history-list {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -119,17 +119,18 @@ body {
     font-style: normal;
     font-optical-sizing: auto;
     cursor: pointer;
+    min-height: 640px;
     margin: 2px;
 }
 
-.shortcut-item {
+.shortcut-item, .history-item {
     border-radius: 6px;
     min-width: 120px;
     min-height: 20px;
     max-height: 38px;
 }
 
-.shortcut-item, .sidebar-heading {
+.shortcut-item, .history-item, .sidebar-heading {
     padding: 5px 10px;
 }
 
@@ -150,6 +151,47 @@ body {
 .shortcut-description {
     font-size: 14px;
     font-weight: 500;
+}
+
+.history-list {
+    max-height: 740px;
+    justify-content: flex-start;
+    min-width: 220.962px;
+    row-gap: 14px;
+}
+
+.history-item {
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+}
+
+.history-expression, .history-result, .history-equals {
+    text-align: center;
+}
+
+.history-expression, .history-result {
+    display: inline-block;
+    background-color: rgba(100, 113, 152, 0.5);
+    outline: 1.5px solid rgb(230, 230, 230);
+    border: none;
+    border-radius: 6px;
+    font-size: 13.5px;
+    padding: 6px 10px;
+    min-height: 34px;
+    max-width: 112px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    vertical-align:middle;
+    text-overflow: ellipsis;
+}
+
+.history-equals {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+    padding: 5px;
+    vertical-align: middle;
 }
 
 .menu-btn {
