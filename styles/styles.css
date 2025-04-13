@@ -82,9 +82,10 @@ body {
 .calc-help-sidebar {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
     width: 300px;
-    min-height: 100svh;
+    min-height: 90svh;
+    max-height: 95svh;
     padding: 20px;
     border-radius: 22px 0 0 22px;
     position: absolute;
@@ -112,10 +113,8 @@ body {
 .shortcut-list {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: flex-start;
-    row-gap: 4px;
-    min-height: 95svh;
     list-style-type: none;
     font-style: normal;
     font-optical-sizing: auto;
@@ -125,6 +124,9 @@ body {
 
 .shortcut-item {
     border-radius: 6px;
+    min-width: 120px;
+    min-height: 20px;
+    max-height: 38px;
 }
 
 .shortcut-item, .sidebar-heading {
@@ -137,8 +139,9 @@ body {
     font-weight: 550;
     padding: 4.5px 8.5px;
     border-radius: 6px;
-    min-width: 26px;
-    min-height: 26px;
+    max-width: 202px;
+    min-height: 20px;
+    max-height: 28px;
     justify-content: center;
     align-items: center;
     text-align: center;
