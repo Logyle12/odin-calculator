@@ -110,6 +110,10 @@ body {
     text-transform: uppercase; 
 }
 
+.shortcut-list {
+    min-height: 640px;
+}
+
 .shortcut-list, .history-list {
     display: flex;
     flex-direction: column;
@@ -119,7 +123,6 @@ body {
     font-style: normal;
     font-optical-sizing: auto;
     cursor: pointer;
-    min-height: 640px;
     margin: 2px;
 }
 
@@ -153,11 +156,26 @@ body {
     font-weight: 500;
 }
 
+.history-sidebar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 5px;
+    min-height: 640px;
+}
+
+.history-content {
+    display: flex;
+    flex-direction: column;
+}
+
 .history-list {
-    max-height: 740px;
-    justify-content: flex-start;
     min-width: 220.962px;
+    max-width: 280px;
+    max-height: 530px;
+    justify-content: flex-start;
     row-gap: 14px;
+    overflow-y: scroll;
 }
 
 .history-item {
