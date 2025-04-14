@@ -185,22 +185,21 @@ body {
 }
 
 .history-expression, .history-result, .history-equals {
+    font-weight: 450;
     text-align: center;
 }
 
 .history-expression, .history-result {
     display: inline-block;
-    background-color: rgba(100, 113, 152, 0.5);
-    outline: 1.5px solid rgb(230, 230, 230);
     border: none;
     border-radius: 6px;
-    font-size: 13.5px;
+    font-size: 15px;
     padding: 6px 10px;
-    min-height: 34px;
+    min-height: 35px;
     max-width: 112px;
     white-space: nowrap;
     overflow-x: hidden;
-    vertical-align:middle;
+    vertical-align: middle;
     text-overflow: ellipsis;
 }
 
