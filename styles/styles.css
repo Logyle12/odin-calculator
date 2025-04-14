@@ -133,7 +133,7 @@ body {
     max-height: 38px;
 }
 
-.shortcut-item, .history-item, .sidebar-heading {
+.shortcut-item, .sidebar-heading {
     padding: 5px 10px;
 }
 
@@ -181,6 +181,7 @@ body {
 .history-item {
     letter-spacing: 1.5px;
     white-space: nowrap;
+    margin: 5px 10px;
 }
 
 .history-expression, .history-result, .history-equals {
