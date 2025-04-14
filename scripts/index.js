@@ -5,12 +5,17 @@ const keyboardSidebar = document.querySelector('#keyboard-sidebar');
 
 // Get reference to the history list in the DOM
 const historyList = document.querySelector('.history-list');
+// Get reference to clear histoy button
+const clearHistoryButton = document.querySelector('#clear-history-btn');
 
 // Get the theme switch input to detect user selection
 const themeSwitch = document.querySelector('#theme-switch');
 
 // Get the calculator container to update its theme
 const calculatorUI = document.querySelector('.calc-container');
+
+const historyIcon = document.querySelector('#history-icon');
+const keyboardIcon = document.querySelector('#keyboard-icon');
 
 // Map switch values to corresponding theme class names
 const themeOptions = {
@@ -269,6 +274,17 @@ function saveHistory(expression, result) {
     historyList.appendChild(entryItem);
 }
 
+// Clear all saved history from the calculator
+function clearHistory() {
+    // Only clear if there's something in history
+    if (calculator.calculationHistory.length > 0) {
+        // Reset the history data
+        calculator.calculationHistory = [];
+        // Remove all history items from the sidebar
+        historyList.replaceChildren();
+    }
+}
+
 // Event Listener Callbacks
 
 // Handles keydown events and triggers corresponding button clicks  
@@ -437,16 +453,24 @@ function handleSidebar() {
             switch (buttonId) {
                 // Shows calculation history when history button clicked
                 case 'history-btn':
+                    // Toggle the history panel on or off
                     toggleSidebar(historySidebar);
+
+                    // Add click listener to clear all saved history
+                    clearHistoryButton.addEventListener('click', clearHistory);
+
                     break;
 
                 // Shows keyboard shortcuts when keyboard button clicked
                 case 'keyboard-btn':
+                    // Toggle the keyboard panel on or off
                     toggleSidebar(keyboardSidebar);
+
                     break;
 
                 // Handles any unexpected button IDs
                 default:
+                    
                     break;
             }
         }
