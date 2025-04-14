@@ -232,6 +232,8 @@ function removeLastInput(expression) {
     return updatedExpression;
 }
 
+// History functions
+
 // Adds a calculation to the history sidebar
 function saveHistory(expression, result) {
     // Create main list item container
@@ -359,6 +361,21 @@ function applyTheme() {
     
     // Determine the theme corresponding to the selected switch value
     const selectedTheme = themeOptions[themeSwitch.value];
+
+    // Change icon colors based on selected theme  
+    switch (selectedTheme) {  
+        // Use dark icons for light theme for better contrast  
+        case 'theme-light':  
+            historyIcon.src = 'icons/history-icon-dark.png';  
+            keyboardIcon.src = 'icons/keyboard-icon-dark.png';  
+            break;  
+    
+        // Use light icons by default for dark or default themes  
+        default:  
+            historyIcon.src = 'icons/history-icon-light.png';  
+            keyboardIcon.src = 'icons/keyboard-icon-light.png';  
+            break;  
+    }
     
     // Replace the old theme with the new one to reflect the change
     calculatorUI.classList.replace(currentTheme, selectedTheme);  
