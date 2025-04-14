@@ -12,6 +12,7 @@
     background-color: rgb(24, 31, 51);
 }
 
+/* Button Styles */
 .theme-default .menu-btn:hover {
     background-color: rgb(83, 93, 121);
 }
@@ -51,7 +52,7 @@
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); 
 }
 
-/* Help Styles */
+/* Sidebar Styles */
 .theme-default .calc-help-sidebar {
     background: linear-gradient(to right, rgb(60, 75, 115), rgb(48, 60, 89));
     color: rgb(230, 230, 230); 
@@ -63,9 +64,17 @@
     box-shadow: 0 0 10px rgba(120, 133, 172, 0.5); 
 }
 
-.theme-default .calc-help-sidebar .shortcut-key {
+.theme-default .calc-help-sidebar .shortcut-key,
+.theme-default .calc-help-sidebar .history-expression, 
+.theme-default .calc-help-sidebar .history-result {
     background-color: rgba(100, 113, 152, 0.5);
     outline: 1.5px solid rgb(230, 230, 230);
+}
+
+.theme-default .calc-help-sidebar .history-expression:hover, 
+.theme-default .calc-help-sidebar .history-result:hover {
+    background-color: rgba(200, 70, 70, 0.45); /* soft punchy red */
+    box-shadow: 0 0 10px rgba(220, 100, 100, 0.5);
 }
 
 /* Slider Styles */
@@ -102,8 +111,9 @@
     background-color: rgb(210, 205, 205);
 }
 
+/* Button Styles */
 .theme-light .menu-btn:hover {
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(168, 168, 168);
 }
 
 /* Vertical Separator */
@@ -138,7 +148,7 @@
     box-shadow: inset 0px -4px 0px rgb(160, 50, 20);
 }
 
-/* Help Styles */
+/* Sidebar Styles */
 .theme-light .calc-help-sidebar {
     background: linear-gradient(to right, rgb(220, 220, 220), rgb(245, 245, 245));
     color: rgb(40, 40, 40);
@@ -150,9 +160,17 @@
     box-shadow: 0 0 10px rgba(100, 100, 100, 0.4); 
 }
 
-.theme-light .calc-help-sidebar .shortcut-key {
+.theme-light .calc-help-sidebar .shortcut-key,
+.theme-light .calc-help-sidebar .history-expression, 
+.theme-light .calc-help-sidebar .history-result {
     background-color: rgba(80, 80, 80, 0.15);
     outline: 1.5px solid rgb(40, 40, 40);
+}
+
+.theme-light .calc-help-sidebar .history-expression:hover, 
+.theme-light .calc-help-sidebar .history-result:hover {
+    background-color: rgba(200, 84, 2, 0.4);
+    box-shadow: 0 0 8px rgba(241, 115, 26, 0.4);
 }
 
 /* Slider Styles */
@@ -189,6 +207,7 @@
     background-color: rgb(30, 9, 54)
 }
 
+/* Button Styles */
 .theme-dark .menu-btn:hover {
     background-color: rgb(75, 35, 145);
 }
@@ -229,7 +248,7 @@
     color: rgb(255, 255, 255);
 }
 
-/* Help Styles */
+/* Sidebar Styles */
 .theme-dark .calc-help-sidebar {
     background: linear-gradient(to right, rgb(40, 20, 80), rgb(25, 10, 50));
     color: rgb(206, 206, 43);
@@ -237,13 +256,21 @@
 }
 
 .theme-dark .shortcut-item:hover {
-    background-color: rgba(255, 229, 61, 0.4); 
-    box-shadow: 0 0 12px rgba(255, 229, 61, 0.6);
+    background-color: rgba(120, 90, 0, 0.4);
+    box-shadow: 0 0 12px rgba(120, 90, 0, 0.4);
 }
 
-.theme-dark .calc-help-sidebar .shortcut-key {
+.theme-dark .calc-help-sidebar .shortcut-key,
+.theme-dark .calc-help-sidebar .history-expression, 
+.theme-dark .calc-help-sidebar .history-result {
     background-color: rgba(255, 229, 61, 0.3);
     outline: 1.5px solid rgb(220, 220, 220);
+}
+
+.theme-dark .calc-help-sidebar .history-expression:hover, 
+.theme-dark .calc-help-sidebar .history-result:hover {
+    background-color: rgba(120, 90, 0, 0.4);
+    box-shadow: 0 0 10px rgba(120, 90, 0, 0.4);
 }
 
 /* Slider Styles */
