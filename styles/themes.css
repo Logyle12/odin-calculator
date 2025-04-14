@@ -150,7 +150,7 @@
 
 /* Sidebar Styles */
 .theme-light .calc-help-sidebar {
-    background: linear-gradient(to right, rgb(220, 220, 220), rgb(245, 245, 245));
+    background: linear-gradient(to right, rgb(187, 186, 186), rgb(205, 201, 201));
     color: rgb(40, 40, 40);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
