@@ -212,6 +212,21 @@ body {
     vertical-align: middle;
 }
 
+.history-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#clear-history-btn {
+    width: 200px;
+    height: 35px;
+    border: none;
+    border-radius: 6px;
+    outline: 1px solid black;
+    cursor: pointer;
+}
+
 .menu-btn {
     display: flex;
     justify-content: center;
