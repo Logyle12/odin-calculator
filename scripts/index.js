@@ -191,6 +191,18 @@ function scrollToLatestInput() {
     });
 }
 
+// Returns calculator display elements to their default state
+function resetDisplay() {
+    // Remove transition animations  
+    resultDisplay.id = 'result-display';
+
+    // Clears any value from the result display
+    resultDisplay.value = '';
+
+    // Makes the expression input visible again
+    expressionDisplay.style['display'] = 'inline-block';
+}
+
 // Determines the appropriate digit limit 
 function getDigitLimit(valueString) {
     // Default to the integer digit limit for whole numbers
@@ -282,6 +294,57 @@ function clearHistory() {
         calculator.calculationHistory = [];
         // Remove all history items from the sidebar
         historyList.replaceChildren();
+    }
+}
+
+// Loads a previous calculation when a history item is clicked
+function loadFromHistory(event) {
+    // Gets the clicked history element
+    const historyEntry = event.target;
+    
+    // Checks if result dispay moved upwards
+    if (resultDisplay.id === 'transition-result') {
+        // Return calculator displays to default states
+        resetDisplay();
+    }
+    
+    // Sets expression field to history item's text
+    expressionDisplay.value = historyEntry.textContent;
+    
+    // Only proceed if a calculation expression was clicked
+    if (historyEntry.className === 'history-expression') {
+        // Finds matching calculation in history
+        const currentEntry = calculator.calculationHistory.find(
+            // Matches based on expression text
+            (record) => record.inputExpression === expressionDisplay.value
+        );
+        
+        // Debug log header
+        console.log('Retrieved Calculation');
+        
+        // Shows full details in console
+        console.table(currentEntry);
+        
+        // Restores operation sequence
+        calculator.operationsQueue = currentEntry.operationsQueue;
+        
+        // Shows saved result
+        resultDisplay.value = currentEntry.computedResult;
+    }
+
+    // Otherwise it's a result string
+    else {
+        // Clear result display if it contains any value
+        if (resultDisplay.value.length > 0) {
+            // Reset operations queue if any operations exist
+            if (calculator.operationsQueue.length > 0) {
+                // Empty the queue of pending operations
+                calculator.operationsQueue = [];   
+            }
+            
+            // Clear the result display completely
+            resultDisplay.value = '';
+        }
     }
 }
 
@@ -440,7 +503,14 @@ function handleKeyboardInput() {
     });
 }
 
-
+// Initializes history sidebar event listeners
+function setupHistoryListeners() {
+    // Handles clicks on history items to restore calculations
+    historyList.addEventListener('click', loadFromHistory);
+    
+    // Handles clicks on clear button to remove all history
+    clearHistoryButton.addEventListener('click', clearHistory);
+}
 
 // Sets up event handler for sidebar toggle buttons
 function handleSidebar() {
@@ -491,6 +561,9 @@ function handleSidebar() {
             toggleSidebar(sidebarPanel);
         }
     });
+
+    // Initialize event listeners for history feature
+    setupHistoryListeners();
 }
 
 // Adds an event listener to update the theme on user input
@@ -1285,16 +1358,10 @@ function updateDisplay(key) {
     // Get the key ID for reference in actions
     const keyId = key.id;
 
-    // If result display has transitions active
+    // Checks if result dispay moved upwards
     if (resultDisplay.id === 'transition-result') {
-        // Remove transition animations  
-        resultDisplay.id = 'result-display';
-
-        // Reset result display
-        resultDisplay.value = '';
-
-        // Show expression input field
-        expressionDisplay.style['display'] = 'inline-block';
+        // Return calculator displays to default states
+        resetDisplay();
     }
 
     // Fix trailing decimal point when pressing a non-digit key  
@@ -1714,6 +1781,7 @@ function updateDisplay(key) {
                         // Store calculation state for history tracking
                         const calculationState = {
                             inputExpression: expressionDisplay.value,
+                            computedResult: resultDisplay.value,
                             operationsQueue: calculator.operationsQueue.slice(), 
                         };
 
@@ -1833,6 +1901,5 @@ handleKeyboardInput();
 // Initialize event listener for theme switch 
 handleThemeSwitch(); 
 
-// Initialize event listener for help sidebar
+// Initialize event listener for sidebars
 handleSidebar(); 
-
