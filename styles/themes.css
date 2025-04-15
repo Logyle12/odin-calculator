@@ -13,7 +13,7 @@
 }
 
 /* Button Styles */
-.theme-default .menu-btn:hover {
+.theme-default .menu-btn:hover, .theme-default .menu-btn-active {
     background-color: rgb(83, 93, 121);
 }
 
@@ -112,7 +112,7 @@
 }
 
 /* Button Styles */
-.theme-light .menu-btn:hover {
+.theme-light .menu-btn:hover, .theme-light .menu-btn-active {
     background-color: rgb(168, 168, 168);
 }
 
@@ -208,7 +208,7 @@
 }
 
 /* Button Styles */
-.theme-dark .menu-btn:hover {
+.theme-dark .menu-btn:hover, .theme-dark .menu-btn-active {
     background-color: rgb(75, 35, 145);
 }
 
