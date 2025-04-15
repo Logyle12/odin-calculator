@@ -238,6 +238,7 @@ body {
     outline: none;
     cursor: pointer;
     background-color: inherit;
+    padding: 3px
 }
 
 .menu-btn:hover {
@@ -245,8 +246,8 @@ body {
 }
 
 .menu-btn > img {
-    width: 90%;
-    height: 90%;
+    width: 120%;
+    height: 120%;
 }
 
 .theme-toggle {
