@@ -440,39 +440,55 @@ function handleKeyboardInput() {
     });
 }
 
-// Sets up event handlers for sidebar toggle buttons
+
+
+// Sets up event handler for sidebar toggle buttons
 function handleSidebar() {
+    // Maps button IDs to sidebar elements
+    const sidebarControls = {
+        'history-btn': historySidebar,
+        'keyboard-btn': keyboardSidebar,
+    }
+
     // Iterates through each menu button to attach click handlers
     menuButtons.forEach((menuButton) => {
         // Defines the click event behavior for each button
         menuButton.onclick = () => {
+            // Finds currently active button in the UI
+            const activeButton = document.querySelector('.menu-btn-active');
+
             // Gets the ID of the clicked button to determine which sidebar to toggle
             const buttonId = menuButton.id;
 
-            // Determines which sidebar to show based on button ID
-            switch (buttonId) {
-                // Shows calculation history when history button clicked
-                case 'history-btn':
-                    // Toggle the history panel on or off
-                    toggleSidebar(historySidebar);
+            // Retrieves the corresponding sidebar panel from mapping object
+            const sidebarPanel = sidebarControls[buttonId];
 
-                    // Add click listener to clear all saved history
-                    clearHistoryButton.addEventListener('click', clearHistory);
-
-                    break;
-
-                // Shows keyboard shortcuts when keyboard button clicked
-                case 'keyboard-btn':
-                    // Toggle the keyboard panel on or off
-                    toggleSidebar(keyboardSidebar);
-
-                    break;
-
-                // Handles any unexpected button IDs
-                default:
+            // Check if a different button was clicked
+            if (activeButton !== menuButton) {
+                // Verifies there is an active button to deactivate
+                if (activeButton) {
+                    // Gets the previously active sidebar panel
+                    const activePanel = sidebarControls[activeButton.id];
                     
-                    break;
+                    // Removes active state from previous button
+                    activeButton.classList.toggle('menu-btn-active');  
+
+                    // Hides the previously active sidebar
+                    toggleSidebar(activePanel);
+                }
+
+                // Sets the clicked button as active
+                menuButton.classList.add('menu-btn-active');
             }
+
+            // Otherwise if the clicked button is already active
+            else {
+                // Deactivates the button if it was already active
+                activeButton.classList.remove('menu-btn-active');
+            }
+
+            // Shows or hides the sidebar panel associated with clicked button
+            toggleSidebar(sidebarPanel);
         }
     });
 }
