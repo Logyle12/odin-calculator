@@ -17,6 +17,10 @@
     background-color: rgb(83, 93, 121);
 }
 
+.theme-default .menu-btn-active > img {
+    filter: contrast(250%) saturate(250%);
+}
+
 /* Vertical Separator */
 .theme-default #vertical-line {
     border-right-color: rgba(198, 198, 198, 0.5);
@@ -73,6 +77,16 @@
     outline: 1.5px solid rgb(230, 230, 230);
 }
 
+/* Clear Button Styles */
+.theme-default #clear-history-btn {
+    background-color: rgb(100, 113, 152);
+    box-shadow: inset 0px -3px 0px rgb(65, 78, 115);
+}
+
+.theme-default #clear-history-btn:hover {
+    background-color: rgb(163, 178, 225);
+}
+
 /* Slider Styles */
 .theme-default #theme-switch[role='switch'] {
     background-color: rgb(36, 45, 68);
@@ -109,7 +123,11 @@
 
 /* Button Styles */
 .theme-light .menu-btn:hover, .theme-light .menu-btn-active {
-    background-color: rgb(168, 168, 168);
+    background-color: rgba(155, 153, 153, 0.625);
+}
+
+.theme-light .menu-btn-active > img {
+    filter: brightness(230%) hue-rotate(125deg) contrast(200%) saturate(350%);
 }
 
 /* Vertical Separator */
@@ -165,6 +183,16 @@
     box-shadow: 0 0 8px rgba(241, 115, 26, 0.4);
 }
 
+/* Clear Button Styles */
+.theme-light #clear-history-btn {
+    background-color: rgb(190, 109, 58);
+    box-shadow: inset 0px -3px 0px rgb(160, 75, 35);
+}
+
+.theme-light #clear-history-btn:hover {
+    background-color: rgb(211, 139, 92);
+}
+
 /* Slider Styles */
 .theme-light #theme-switch[role='switch'] {
     background-color: rgb(210, 205, 205);
@@ -202,6 +230,10 @@
 /* Button Styles */
 .theme-dark .menu-btn:hover, .theme-dark .menu-btn-active {
     background-color: rgb(75, 35, 145);
+}
+
+.theme-dark .menu-btn-active > img {
+    filter: contrast(250%) hue-rotate(175deg) saturate(260%);
 }
 
 /* Vertical Separator */
@@ -259,6 +291,16 @@
 .theme-dark .calc-help-sidebar .history-result:hover {
     background-color: rgba(120, 90, 0, 0.4);
     box-shadow: 0 0 10px rgba(120, 90, 0, 0.4);
+}
+
+/* Clear Button Styles */
+.theme-dark #clear-history-btn {
+    background-color: rgba(86, 17, 118, 0.773); 
+    box-shadow: inset 0px -3px 0px rgb(70, 20, 105); 
+}
+
+.theme-dark #clear-history-btn:hover {
+    background-color: rgb(106, 43, 137); 
 }
 
 /* Slider Styles */
