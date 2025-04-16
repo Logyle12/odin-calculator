@@ -227,6 +227,16 @@ body {
     cursor: pointer;
 }
 
+#clear-history-btn > span{
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+}
+
+#clear-history-btn:hover {
+    transform: translateY(-3.25px);
+}
+
 .menu-btn {
     display: flex;
     justify-content: center;
