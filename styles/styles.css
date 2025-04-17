@@ -84,8 +84,7 @@ body {
     justify-content: center;
     align-items: stretch;
     width: 300px;
-    min-height: 90svh;
-    max-height: 95svh;
+    height: 95svh;
     padding: 20px;
     border-radius: 22px 0 0 22px;
     position: absolute;
@@ -122,8 +121,11 @@ body {
     list-style-type: none;
     font-style: normal;
     font-optical-sizing: auto;
-    cursor: pointer;
     margin: 2px;
+}
+
+.shortcut-item, .history-expression, .history-result {
+    cursor: pointer;
 }
 
 .shortcut-item, .history-item {
@@ -160,28 +162,29 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    row-gap: 5px;
-    min-height: 640px;
+    height: 100%;
 }
 
 .history-content {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    max-height: 90%;
 }
 
 .history-list {
     min-width: 220.962px;
     max-width: 280px;
-    max-height: 530px;
+    max-height: 90%;
     justify-content: flex-start;
-    row-gap: 14px;
+    flex-grow: 1;
     overflow-y: scroll;
 }
 
 .history-item {
     letter-spacing: 1.5px;
     white-space: nowrap;
-    margin: 5px 10px;
+    margin: 18px 10px;
 }
 
 .history-expression, .history-result, .history-equals {
@@ -216,6 +219,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 10%;
 }
 
 #clear-history-btn {
