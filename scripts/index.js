@@ -292,8 +292,12 @@ function clearHistory() {
     if (calculator.calculationHistory.length > 0) {
         // Reset the history data
         calculator.calculationHistory = [];
+
         // Remove all history items from the sidebar
         historyList.replaceChildren();
+
+        // Remove visibility class to animate button out of view
+        clearHistoryButton.classList.remove('active-btn');
     }
 }
 
@@ -1790,6 +1794,13 @@ function updateDisplay(key) {
 
                         // Add current calculation to history array
                         calculator.calculationHistory.push(calculationState);
+
+                        // Check if this is the first history entry being added
+                        if (calculator.calculationHistory.length === 1) {
+                            // Show clear button only after first history entry is saved
+                            clearHistoryButton.classList.add('active-btn');
+                        }
+
 
                         // Log history data for debugging
                         console.log('Calculation History:');
