@@ -123,6 +123,11 @@ body {
     font-optical-sizing: auto;
     margin: 2px;
 }
+.shortcut-item {
+    min-width: 120px;
+    min-height: 20px;
+    max-height: 38px;
+}
 
 .shortcut-item, .history-expression, .history-result {
     cursor: pointer;
@@ -130,9 +135,6 @@ body {
 
 .shortcut-item, .history-item {
     border-radius: 6px;
-    min-width: 120px;
-    min-height: 20px;
-    max-height: 38px;
 }
 
 .shortcut-item, .sidebar-heading {
@@ -194,7 +196,7 @@ body {
 .history-item {
     letter-spacing: 1.5px;
     white-space: nowrap;
-    margin: 18px 10px;
+    margin: 12px 10px;
 }
 
 .history-expression, .history-result, .history-equals {
