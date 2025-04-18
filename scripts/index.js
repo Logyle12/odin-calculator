@@ -284,6 +284,12 @@ function saveHistory(expression, result) {
     
     // Add the complete history item to the history list
     historyList.appendChild(entryItem);
+
+    // Checks if the history sidebar is active
+    if (historySidebar.classList.contains('calc-help-sidebar-active')) {
+        // Scrolls the entry item into view
+        entryItem.scrollIntoView();
+    }
 }
 
 // Clear all saved history from the calculator
@@ -305,6 +311,9 @@ function clearHistory() {
 function loadFromHistory(event) {
     // Gets the clicked history element
     const historyEntry = event.target;
+
+    // Scrolls the selected history item into view
+    historyEntry.scrollIntoView({behavior: 'smooth'});
     
     // Checks if result dispay moved upwards
     if (resultDisplay.id === 'transition-result') {
