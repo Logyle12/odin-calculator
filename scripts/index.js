@@ -562,6 +562,12 @@ function handleSidebar() {
 
                 // Sets the clicked button as active
                 menuButton.classList.add('menu-btn-active');
+
+                // Scrolls to bottom of history list when opening the sidebar
+                if (buttonId === 'history-btn') {
+                    // Set scroll position to show the most recent history entry
+                    historyList.scrollTop = historyList.scrollHeight - historyList.clientHeight;
+                }
             }
 
             // Otherwise if the clicked button is already active
