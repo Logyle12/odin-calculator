@@ -179,6 +179,16 @@ body {
     justify-content: flex-start;
     flex-grow: 1;
     overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 8.5px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    cursor: pointer;
 }
 
 .history-item {
