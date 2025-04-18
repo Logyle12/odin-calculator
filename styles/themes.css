@@ -77,13 +77,15 @@
     outline: 1.5px solid rgb(230, 230, 230);
 }
 
-/* Clear Button Styles */
-.theme-default #clear-history-btn {
+/* Clear Button Styles / Scrollbar Styles */
+.theme-default #clear-history-btn, 
+.theme-default .history-list::-webkit-scrollbar-thumb {
     background-color: rgb(100, 113, 152);
     box-shadow: inset 0px -3px 0px rgb(65, 78, 115);
 }
 
-.theme-default #clear-history-btn:hover {
+.theme-default #clear-history-btn:hover,
+.theme-default .history-list::-webkit-scrollbar-thumb:hover {
     background-color: rgb(163, 178, 225);
 }
 
@@ -183,13 +185,15 @@
     box-shadow: 0 0 8px rgba(241, 115, 26, 0.4);
 }
 
-/* Clear Button Styles */
-.theme-light #clear-history-btn {
+/* Clear Button Styles / Scrollbar Styles */
+.theme-light #clear-history-btn,
+.theme-light .history-list::-webkit-scrollbar-thumb {
     background-color: rgb(190, 109, 58);
     box-shadow: inset 0px -3px 0px rgb(160, 75, 35);
 }
 
-.theme-light #clear-history-btn:hover {
+.theme-light #clear-history-btn:hover,
+.theme-light .history-list::-webkit-scrollbar-thumb:hover {
     background-color: rgb(211, 139, 92);
 }
 
@@ -293,13 +297,15 @@
     box-shadow: 0 0 10px rgba(120, 90, 0, 0.4);
 }
 
-/* Clear Button Styles */
-.theme-dark #clear-history-btn {
+/* Clear Button Styles / Scrollbar Styles */
+.theme-dark #clear-history-btn,
+.theme-dark .history-list::-webkit-scrollbar-thumb {
     background-color: rgba(86, 17, 118, 0.773); 
     box-shadow: inset 0px -3px 0px rgb(70, 20, 105); 
 }
 
-.theme-dark #clear-history-btn:hover {
+.theme-dark #clear-history-btn:hover,
+.theme-dark .history-list::-webkit-scrollbar-thumb:hover {
     background-color: rgb(106, 43, 137); 
 }
 
