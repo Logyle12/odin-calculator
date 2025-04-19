@@ -242,7 +242,6 @@ function removeLastInput(expression) {
     else if (/(?:log|ln|√)\($/.test(expression)) {
       // Remove the entire function call syntax
       updatedExpression = expression.replace(/(?:log|ln|√)\($/gi, '');
-
     } 
     
     // Return the expression with last input removed
@@ -1383,8 +1382,12 @@ function updateDisplay(key) {
         resetDisplay();
     }
 
-    // Fix trailing decimal point when pressing a non-digit key  
-    if (/\.$/.test(expressionDisplay.value) && keyType !== 'key-digit') {
+    // Check if operator/function follows decimal point
+    const completeDecimal = (keyType === 'key-operator' || keyType === 'math-function') && 
+                            keyId !== 'key-decimal';
+
+    // Complete any trailing decimal point
+    if (/\.$/.test(expressionDisplay.value) && completeDecimal) {
         // Append zero to complete the number 
         expressionDisplay.value += 0;
     }
@@ -1573,8 +1576,8 @@ function updateDisplay(key) {
                     // Get the last character to check if it's an operator 
                     const lastCharacter = updatedExpression.at(-1);
 
-                    // Fix incomplete expressions ending in an operator  
-                    if (/[+−÷×]/.test(lastCharacter) && calculator.operationsQueue.length > 1) {
+                    // Fix incomplete expressions and decimals 
+                    if (/[+−÷×.]/.test(lastCharacter) && calculator.operationsQueue.length >= 1) {
                         // Append '1' for multiplicative operators and'0' for additive operators 
                         updatedExpression += /[÷×]/.test(lastCharacter) ? '1' : '0';
                     }
@@ -1777,6 +1780,8 @@ function updateDisplay(key) {
                     }
                     
                 }
+
+                console.log('Current Operand (Decimal):', calculator.currentOperand);
             }
 
             // On equals press
