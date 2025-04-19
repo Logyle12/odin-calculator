@@ -1282,6 +1282,21 @@ function autoCloseParentheses(expression) {
     return expression.concat(')'.repeat(openingCount));
 }
 
+// Preprocess expression by sanitizing, normalizing, and auto-closing
+function processExpression(expression) {
+    // Remove whitespace and commas for validation
+    expression = sanitizeExpression(expression);
+
+    // Check if expression contains scientific notation (e.g., 1.23e+4)
+    expression = handleScientificNotation(expression);
+
+    // Auto-close unclosed parentheses
+    expression = autoCloseParentheses(expression);
+
+    // Return the processed expression
+    return expression;
+}
+
 // Evaluate the current expression and store the result
 function displayComputedResult(displayElement, expression) {
     // Compute the result of the expression as a floating-point number
@@ -1342,14 +1357,8 @@ function formatResult(displayElement, result) {
 
 // Process and format the result of a mathematical expression
 function processResult(displayElement, expression) {
-    // Remove whitespace and commas for validation
-    expression = sanitizeExpression(expression);
-
-    // Check if expression contains scientific notation (e.g., 1.23e+4)
-    expression = handleScientificNotation(expression);
-
-    // Auto-close unclosed parentheses
-    expression = autoCloseParentheses(expression);
+    // Preprocess expression for evaluation and validation
+    expression = processExpression(expression);
 
     // Validate simplified expression for calculation errors
     validateExpression(expression);
@@ -1938,13 +1947,16 @@ function updateDisplay(key) {
 
     // Skip validation on equals/AC press to prevent redundant checks
     if (keyId !== 'key-equals' && keyType !== 'key-AC') {
+        // Preprocess expression for evaluation and validation
+        const updatedExpression = processExpression(expressionDisplay.value);
+
         // Retrieve the validation outcome from the calculator
         const validationData = calculator.validationData;
 
         // Revalidate in case the result has since changed
         if (validationData.isValid) {
             // Validate expression for calculation errors
-            validateExpression(expressionDisplay.value);   
+            validateExpression(updatedExpression);   
         }
     }
 }
