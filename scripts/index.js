@@ -1330,6 +1330,12 @@ function formatResult(displayElement, result) {
 function processResult(displayElement, expression) {
     // Remove whitespace and commas for validation
     expression = sanitizeExpression(expression);
+
+    // Check if expression contains scientific notation (e.g., 1.23e+4)
+    expression = handleScientificNotation(expression);
+
+    // Auto-close unclosed parentheses
+    expression = autoCloseParentheses(expression);
     
     // Check expression for mathematical errors
     const validationResult = validateExpression(expression);
@@ -1338,16 +1344,10 @@ function processResult(displayElement, expression) {
     calculator['validationResult'] = validationResult;
 
     // Log current operand for debugging
-    // console.log('Current Operand:', calculator.currentOperand);
+    console.log('Current Operand:', calculator.currentOperand);
     
     // Process expression only if valid results exist (non-empty and numeric)
     if (validationResult.isValid && calculator.currentOperand.length !== 0) {
-        // Check if expression contains scientific notation (e.g., 1.23e+4)
-        expression = handleScientificNotation(expression);
-        
-        // Auto-close unclosed parentheses
-        expression = autoCloseParentheses(expression);
-        
         // Check for a complete expression with a valid ending  
         if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$)/gi.test(expression)) {
             // Compute display the result if it's a finite number
@@ -1726,7 +1726,7 @@ function updateDisplay(key) {
                 }
 
                 // Implicit multiplication case
-                else if (/\d|\)/.test(previousOperator)) {
+                else if (/\d+$|\)$/.test(expressionDisplay.value)) {
                     // Append the padded multiplication operator
                     insertMultiplication();
 
