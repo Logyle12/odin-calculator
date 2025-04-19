@@ -5,7 +5,7 @@ const keyboardSidebar = document.querySelector('#keyboard-sidebar');
 
 // Get reference to the history list in the DOM
 const historyList = document.querySelector('.history-list');
-// Get reference to clear histoy button
+// Get reference to clear history button
 const clearHistoryButton = document.querySelector('#clear-history-btn');
 
 // Get the theme switch input to detect user selection
@@ -321,7 +321,7 @@ function loadFromHistory(event) {
     // Scrolls the selected history item into view
     historyEntry.scrollIntoView({behavior: 'smooth'});
     
-    // Checks if result dispay moved upwards
+    // Checks if result display moved upwards
     if (resultDisplay.id === 'transition-result') {
         // Return calculator displays to default states
         resetDisplay();
@@ -983,13 +983,13 @@ function findNextOperation(operatorRegex, expression) {
             // Track how deeply nested each expression is
             let depthLevel = 0;
 
-            // Extract just the subexpression string
-            const subexpression = groupedExpressions[i][0];
+            // Extract just the sub expression string
+            const subExpression = groupedExpressions[i][0];
 
-            // Loop through each character in the subexpression
-            for (let charIndex = 0; charIndex < subexpression.length; charIndex++) {
+            // Loop through each character in the sub expression
+            for (let charIndex = 0; charIndex < subExpression.length; charIndex++) {
                 // Get the current character
-                const character = subexpression[charIndex];
+                const character = subExpression[charIndex];
 
                 // Increase depth level for every opening parenthesis
                 if (character === '(') {
@@ -998,7 +998,7 @@ function findNextOperation(operatorRegex, expression) {
                 }
 
                 // Assign depth once end of expression is reached
-                if (charIndex + 1 === subexpression.length) {
+                if (charIndex + 1 === subExpression.length) {
                     // Store the calculated depth value in the array
                     groupedExpressions[i][1] = depthLevel;
                 }
@@ -1016,7 +1016,7 @@ function findNextOperation(operatorRegex, expression) {
 
         // Loop through each group starting with the deepest
         for (const group of groupedExpressions) {
-            // Get the subexpression from the group
+            // Get the sub expression from the group
             const subExpression = group[0];
 
             // If it contains a valid operator, extract and return it
@@ -1399,7 +1399,7 @@ function updateDisplay(key) {
     // Get the key ID for reference in actions
     const keyId = key.id;
 
-    // Checks if result dispay moved upwards
+    // Checks if result display moved upwards
     if (resultDisplay.id === 'transition-result') {
         // Return calculator displays to default states
         resetDisplay();
