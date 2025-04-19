@@ -33,6 +33,13 @@ const keyButtons = document.querySelectorAll('.key');
 
 // Calculator object holding state and configurations
 const calculator = {
+    // Holds the result of the expression validation
+    validationData: {
+        isValid: null,
+        errorMessage: null,
+    },
+
+    // Stores the history of previous calculations
     calculationHistory: [],
 
     // Store latest number value
@@ -882,7 +889,7 @@ function validateExpression(expression) {
     } 
 
     // Check for logarithm of zero or negative number
-    else if (/(?:log|ln)\(?(?:0(?!\.)|-)/g.test(expression)) {
+    else if (/(?:log|ln)\(?(?:0(?!\.)|\-)/g.test(expression)) {
         // More concise error for invalid logarithm input
         errorMessage = "Error: Invalid log Input";
     }
@@ -899,11 +906,18 @@ function validateExpression(expression) {
         errorMessage = "Error: Well... This is Awkward";
     }
     
-    // Return validation result
-    return {
+    // Build validation outcome with status and message
+    const validationData = {
         isValid: errorMessage === '',
         errorMessage: errorMessage
     };
+
+    // Attach validation data to calculator for future access
+    calculator.validationData = validationData;
+
+    // Log validation outcome for debugging
+    console.log('validation Data:');
+    console.table(validationData);
 }
 
 // Reset error styling on all display elements
@@ -1213,20 +1227,20 @@ function evaluateExpression(expression) {
         console.log('Simplified Expression:', simplifiedExpression);
         console.log('\n');
 
-        // Check expression for mathematical errors
-        const validationResult = validateExpression(simplifiedExpression);
+        // Validate simplified expression for calculation errors
+        validateExpression(simplifiedExpression);
+
+        // Retrieve the validation outcome from the calculator
+        const validationData = calculator.validationData;
 
         // Check if the expression is structurally valid before proceeding
-        if (validationResult.isValid) {
+        if (validationData.isValid) {
             // Update expression 
             expression = simplifiedExpression;
         }
 
-        // Otherwise store validation result and stop evaluation
+        // Otherwise exit evaluation
         else {
-            // Attach validation outcome to calculator for access on equals press 
-            calculator['validationResult'] = validationResult;
-
             // Prevent further evaluation of an invalid expression
             return;
         }
@@ -1336,18 +1350,18 @@ function processResult(displayElement, expression) {
 
     // Auto-close unclosed parentheses
     expression = autoCloseParentheses(expression);
-    
-    // Check expression for mathematical errors
-    const validationResult = validateExpression(expression);
-    
-    // Attach validation outcome to calculator for access on equals press 
-    calculator['validationResult'] = validationResult;
 
+    // Validate simplified expression for calculation errors
+    validateExpression(expression);
+    
+    // Retrieve the validation outcome from the calculator
+    const validationData = calculator.validationData;
+    
     // Log current operand for debugging
     console.log('Current Operand:', calculator.currentOperand);
     
     // Process expression only if valid results exist (non-empty and numeric)
-    if (validationResult.isValid && calculator.currentOperand.length !== 0) {
+    if (validationData.isValid && calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
         if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$)/gi.test(expression)) {
             // Compute display the result if it's a finite number
@@ -1792,13 +1806,13 @@ function updateDisplay(key) {
                 // Convert the displayed result to a number for validation  
                 const numericResult = parseFloat(resultDisplay.value.replaceAll(',', ''));
 
-                // Check for mathematical errors in expression  
-                const validationResult = calculator.validationResult;
+                // Retrieve the validation outcome from the calculator 
+                const validationData = calculator.validationData;
 
                 // Process only if there's an equation to evaluate
                 if (finalExpression !== calculator.currentOperand) {
                     // Process expression only if valid results exist (non-empty and numeric)
-                    if (validationResult.isValid && !isNaN(numericResult) && resultDisplay.value.length > 0) {
+                    if (validationData.isValid && !isNaN(numericResult) && resultDisplay.value.length > 0) {
                         // Clear console
                         console.clear();
 
@@ -1859,7 +1873,7 @@ function updateDisplay(key) {
                     // Handle invalid expressions or calculation errors
                     else {
                         // Display error message when validation fails
-                        resultDisplay.value = validationResult.errorMessage;
+                        resultDisplay.value = validationData.errorMessage;
     
                         // Apply error styling to the expression display
                         expressionDisplay.classList.add('error-state');
@@ -1920,6 +1934,18 @@ function updateDisplay(key) {
 
         default:
             break;
+    }
+
+    // Skip validation on equals/AC press to prevent redundant checks
+    if (keyId !== 'key-equals' && keyType !== 'key-AC') {
+        // Retrieve the validation outcome from the calculator
+        const validationData = calculator.validationData;
+
+        // Revalidate in case the result has since changed
+        if (validationData.isValid) {
+            // Validate expression for calculation errors
+            validateExpression(expressionDisplay.value);   
+        }
     }
 }
 
