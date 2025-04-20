@@ -8,6 +8,14 @@ body {
     overflow: hidden;
 }
 
+@font-face {
+    font-family: 'League Spartan';
+    src: local('League Spartan'), 
+         url('../assets/fonts/LeagueSpartan.ttf') format('truetype');
+    font-style: normal;
+    font-optical-sizing: auto;
+}
+  
 .calc-container {
     display: flex;
     justify-content: center;
@@ -30,8 +38,6 @@ body {
     align-items: center;
     font-family: 'League Spartan';
     font-weight: 500;
-    font-style: normal;
-    font-optical-sizing: auto;
     letter-spacing: 1.5px;
     color: inherit;
     padding: 0px 18px;
@@ -241,8 +247,6 @@ body {
     font-family: 'League Spartan';
     font-size: 13px;
     font-weight: 450;
-    font-optical-sizing: auto;
-    font-style: normal;
     letter-spacing: 0.45px;
     text-transform: uppercase;
     margin-bottom: 8px;
@@ -381,8 +385,6 @@ body {
     width: 100%;
     font-family: 'League Spartan';
     font-weight: 500;
-    font-style: normal;
-    font-optical-sizing: auto;
     letter-spacing: 1.5px;
     caret-color: rgb(255, 255, 255);
     color: inherit;
@@ -478,8 +480,6 @@ body {
     font-family: 'League Spartan';
     font-size: 24px;
     font-weight: 500;
-    font-style: normal;
-    font-optical-sizing: auto;
     letter-spacing: 1.5px;
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
