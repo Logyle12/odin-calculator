@@ -272,11 +272,11 @@ function saveHistory(expression, result) {
     const equalsText = document.createTextNode(' = ');
     const resultText = document.createTextNode(`${result}`);
     
-    // Add appropriate CSS classes for styling
+    // Add appropriate CSS classes for styling and extraction
     entryItem.className = 'history-item';
-    expressionSpan.className = 'history-expression';
     equalsSpan.className = 'history-equals';
-    resultSpan.className = 'history-result';
+    expressionSpan.classList.add('history-expression', 'history-entry');
+    resultSpan.classList.add('history-result', 'history-entry');
     
     // Append text nodes to their respective span elements
     expressionSpan.appendChild(expressionText);
@@ -318,59 +318,63 @@ function loadFromHistory(event) {
     // Gets the clicked history element
     const historyEntry = event.target;
 
-    // Scrolls the selected history item into view
-    historyEntry.scrollIntoView({behavior: 'smooth'});
-    
-    // Checks if result display moved upwards
-    if (resultDisplay.id === 'transition-result') {
-        // Return calculator displays to default states
-        resetDisplay();
-    }
-    
-    // Sets expression field to history item's text
-    expressionDisplay.value = historyEntry.textContent;
-    
-    // Only proceed if a calculation expression was clicked
-    if (historyEntry.className === 'history-expression') {
-        // Finds matching calculation in history
-        const currentEntry = calculator.calculationHistory.find(
-            // Matches based on expression text
-            (record) => record.inputExpression === expressionDisplay.value
-        );
+    // Checks if the clicked element is a valid history entry
+    if (historyEntry.classList.contains('history-entry')) {
+        // Scrolls the selected history item into view
+        historyEntry.scrollIntoView({behavior: 'smooth'});
         
-        // Debug log header
-        console.log('Retrieved Calculation');
-        
-        // Shows full details in console
-        console.table(currentEntry);
-        
-        // Restores operation sequence
-        calculator.operationsQueue = currentEntry.operationsQueue;
-        
-        // Shows saved result
-        resultDisplay.value = currentEntry.computedResult;
-    }
-
-    // Otherwise it's a result string
-    else {
-        // Clear result display if it contains any value
-        if (resultDisplay.value.length > 0) {
-            // Reset operations queue if any operations exist
-            if (calculator.operationsQueue.length > 0) {
-                // Empty the queue of pending operations
-                calculator.operationsQueue = [];   
-            }
-            
-            // Clear the result display completely
-            resultDisplay.value = '';
+        // Checks if result display moved upwards
+        if (resultDisplay.id === 'transition-result') {
+            // Return calculator displays to default states
+            resetDisplay();
         }
+        
+        // Sets expression field to history item's text
+        expressionDisplay.value = historyEntry.textContent;
+        
+        // Only proceed if a calculation expression was clicked
+        if (historyEntry.classList.contains('history-expression')) {
+            // Finds matching calculation in history
+            const currentEntry = calculator.calculationHistory.find(
+                // Matches based on expression text
+                (record) => record.inputExpression === expressionDisplay.value
+            );
+            
+            // Debug log header
+            console.log('Retrieved Calculation');
+            
+            // Shows full details in console
+            console.table(currentEntry);
+            
+            // Restores operation sequence
+            calculator.operationsQueue = currentEntry.operationsQueue;
+            
+            // Shows saved result
+            resultDisplay.value = currentEntry.computedResult;
+        }
+    
+        // Otherwise it's a result string
+        else {
+            // Clear result display if it contains any value
+            if (resultDisplay.value.length > 0) {
+                // Reset operations queue if any operations exist
+                if (calculator.operationsQueue.length > 0) {
+                    // Empty the queue of pending operations
+                    calculator.operationsQueue = [];   
+                }
+                
+                // Clear the result display completely
+                resultDisplay.value = '';
+            }
+        }
+    
+        // Set current operand to last number in display  
+        setCurrentOperand(expressionDisplay.value);
+    
+        // Log current operand for debugging
+        console.log('Current Operand:', calculator.currentOperand);
     }
 
-    // Set current operand to last number in display  
-    setCurrentOperand(expressionDisplay.value);
-
-    // Log current operand for debugging
-    console.log('Current Operand:', calculator.currentOperand);
 }
 
 // Event Listener Callbacks
