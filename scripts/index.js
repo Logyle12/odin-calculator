@@ -464,14 +464,14 @@ function applyTheme() {
     switch (selectedTheme) {  
         // Use dark icons for light theme for better contrast  
         case 'theme-light':  
-            historyIcon.src = 'icons/history-icon-dark.png';  
-            keyboardIcon.src = 'icons/keyboard-icon-dark.png';  
+            historyIcon.src = 'assets/icons/history-icon-dark.png';  
+            keyboardIcon.src = 'assets/icons/keyboard-icon-dark.png';  
             break;  
     
         // Use light icons by default for dark or default themes  
         default:  
-            historyIcon.src = 'icons/history-icon-light.png';  
-            keyboardIcon.src = 'icons/keyboard-icon-light.png';  
+            historyIcon.src = 'assets/icons/history-icon-light.png';  
+            keyboardIcon.src = 'assets/icons/keyboard-icon-light.png';  
             break;  
     }
     
