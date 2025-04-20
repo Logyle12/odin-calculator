@@ -365,6 +365,12 @@ function loadFromHistory(event) {
             resultDisplay.value = '';
         }
     }
+
+    // Set current operand to last number in display  
+    setCurrentOperand(expressionDisplay.value);
+
+    // Log current operand for debugging
+    console.log('Current Operand:', calculator.currentOperand);
 }
 
 // Event Listener Callbacks
@@ -790,8 +796,11 @@ function setCurrentOperand(displayText) {
     
         // Update current operand only if it differs from last number
         if (calculator.currentOperand !== operands.at(-1)) {
-            // Get the latest operand 
-            return operands.pop();
+            // Set to the latest operand 
+            calculator.currentOperand = operands.pop();
+
+            // Exit operand search
+            return;
         }
     }
 
@@ -802,7 +811,7 @@ function setCurrentOperand(displayText) {
     }
 
     // Return the current operand unchanged 
-    return calculator.currentOperand;
+    return;
 }
 
 // Converts operand strings to numeric values with percentage handling
@@ -1606,7 +1615,7 @@ function updateDisplay(key) {
                     }
 
                     // Set current operand to last number in display  
-                    calculator.currentOperand = setCurrentOperand(updatedExpression);
+                    setCurrentOperand(updatedExpression);
 
                     // Log updated current operand value
                     console.log('Current Operand (Delete):', calculator.currentOperand); 
