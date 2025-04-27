@@ -503,3 +503,239 @@ body {
     letter-spacing: 1.5px;
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
+
+/* Tablets and small laptops */
+@media only screen and (min-width: 712px) and (max-width: 1025px) {
+    .key-text {
+        font-size: 26px;
+    }
+
+    .calc-title {
+        font-size: 36px;
+    }
+
+    #expression-display, #transition-result {
+        font-size: 30px;
+    }
+
+    #result-display {
+        font-size: 26px;
+    }
+
+    .theme-container {
+        height: 85%;
+    }
+
+    .theme-choice {
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+    }
+
+    /* Taller tablet screens */
+    @media only screen and (min-height: 954px) and (max-height: 1370px) {
+        .calc-interface {
+            flex-grow: 1;
+            max-width: 82.5svw;
+        }
+
+        .calc-header {
+            height: 6.5%;
+        }
+
+        .calc-display {
+            height: 20%;
+        }
+    }
+}
+
+/* Small phones */
+@media only screen and (min-width: 320px) and (max-width: 431px) {
+    #expression-display, #transition-result {
+        font-size: 28.5px;
+    }
+
+    #result-display {
+        font-size: 22.5px;
+    }
+
+    .calc-title {
+        font-size: 22.5px;
+    }
+
+    .theme-container {
+        width: 60px;
+        height: 90%;
+    }
+
+    .theme-indicator {
+        width: 100%;
+    }
+
+    #theme-switch[role='switch'] {
+        width: 100%;
+        height: 16.5px;
+        padding: 1.5px 5px;
+    }
+
+    #theme-switch[role='switch']::-webkit-slider-thumb {
+        width: 14px;
+        height: 14px;
+    }
+
+    .calc-display, .calc-keypad {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .calc-settings {
+        bottom: 28px;
+        left: 20px;
+    }
+
+    .menu-btn {
+        width: 21.5px;
+        height: 21.5px;
+    }
+
+    /* Very short small phones (480px height) */
+    @media only screen and (height: 480px) {
+        .calc-interface {
+            min-width: 280px;
+        }
+
+        .calc-ui {
+            height: 92svh;
+        }
+
+        .calc-header {
+            height: 10%;
+        }
+
+        .calc-title {
+            font-size: 20px;
+        }
+
+        .theme-container {
+            height: 100%;
+        }
+    
+        .theme-indicator {
+            width: 100%;
+        }
+
+        .theme-choice {
+            width: 14px;
+            height: 14px;
+            font-size: 14px;
+        }
+    
+        #theme-switch[role='switch'] {
+            width: 100%;
+            height: 18px;
+            padding: 2px 5px;
+        }
+    
+        #theme-switch[role='switch']::-webkit-slider-thumb {
+            width: 11.5px;
+            height: 11.5px;
+        }
+
+        .calc-layout {
+            height: 82%;
+        }
+
+        #expression-display, #transition-result {
+            font-size: 21.5px;
+        }
+
+        #result-display {
+            font-size: 17.5px;
+        }
+
+        .calc-body {
+            row-gap: 10px;
+        }
+
+        .calc-display {
+           height: 25%; 
+        }
+
+        .calc-settings {
+            bottom: 16px;
+            left: 16px;
+        }
+    
+        .menu-btn {
+            width: 20px;
+            height: 20px;
+        }
+
+        .calc-keypad {
+            padding: 30px 24px;
+            height: 75%;
+            column-gap: 5%;
+        }
+
+        .keypad-column {
+            row-gap: 5%;
+        }
+
+        .key-text {
+            font-size: 15.5px;
+        }
+    }
+
+    /* Short small phones (640px height) */
+    @media only screen and (height: 640px) {
+        .calc-settings {
+            left: 20px;
+            bottom: 20px;
+        }
+    }
+
+    /* Medium short phones (658px–745px height) */
+    @media only screen and (min-height: 658px) and (max-width: 745px) {
+        .calc-ui {
+            height: 88svh;
+        }
+    }
+
+    /* Medium phones (740px–790px height) */
+    @media only screen and (min-height: 740px) and (max-height: 790px) {
+        .calc-ui {
+            height: 95svh;
+        }
+
+        .calc-settings {
+            left: 18px;
+            bottom: 28px;
+        }
+    }
+
+    /* iPhone X and Mini series (812px–825px height) */
+    @media only screen and (min-height: 812px) and (max-height: 825px) {
+        .calc-ui {
+            height: 80svh;
+        }
+
+        .key-text {
+            font-size: 20px;
+        }
+    }
+
+    /* iPhone 12–14 standard models (844px–932px height) */
+    @media only screen and (min-height: 844px) and (max-height: 932px) {
+        .calc-ui {
+            height: 72svh;
+        }
+
+        .key-text {
+            font-size: 20px;
+        }
+
+        #expression-display, #transition-result {
+            font-size: 26.5px;
+        }
+    }
+}
