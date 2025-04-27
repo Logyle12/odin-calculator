@@ -603,8 +603,8 @@ function handleSidebar() {
 
 // Adds an event listener to update the theme on user input
 function handleThemeSwitch() {
-    // Listen for clicks on the switch and apply the chosen theme
-    themeSwitch.addEventListener('click', applyTheme);
+    // Listen for input on the switch and apply the chosen theme
+    themeSwitch.addEventListener('input', applyTheme);
 }
 
 // Operator functions
