@@ -31,7 +31,8 @@ body {
     min-height: 460px;
     min-width: 300px;
     max-width: 90svw;
-    flex-basis: 500px;
+    flex-basis: 455px;
+    height: 98svh;
     margin: 20px;
 }
 
@@ -73,8 +74,8 @@ body {
     justify-content: center;
     align-items: center;
     row-gap: 18px;
-    flex-grow: 1;
-    height: 98svh;
+    width: 100%;
+    height: 100%;
     transition: height 0.3s ease-in-out,
                 width 0.3s ease-in-out;
 }
@@ -90,11 +91,10 @@ body {
 .calc-body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 100%;
-    row-gap: 18px;
 }
 
 .calc-help-sidebar {
