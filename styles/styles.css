@@ -444,9 +444,16 @@ body {
 
 .calc-keypad {
     display: flex;
+    width: 100%;
+    height: 75%;
     padding: 38px 32px;
+}
+
+.keypad-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
     column-gap: 4.75%;
-    height: 77.5%;
 }
 
 .keypad-column {
