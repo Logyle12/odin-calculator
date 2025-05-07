@@ -480,7 +480,7 @@ body {
     flex-direction: column;
     row-gap: 6%;
     height: 100%;
-    width: 25%;
+    flex-basis: 15.25%;
 }
 
 #keypad-column-0 {
