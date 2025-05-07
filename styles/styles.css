@@ -272,6 +272,27 @@ body {
     text-overflow: ellipsis;
 }
 
+.history-content-mobile .history-item {
+    display: flex;
+    flex-grow: 1;
+    max-height: 35px;
+    max-width: calc(95% - 16px);
+    letter-spacing: 1px;
+    margin: 10px 8px;
+}
+
+.history-content-mobile .history-expression, 
+.history-content-mobile .history-result,
+.history-content-mobile .history-equals {
+    font-size: 14.5px;
+    font-weight: 400;
+    padding: 6px 8px;
+}
+
+.history-content-mobile .history-entry{
+    max-width: 70px;
+}
+
 .history-equals {
     display: inline-block;
     width: 35px;
