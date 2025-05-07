@@ -144,6 +144,7 @@ body {
     font-size: 18px; 
     font-weight: 800; 
     text-transform: uppercase; 
+    width: 50%;
 }
 
 .shortcut-list {
