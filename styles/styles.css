@@ -253,7 +253,7 @@ body {
     height: 10%;
 }
 
-#clear-history-btn {
+.clear-history-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -275,15 +275,15 @@ body {
     transition: transform 0.25s 0.1s ease-in-out;
 }
 
-#clear-history-btn.active-btn {
+.clear-history-btn.active-btn {
     transform: scale(1, 1);
 }
 
-#clear-history-btn.active-btn:hover {
+.clear-history-btn.active-btn:hover {
     transform: scale(1, 1) translateY(-5px);
 }
 
-#clear-history-btn > span{
+.clear-history-btn > span{
     padding: 10px;
     text-align: center;
 }
