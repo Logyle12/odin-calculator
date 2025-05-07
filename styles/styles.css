@@ -331,6 +331,10 @@ body {
     transition: transform 0.25s 0.1s ease-in-out;
 }
 
+.history-content-mobile .clear-history-btn {
+    width: 70%;
+}
+
 .clear-history-btn.active-btn {
     transform: scale(1, 1);
 }
