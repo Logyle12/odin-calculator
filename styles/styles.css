@@ -109,7 +109,6 @@ body {
     right: 0px;
     transform: translateX(300px);
     transition: transform 0.3s ease-in-out;
-    display: none;
 }
 
 .calc-help-sidebar {
@@ -205,11 +204,20 @@ body {
     height: 100%;
 }
 
-.history-content {
+.history-content, .history-content-mobile {
     display: flex;
     flex-direction: column;
+    max-height: 88%;
+}
+
+.history-content {
     flex-grow: 1;
-    max-height: 90%;
+}
+
+.history-content-mobile {
+    justify-content: space-between;
+    height: 90%;
+    width: 100%;
 }
 
 .history-list {
