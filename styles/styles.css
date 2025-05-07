@@ -221,13 +221,21 @@ body {
 }
 
 .history-list {
-    min-width: 220.962px;
-    max-width: 280px;
     max-height: 90%;
     justify-content: flex-start;
-    flex-grow: 1;
     overflow-y: scroll;
     scroll-behavior: smooth;
+}
+
+.history-content .history-list {
+    flex-grow: 1;
+    min-width: 220.962px;
+    max-width: 280px;
+}
+
+.history-mobile.active .history-list {
+    height: calc(74% - 4px);
+    width: calc(90% - 4px);
 }
 
 .history-list::-webkit-scrollbar {
