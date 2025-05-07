@@ -57,7 +57,8 @@
 }
 
 /* Sidebar Styles */
-.theme-default .calc-help-sidebar {
+.theme-default .calc-help-sidebar, 
+.theme-default .history-mobile.active {
     background: linear-gradient(to right, rgb(60, 75, 115), rgb(48, 60, 89));
     color: rgb(230, 230, 230); 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -72,19 +73,21 @@
 
 .theme-default .calc-help-sidebar .shortcut-key,
 .theme-default .calc-help-sidebar .history-expression, 
-.theme-default .calc-help-sidebar .history-result {
+.theme-default .calc-help-sidebar .history-result,
+.theme-default .history-mobile.active .history-expression,
+.theme-default .history-mobile.active .history-result {
     background-color: rgba(100, 113, 152, 0.5);
     outline: 1.5px solid rgb(230, 230, 230);
 }
 
 /* Clear Button Styles / Scrollbar Styles */
-.theme-default #clear-history-btn, 
+.theme-default .clear-history-btn, 
 .theme-default .history-list::-webkit-scrollbar-thumb {
     background-color: rgb(100, 113, 152);
     box-shadow: inset 0px -3px 0px rgb(65, 78, 115);
 }
 
-.theme-default #clear-history-btn:hover,
+.theme-default .clear-history-btn:hover,
 .theme-default .history-list::-webkit-scrollbar-thumb:hover {
     background-color: rgb(163, 178, 225);
 }
@@ -165,7 +168,8 @@
 }
 
 /* Sidebar Styles */
-.theme-light .calc-help-sidebar {
+.theme-light .calc-help-sidebar,
+.theme-light .history-mobile.active {
     background: linear-gradient(to right, rgb(187, 186, 186), rgb(205, 201, 201));
     color: rgb(40, 40, 40);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -173,7 +177,9 @@
 
 .theme-light .calc-help-sidebar .shortcut-key,
 .theme-light .calc-help-sidebar .history-expression, 
-.theme-light .calc-help-sidebar .history-result {
+.theme-light .calc-help-sidebar .history-result,
+.theme-light .history-mobile.active .history-expression,
+.theme-light .history-mobile.active .history-result {
     background-color: rgba(80, 80, 80, 0.15);
     outline: 1.5px solid rgb(40, 40, 40);
 }
@@ -186,13 +192,13 @@
 }
 
 /* Clear Button Styles / Scrollbar Styles */
-.theme-light #clear-history-btn,
+.theme-light .clear-history-btn,
 .theme-light .history-list::-webkit-scrollbar-thumb {
     background-color: rgb(190, 109, 58);
     box-shadow: inset 0px -3px 0px rgb(160, 75, 35);
 }
 
-.theme-light #clear-history-btn:hover,
+.theme-light .clear-history-btn:hover,
 .theme-light .history-list::-webkit-scrollbar-thumb:hover {
     background-color: rgb(211, 139, 92);
 }
@@ -277,7 +283,8 @@
 }
 
 /* Sidebar Styles */
-.theme-dark .calc-help-sidebar {
+.theme-dark .calc-help-sidebar,
+.theme-dark .history-mobile.active {
     background: linear-gradient(to right, rgb(40, 20, 80), rgb(25, 10, 50));
     color: rgb(206, 206, 43);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
@@ -285,7 +292,9 @@
 
 .theme-dark .calc-help-sidebar .shortcut-key,
 .theme-dark .calc-help-sidebar .history-expression, 
-.theme-dark .calc-help-sidebar .history-result {
+.theme-dark .calc-help-sidebar .history-result,
+.theme-dark .history-mobile.active .history-expression,
+.theme-dark .history-mobile.active .history-result {
     background-color: rgba(255, 229, 61, 0.3);
     outline: 1.5px solid rgb(220, 220, 220);
 }
@@ -298,13 +307,13 @@
 }
 
 /* Clear Button Styles / Scrollbar Styles */
-.theme-dark #clear-history-btn,
+.theme-dark .clear-history-btn,
 .theme-dark .history-list::-webkit-scrollbar-thumb {
     background-color: rgba(86, 17, 118, 0.773); 
     box-shadow: inset 0px -3px 0px rgb(70, 20, 105); 
 }
 
-.theme-dark #clear-history-btn:hover,
+.theme-dark .clear-history-btn:hover,
 .theme-dark .history-list::-webkit-scrollbar-thumb:hover {
     background-color: rgb(106, 43, 137); 
 }
