@@ -483,6 +483,31 @@ body {
     width: 25%;
 }
 
+#keypad-column-0 {
+    transition: flex-shrink 0.35s 0.05s ease-in-out;
+}
+
+.history-mode.keypad-column {
+    display: none;
+}
+
+.history-mode#keypad-column-0 {
+    display: flex;
+    flex-basis: auto;
+    row-gap: 0px;
+    width: 75%;
+}
+
+.history-mode#keypad-column-0 .key {
+    display: none;
+}
+
+.history-mode#keypad-column-4 {
+    display: flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
 .calc-separator {
     display: flex;
     justify-content: center;
