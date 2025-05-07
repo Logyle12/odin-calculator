@@ -3,10 +3,23 @@ const menuButtons = document.querySelectorAll('.menu-btn');
 const historySidebar = document.querySelector('#history-sidebar');  
 const keyboardSidebar = document.querySelector('#keyboard-sidebar');   
 
-// Get reference to the history list in the DOM
-const historyList = document.querySelector('.history-list');
-// Get reference to clear history button
-const clearHistoryButton = document.querySelector('#clear-history-btn');
+// Get reference to mobile history section
+const historyMobile = document.querySelector('.history-mobile');
+
+// Get reference to keypad columns
+const keypadColumns = document.querySelectorAll('.keypad-column');
+
+// Get reference to the history lists in the DOM
+const historyLists = document.querySelectorAll('.history-list');
+
+// Get device-specific history list 
+const historyList = [...historyLists].find(findHistoryList);
+
+// Get reference to clear history buttons
+const clearHistoryButtons = document.querySelectorAll('.clear-history-btn');
+
+// Get device-specific clear button
+const clearHistoryButton = [...clearHistoryButtons].find(findClearButton);
 
 // Get the theme switch input to detect user selection
 const themeSwitch = document.querySelector('#theme-switch');
@@ -14,6 +27,7 @@ const themeSwitch = document.querySelector('#theme-switch');
 // Get the calculator container to update its theme
 const calculatorUI = document.querySelector('.calc-container');
 
+// Get icon elements for toggling between history and keyboard views
 const historyIcon = document.querySelector('#history-icon');
 const keyboardIcon = document.querySelector('#keyboard-icon');
 
@@ -199,6 +213,30 @@ function isDesktop() {
 
     // A desktop is any non-mobile device running Windows or Mac OS
     return !isMobile && (isWindows || isMac);
+}
+
+// Finds history list element matching device-specific ID
+function findHistoryList(listElement) {
+    // Choose ID based on device type
+    const targetListId = isDesktop() ? 'desktop-list' : 'mobile-list';
+
+    // Debug output of target ID
+    console.log(`Target list ID: ${targetListId}`);
+    
+    // Check if element ID matches target
+    return listElement.id === targetListId; 
+}
+
+// Finds clear button element matching device-specific ID
+function findClearButton(buttonElement) {
+    // Choose ID based on device type
+    const targetButtonId = isDesktop() ? 'desktop-btn' : 'mobile-btn';
+
+    // Debug output of target ID
+    console.log(`Target button ID: ${targetButtonId}`);
+    
+    // Check if element ID matches target
+    return buttonElement.id === targetButtonId; 
 }
 
 // Check if an expression ends with a number or closing parenthesis
