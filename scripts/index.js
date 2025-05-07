@@ -178,6 +178,29 @@ const keyMap = {
 
 // Helper functions
 
+// Determines whether the user is browsing from a desktop computer
+function isDesktop() {    
+    // Get the device and browser information string
+    const userAgent = navigator.userAgent;
+
+    // Common identifiers found in mobile device browsers
+    const mobilePattern = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/gi;
+    // Identifiers specific to Windows desktop computers
+    const windowsPattern = /Windows NT|Win32|Win64/gi;
+    // Identifiers specific to Mac desktop computers
+    const macPattern = /Macintosh|Mac OS/gi;
+
+    // Determine if this is a mobile device
+    const isMobile = mobilePattern.test(userAgent);
+    // Determine if this is a Windows PC
+    const isWindows = windowsPattern.test(userAgent);
+    // Determine if this is a Mac (excluding touch-capable devices like iPads)
+    const isMac = macPattern.test(userAgent) && navigator.maxTouchPoints === 0;
+
+    // A desktop is any non-mobile device running Windows or Mac OS
+    return !isMobile && (isWindows || isMac);
+}
+
 // Check if an expression ends with a number or closing parenthesis
 function endsWithValidToken(expression) {
     // Verify expression ends with a valid token
@@ -543,6 +566,30 @@ function setupHistoryListeners() {
 
 // Sets up event handler for sidebar toggle buttons
 function handleSidebar() {
+    // Hide keyboard button and sidebars on mobile devices
+    if (isDesktop() === false) {
+        // Find the keyboard button from the menu button list
+        const keyboardBtn = [...menuButtons].find((button) => button.id === 'keyboard-btn');
+        
+        // Hide the keyboard button on mobile
+        keyboardBtn.style.display = 'none';
+        
+        // Remove the history sidebar from the DOM
+        historySidebar.remove();
+        
+        // Remove the keyboard sidebar from the DOM
+        keyboardSidebar.remove();
+    }
+
+    // Handle desktop case
+    else {
+        // Find mobile history element in the DOM
+        const mobileHistory = document.querySelector('.history-mobile');
+
+        // Remove mobile history from the page
+        mobileHistory.remove();
+    }
+
     // Maps button IDs to sidebar elements
     const sidebarControls = {
         'history-btn': historySidebar,
@@ -581,6 +628,9 @@ function handleSidebar() {
 
                 // Scrolls to bottom of history list when opening the sidebar
                 if (buttonId === 'history-btn') {
+                    // Switch to mobile layout for history
+                    toggleHistoryMobile();
+
                     // Set scroll position to show the most recent history entry
                     historyList.scrollTop = historyList.scrollHeight - historyList.clientHeight;
                 }
@@ -590,6 +640,9 @@ function handleSidebar() {
             else {
                 // Deactivates the button if it was already active
                 activeButton.classList.remove('menu-btn-active');
+
+                // Switch to mobile layout for history
+                toggleHistoryMobile();
             }
 
             // Shows or hides the sidebar panel associated with clicked button
