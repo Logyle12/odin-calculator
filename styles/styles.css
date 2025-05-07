@@ -464,11 +464,17 @@ body {
     width: 25%;
 }
 
+.calc-separator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
 #vertical-line {
     border-right-width: 0.25px;
     border-right-style: solid;
-    height: 98%;
-    margin: auto;
+    height: 95%;
 }
 
 .key {
