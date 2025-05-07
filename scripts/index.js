@@ -564,6 +564,21 @@ function toggleSidebar(sidebarPanel) {
     }  
 }
 
+// Remove history-mode class from all keypad columns on mobile
+function toggleHistoryMobile() {
+    // Only apply this on mobile devices
+    if (isDesktop() === false) {
+        // Loop through all keypad columns
+        keypadColumns.forEach((keypadColumn) => {
+            // Merge the history layout into the keypad
+            keypadColumn.classList.toggle('history-mode');
+        });
+        
+        // Toggle active state on history mobile element
+        historyMobile.classList.toggle('active');
+    }
+}
+
 // Event listeners
 
 // Handle key button clicks
