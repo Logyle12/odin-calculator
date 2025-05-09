@@ -63,6 +63,7 @@ const calculator = {
     digitLimits: {
         'INTEGER': 15,
         'DECIMAL': 10,
+        'EXPONENT': 3,
     },
 
     // Track count of opening and closing parentheses
@@ -275,12 +276,24 @@ function resetDisplay() {
 function getDigitLimit(valueString) {
     // Default to the integer digit limit for whole numbers
     let digitLimit = calculator.digitLimits.INTEGER;
+
+    // Log value string for debugging
+    console.log('Value String:', valueString);
+
+    // Check if operand in scientific notation
+    if (/\E/gi.test(valueString)) {
+        // Use exponent digit limit
+        digitLimit = calculator.digitLimits.EXPONENT
+    }
  
     // Check if the operand contains a decimal point
-    if (/\./g.test(valueString)) {
+    else if (/\./g.test(valueString)) {
         // Use fractional digit limit
         digitLimit = calculator.digitLimits.DECIMAL;
     }
+
+    // Log digit limit for debugging
+    console.log('Digit Limit:', digitLimit);
     
     // Return the digit limit 
     return digitLimit;
@@ -288,8 +301,22 @@ function getDigitLimit(valueString) {
 
 // Counts total digits for integers or decimal places for floats
 function getDigitCount(valueString) {
+    // Log value string for debugging
+    console.log('Value String:', valueString);
+
+    // Extract digit part based on exponent or decimal format
+    const digitPart = /\E/gi.test(valueString) 
+        ? valueString.replace(/.+[+-](?=\d+)/gi, '') 
+        : valueString.replace(/\d+\./g, '');
+
+    // Log digit part for debugging
+    console.log('Digit Part:', digitPart);
+
     // Count digits after decimal point or total digits if integer
-    const digitCount = valueString.replace(/\d+\./g, '').length;
+    const digitCount = digitPart.length;
+
+    // Log digit count for debugging
+    console.log('Digit Count:', digitCount);
 
     // Return the computed digit count 
     return digitCount;
