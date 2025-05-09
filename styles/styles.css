@@ -33,7 +33,7 @@ body {
     max-width: 90svw;
     flex-basis: 455px;
     height: 98svh;
-    margin: 20px;
+    margin: 0px 20px 20px;
 }
 
 .calc-header {
