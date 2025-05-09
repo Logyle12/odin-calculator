@@ -1549,6 +1549,12 @@ function updateDisplay(key) {
     // Process the action based on the key type
     switch (keyType) {
         case 'key-digit':
+            // Reset operand if it follows a space and already holds a value
+            if (/\s$/g.test(expressionDisplay.value) && calculator.currentOperand.length !== 0) {
+                // Clear stored value to avoid joining with next digit
+                calculator.currentOperand = '';
+            }
+
             // If display shows only zero, overwrite it with new input
             if (expressionDisplay.value === '0') {
                 // Replace the zero with the clicked digit
