@@ -1839,20 +1839,29 @@ function updateDisplay(key) {
 
                 // Add operator if we have a valid number and proper expression ending
                 else if (calculator.currentOperand.length !== 0 && isValidNumber && isValidEnd) {
-                    // Retrieve operator symbol for pressed key
-                    const keySymbol = calculator.operators[keyId].symbol;
-
-                    // Get formatted operator  
-                    const operator = formatOperator(keySymbol);
-
-                    // Append operator to display
-                    expressionDisplay.value += operator;
-
-                    // Add the operator and action to the queue
-                    calculator.operationsQueue.push([keyId, keySymbol, operatorRank]);
-
-                    // Reset tracked value after operator added
-                    calculator.currentOperand = '';
+                    // Prevents adding a second 'E' after a valid exponent part
+                    if (keyId === 'key-exponent'  && /\E\-?\d+\.?\d*\%?$/g.test(expressionDisplay.value)) {
+                        // Block extra exponent if expression already ends with one
+                        return;
+                    }
+                    
+                    // Otherwise, append operator and enqueue it for evaluation
+                    else {
+                        // Retrieve operator symbol for pressed key
+                        const keySymbol = calculator.operators[keyId].symbol;
+    
+                        // Get formatted operator  
+                        const operator = formatOperator(keySymbol);
+    
+                        // Append operator to display
+                        expressionDisplay.value += operator;
+    
+                        // Add the operator and action to the queue
+                        calculator.operationsQueue.push([keyId, keySymbol, operatorRank]);
+    
+                        // Reset tracked value after operator added
+                        calculator.currentOperand = '';
+                    }
                 }
             }
 
