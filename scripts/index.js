@@ -354,8 +354,8 @@ function saveHistory(expression, result) {
 
     // Checks if the history sidebar is active
     if (historySidebar.classList.contains('calc-help-sidebar-active')) {
-        // Scrolls the entry item into view
-        entryItem.scrollIntoView();
+        // Scrolls the latest entry item into view
+        historyList.scrollTop = historyList.scrollHeight - historyList.clientHeight;
     }
 }
 
@@ -382,7 +382,7 @@ function loadFromHistory(event) {
     // Checks if the clicked element is a valid history entry
     if (historyEntry.classList.contains('history-entry')) {
         // Scrolls the selected history item into view
-        historyEntry.scrollIntoView({behavior: 'smooth'});
+        historyEntry.scrollIntoView({behavior: 'smooth', block: 'center'});
         
         // Checks if result display moved upwards
         if (resultDisplay.id === 'transition-result') {
