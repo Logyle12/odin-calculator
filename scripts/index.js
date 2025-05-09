@@ -1851,7 +1851,7 @@ function updateDisplay(key) {
                 // Add operator if we have a valid number and proper expression ending
                 else if (calculator.currentOperand.length !== 0 && isValidNumber && isValidEnd) {
                     // Prevents adding a second 'E' after a valid exponent part
-                    if (keyId === 'key-exponent'  && /\E\-?\d+\.?\d*\%?$/g.test(expressionDisplay.value)) {
+                    if (keyId === 'key-exponent'  && /\E\-?\d+\%?$/g.test(expressionDisplay.value)) {
                         // Block extra exponent if expression already ends with one
                         return;
                     }
@@ -1926,8 +1926,8 @@ function updateDisplay(key) {
 
             // Check if the decimal key was pressed
             else if (keyId === 'key-decimal') {
-                // Add decimal point if currentOperand doesn't have one yet
-                if (calculator.currentOperand.includes('.') === false) {
+                // Add decimal point if absent or not before scientific notation
+                if (calculator.currentOperand.includes('.') === false && /\E(?!\-?\d+\%?)$/g.test(expressionDisplay.value)) {
                     // Add '0' if input not preceded by a digit
                     if (calculator.currentOperand.length === 0) {
 
