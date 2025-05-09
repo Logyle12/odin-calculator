@@ -929,6 +929,8 @@ function processOperands(numericString, currentIndex, operandStrings) {
     // Get operator ID from function context
     const operatorId = String(this);
 
+    console.log('Operator Id:', operatorId);
+
     // For percentage values (e.g., "50%")
     if (/(\d+)\%/.test(numericString)) {
         // Convert percentage to decimal value (50% → 0.5)
@@ -949,6 +951,15 @@ function processOperands(numericString, currentIndex, operandStrings) {
             
                 // Return calculated relative percentage value
                 return relativePercent;
+            }
+
+            // Check if operator is exponentiation
+            else if (operatorId === 'key-exponent') {
+                // Adjust exponent value by subtracting 2 (division by 10^2)
+                const adjustedExponent = parseFloat(operandStrings[1]) - 2;
+
+                // Return the adjusted exponent for further calculation
+                return adjustedExponent;
             }
 
             // Return simple decimal form for percentage
@@ -1330,7 +1341,7 @@ function evaluateExpression(expression) {
     
         // Convert the pattern to a regular expression
         const regex = new RegExp(pattern, 'i');
-        // console.log('Regex:', regex);
+        console.log('Regex:', regex);
 
         // Find all matches of the pattern in the mathematical expression
         const operatorMatches = findNextOperation(regex, expression);
@@ -1844,7 +1855,7 @@ function updateDisplay(key) {
                         // Block extra exponent if expression already ends with one
                         return;
                     }
-                    
+
                     // Otherwise, append operator and enqueue it for evaluation
                     else {
                         // Retrieve operator symbol for pressed key
