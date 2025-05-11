@@ -1062,6 +1062,12 @@ function validateExpression(expression) {
         // Generic error message for other mathematical errors
         errorMessage = "Error: Well... This is Awkward";
     }
+
+    // Check for value overflow beyond number limits
+    else if (Math.abs(parseFloat(expression)) === (Number.POSITIVE_INFINITY)) {
+        // Concise error for exceeding numeric range
+        errorMessage = "Value Out of Range";
+    }
     
     // Build validation outcome with status and message
     const validationData = {
@@ -1469,11 +1475,6 @@ function displayComputedResult(displayElement, expression) {
             // Format and display the result
             formatResult(displayElement, computedResult);
         } 
-        // Handle infinite results separately
-        else {
-            // Display infinity directly without formatting
-            displayElement.value = computedResult;
-        }
     }
 
     // Otherwise clear display if result is NaN or undefined 
