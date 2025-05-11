@@ -278,7 +278,7 @@ function getDigitLimit(valueString) {
     let digitLimit = calculator.digitLimits.INTEGER;
 
     // Log value string for debugging
-    console.log('Value String:', valueString);
+    // console.log('Value String:', valueString);
 
     // Check if operand in scientific notation
     if (/\E/gi.test(valueString)) {
@@ -293,7 +293,7 @@ function getDigitLimit(valueString) {
     }
 
     // Log digit limit for debugging
-    console.log('Digit Limit:', digitLimit);
+    // console.log('Digit Limit:', digitLimit);
     
     // Return the digit limit 
     return digitLimit;
@@ -302,7 +302,7 @@ function getDigitLimit(valueString) {
 // Counts total digits for integers or decimal places for floats
 function getDigitCount(valueString) {
     // Log value string for debugging
-    console.log('Value String:', valueString);
+    // console.log('Value String:', valueString);
 
     // Extract digit part based on exponent or decimal format
     const digitPart = /\E/gi.test(valueString) 
@@ -310,13 +310,13 @@ function getDigitCount(valueString) {
         : valueString.replace(/\d+\./g, '');
 
     // Log digit part for debugging
-    console.log('Digit Part:', digitPart);
+    // console.log('Digit Part:', digitPart);
 
     // Count digits after decimal point or total digits if integer
     const digitCount = digitPart.length;
 
     // Log digit count for debugging
-    console.log('Digit Count:', digitCount);
+    // console.log('Digit Count:', digitCount);
 
     // Return the computed digit count 
     return digitCount;
@@ -1529,7 +1529,7 @@ function processResult(displayElement, expression) {
     // Process expression only if valid results exist (non-empty and numeric)
     if (validationData.isValid && calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$)/gi.test(expression)) {
+        if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$|^\-?\d+\.?\d*\e[+-]\d+$)/gi.test(expression)) {
             // Compute display the result if it's a finite number
             displayComputedResult(displayElement, expression);
         }
