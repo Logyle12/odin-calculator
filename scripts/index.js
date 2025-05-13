@@ -306,7 +306,7 @@ function getDigitCount(valueString) {
 
     // Extract digit part based on exponent or decimal format
     const digitPart = /\E/gi.test(valueString) 
-        ? valueString.replace(/.+[+-](?=\d+)/gi, '') 
+        ? valueString.replace(/.+[+-](?=\d+|$)/gi, '') 
         : valueString.replace(/\d+\./g, '');
 
     // Log digit part for debugging
@@ -927,9 +927,9 @@ function setCurrentOperand(displayText) {
     displayText = displayText.replaceAll(/\s/g, '');
 
     // Proceed only if the display ends with a valid operand  
-    if (/\d+$/g.test(displayText)) {
+    if (/\d+$|\E[+-]/gi.test(displayText)) {
         // Extract all numbers from display text
-        const operands = displayText.replaceAll(',', '').match(/(\-?\d+\.?\d*)/g);
+        const operands = displayText.replaceAll(',', '').match(/(\-?\d+\.?\d*\E?[+-]?\d*)/gi);
     
         // Update current operand only if it differs from last number
         if (calculator.currentOperand !== operands.at(-1)) {
@@ -1011,8 +1011,8 @@ function formatNumberDisplay() {
 
     // console.log('Unformatted Number:', unformattedNumber);
 
-    // Format number if it doesn't already contain a decimal point
-    if (unformattedNumber.includes('.') === false) {
+    // Format number if not a decimal number or in scientific notation
+    if (unformattedNumber.includes('.') === false && /E/gi.test(unformattedNumber) === false) {
         // Parse and format number with UK locale separators
         const formattedNumber = parseInt(calculator.currentOperand, 10).toLocaleString('en-GB');
 
@@ -1629,8 +1629,30 @@ function updateDisplay(key) {
                     // Append digit to tracked value
                     calculator.currentOperand += keyAction;
 
-                    // Update display with current digit
-                    expressionDisplay.value += keyAction;
+                    // Convert current operand to a numeric value
+                    const currentOperand = parseFloat(calculator.currentOperand);
+
+                    // Log parsed operand for debugging
+                    console.log('Current Operand (Numeric):', currentOperand)
+
+                    // Allow input if value stays within floating point precision
+                    if (currentOperand >= -Number.MAX_VALUE && currentOperand <= Number.MAX_VALUE) {
+                        // Append digit to display if value is within valid range
+                        expressionDisplay.value += keyAction;
+                    }
+
+                    // Otherwise operand exceeds valid numeric range
+                    else {
+                        // Reset operand if value exceeds allowable numeric range
+                        setCurrentOperand (expressionDisplay.value);
+
+                        // Log updated operand after reset
+                        console.log('Current Operand (Above):', calculator.currentOperand);
+
+                        // Exit early to prevent further processing
+                        return;
+                    }
+
 
                     // Apply locale formatting  
                     formatNumberDisplay();
@@ -1897,9 +1919,19 @@ function updateDisplay(key) {
     
                         // Add the operator and action to the queue
                         calculator.operationsQueue.push([keyId, keySymbol, operatorRank]);
+
+                        // If exponent key was pressed
+                        if (keyId === 'key-exponent') {
+                            // Add exponent to current operand
+                            calculator.currentOperand += operator;    
+                        }
+                        
+                        // If any other operator was pressed
+                        else {
+                            // Reset operand after non-exponent operator
+                            calculator.currentOperand = '';
+                        }
     
-                        // Reset tracked value after operator added
-                        calculator.currentOperand = '';
                     }
                 }
             }
