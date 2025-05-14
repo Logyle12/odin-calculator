@@ -306,7 +306,7 @@ function getDigitCount(valueString) {
 
     // Extract digit part based on exponent or decimal format
     const digitPart = /\E/gi.test(valueString) 
-        ? valueString.replace(/.+[+-](?=\d+|$)/gi, '') 
+        ? valueString.replace(/.+\E[+-]?(?=\d+|$)/gi, '') 
         : valueString.replace(/\d+\./g, '');
 
     // Log digit part for debugging
@@ -1530,7 +1530,7 @@ function processResult(displayElement, expression) {
     // Process expression only if valid results exist (non-empty and numeric)
     if (validationData.isValid && calculator.currentOperand.length !== 0) {
         // Check for a complete expression with a valid ending  
-        if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$|^\-?\d+\.?\d*\e[+-]\d+$)/gi.test(expression)) {
+        if (/[\%\)\d]+$(?<!^\-?\d+\.?\d*$|^\-?\d+\.?\d*\e[+]\d+$)/gi.test(expression)) {
             // Compute display the result if it's a finite number
             displayComputedResult(displayElement, expression);
         }
@@ -1855,9 +1855,6 @@ function updateDisplay(key) {
                         // Append negative sign to expression display
                         expressionDisplay.value += '\u002D';
                     }
-
-                    // Reset current operand
-                    calculator.currentOperand = '';
 
                     // Update current operand with negative sign
                     calculator.currentOperand += '\u002D';
