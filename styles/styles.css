@@ -225,6 +225,7 @@ body {
     max-height: 90%;
     justify-content: flex-start;
     overflow-y: scroll;
+    scrollbar-width: thin;
     scroll-behavior: smooth;
 }
 
