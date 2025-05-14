@@ -260,18 +260,6 @@ function scrollToLatestInput() {
     });
 }
 
-// Returns calculator display elements to their default state
-function resetDisplay() {
-    // Remove transition animations  
-    resultDisplay.id = 'result-display';
-
-    // Clears any value from the result display
-    resultDisplay.value = '';
-
-    // Makes the expression input visible again
-    expressionDisplay.style['display'] = 'inline-block';
-}
-
 // Determines the appropriate digit limit 
 function getDigitLimit(valueString) {
     // Default to the integer digit limit for whole numbers
@@ -410,12 +398,6 @@ function loadFromHistory(event) {
     if (historyEntry.classList.contains('history-entry')) {
         // Scrolls the selected history item into view
         historyEntry.scrollIntoView({behavior: 'smooth', block: 'center'});
-        
-        // Checks if result display moved upwards
-        if (resultDisplay.id === 'transition-result') {
-            // Return calculator displays to default states
-            resetDisplay();
-        }
         
         // Sets expression field to history item's text
         expressionDisplay.value = historyEntry.textContent;
@@ -1556,13 +1538,7 @@ function updateDisplay(key) {
 
     // Get the key ID for reference in actions
     const keyId = key.id;
-
-    // Checks if result display moved upwards
-    if (resultDisplay.id === 'transition-result') {
-        // Return calculator displays to default states
-        resetDisplay();
-    }
-
+    
     // Check if operator/function follows decimal point
     const completeDecimal = (keyType === 'key-operator' || keyType === 'math-function') && 
                             keyId !== 'key-decimal';
@@ -2068,13 +2044,10 @@ function updateDisplay(key) {
                         processResult(expressionDisplay, finalExpression);
         
                         // Update the current operand to the computed result
-                        calculator.currentOperand = resultDisplay.value;
-        
-                        // Hide the expression input field
-                        expressionDisplay.style['display'] = 'none';
-        
-                        // Apply transition animations
-                        resultDisplay.id = 'transition-result';
+                        calculator.currentOperand = resultDisplay.value;        
+
+                        // Reset results display
+                        resultDisplay.value = '';
         
                         // Reset operator queue after final calculation
                         calculator.operationsQueue = [];
